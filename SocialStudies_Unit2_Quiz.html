@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Studies Unit 2 — Interactive Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E2761;
+    --navy-dark:#0D1B2A;
+    --slate:#2C3E50;
+    --lightblue:#CADCFC;
+    --bg:#F2F2F2;
+    --text:#1A1A1A;
+    --correct:#1565C0;
+    --correct-bg:#E8F0FE;
+    --wrong-bg:#FBE9E9;
+    --wrong-border:#B3261E;
+    --muted:#5B6472;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:'Sarabun','TH Sarabun New',Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    margin:0;
+    padding:24px 12px 60px;
+    font-size:15px;
+    line-height:1.6;
+  }
+  .container{max-width:760px;margin:0 auto;}
+  header{
+    background:var(--navy);
+    color:#fff;
+    padding:22px 26px;
+    border-radius:10px;
+    margin-bottom:20px;
+  }
+  header .eyebrow{
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--lightblue);
+    margin:0 0 6px;
+    font-weight:600;
+  }
+  header h1{margin:0 0 4px;font-size:20px;font-weight:700;}
+  header p{margin:0;font-size:13px;color:var(--lightblue);}
+
+  /* Progress */
+  .progress-wrap{margin-bottom:18px;}
+  .progress-bar-bg{
+    width:100%;height:8px;background:#DDE3EA;border-radius:4px;overflow:hidden;
+  }
+  .progress-bar-fill{
+    height:100%;background:var(--correct);width:0%;
+    transition:width .3s ease;
+  }
+  .progress-labels{
+    display:flex;justify-content:space-between;
+    font-size:12px;color:var(--muted);margin-top:6px;
+  }
+  .score-badge{
+    font-weight:700;color:var(--navy);
+  }
+
+  /* Question card */
+  .card{
+    background:#fff;border-radius:10px;padding:24px 26px;
+    box-shadow:0 1px 3px rgba(0,0,0,.08);margin-bottom:16px;
+  }
+  .qnum{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+  .qtext{font-size:17px;font-weight:600;color:var(--navy-dark);margin:0 0 18px;}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .option{
+    border:1.5px solid #D7DCE4;border-radius:8px;padding:13px 16px;
+    cursor:pointer;font-size:14.5px;transition:background .15s,border-color .15s;
+    background:#fff;
+  }
+  .option:hover:not(.locked){border-color:var(--navy);background:#F7F9FC;}
+  .option.selected-correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);font-weight:600;}
+  .option.selected-wrong{background:var(--wrong-bg);border-color:var(--wrong-border);color:var(--wrong-border);font-weight:600;}
+  .option.reveal-correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);font-weight:600;}
+  .option.locked{cursor:default;}
+
+  .explanation{
+    margin-top:16px;padding:14px 16px;border-radius:8px;
+    background:#F5F7FA;border-left:4px solid var(--navy);
+    font-size:13.5px;color:var(--slate);display:none;
+  }
+  .explanation.show{display:block;}
+  .explanation strong{color:var(--navy);}
+
+  .nav-row{display:flex;justify-content:space-between;gap:10px;margin-top:4px;}
+  button.nav-btn{
+    background:var(--navy);color:#fff;border:none;border-radius:6px;
+    padding:11px 20px;font-size:14px;font-weight:600;cursor:pointer;
+    font-family:inherit;
+  }
+  button.nav-btn:disabled{background:#B7BEC9;cursor:not-allowed;}
+  button.nav-btn.secondary{background:#fff;color:var(--navy);border:1.5px solid var(--navy);}
+
+  /* Results */
+  .results{display:none;text-align:center;}
+  .results.show{display:block;}
+  .results .big-score{font-size:48px;font-weight:700;color:var(--navy);margin:10px 0 4px;}
+  .results .score-sub{color:var(--muted);font-size:14px;margin-bottom:20px;}
+  .results-breakdown{text-align:left;background:#F5F7FA;border-radius:8px;padding:16px 20px;margin:20px 0;font-size:13.5px;}
+  .results-breakdown div{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #E2E6EC;}
+  .results-breakdown div:last-child{border-bottom:none;}
+
+  #quizArea.hidden{display:none;}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <p class="eyebrow">Social Studies — Unit 2</p>
+    <h1>Constitution &amp; Administration of Thailand</h1>
+    <p>37 questions · Multiple choice · Instant feedback</p>
+  </header>
+
+  <div id="quizArea">
+    <div class="progress-wrap">
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+      <div class="progress-labels">
+        <span id="progressText">Question 1 of 37</span>
+        <span class="score-badge" id="scoreText">Score: 0 / 0</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="qnum" id="qnum">Question 1</div>
+      <p class="qtext" id="qtext"></p>
+      <div class="options" id="options"></div>
+      <div class="explanation" id="explanation"></div>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn secondary" id="prevBtn">← Previous</button>
+      <button class="nav-btn" id="nextBtn">Next →</button>
+    </div>
+  </div>
+
+  <div class="card results" id="results">
+    <p class="qnum">Quiz Complete</p>
+    <div class="big-score" id="finalScore">0 / 37</div>
+    <div class="score-sub" id="finalPct">0%</div>
+    <div class="results-breakdown" id="breakdown"></div>
+    <button class="nav-btn" id="restartBtn">Restart Quiz</button>
+  </div>
+</div>
+
+<script>
+const questions = [
+{q:"Since what year has Thailand's political regime been a constitutional monarchy, with His Majesty the King as Head of State?",o:["1930","1932","1935","1940"],c:1,e:"The regime changed from absolute monarchy to constitutional monarchy in 1932."},
+{q:"The current Constitution of the Kingdom of Thailand, B.E. 2560 (2017), is which constitution in Thailand's history?",o:["18th","19th","20th","21st"],c:2,e:"It is the 20th Constitution of the Kingdom of Thailand."},
+{q:"Which organization took control of administrative power on May 22, 2014, aiming to terminate political conflicts?",o:["The Election Commission","The National Council for Peace and Order (NCPO)","Parliament","The Constitutional Court"],c:1,e:"The NCPO took control of administrative power on May 22, 2014."},
+{q:"Which of the following is NOT listed as one of the five points on the Importance of the Constitution?",o:["It shows that Thailand is a sovereign country","It certifies that Thailand is a unitary state","It guarantees free healthcare for all citizens","It protects human dignities, rights, and liberties of Thai people"],c:2,e:"The five points cover sovereignty, unitary state status, democratic monarchy governance, protection of dignity/rights/liberties, and equal protection — not a specific healthcare guarantee."},
+{q:"Which of the following is listed among the Aims of the Constitution?",o:["Increasing GDP growth","Preserving the religions","Expanding national territory","Reducing all taxes"],c:1,e:"Preserving the religions is one of the five aims of the constitution, alongside independence/sovereignty/security, admiring the King, constitutional monarchy principles, and protecting human dignity."},
+{q:"Per the Principles of the Constitution, the Kingdom of Thailand is described as:",o:["A federal state that can be divided","A unitary state which cannot be separated","A confederation of provinces","A colonial territory"],c:1,e:"The Kingdom of Thailand is a unitary state which cannot be separated, with a single government holding all administrative power."},
+{q:"According to the Principles of the Constitution, sovereignty (the supreme power of administration) belongs to:",o:["The King alone","The Parliament alone","Thai people","The Council of Ministers alone"],c:2,e:"The sovereignty belongs to Thai people; the King is positioned as Head of State and exercises power through the Parliament, Council of Ministers, and Courts."},
+{q:"Sovereign power is divided into three parts. Which of the following is NOT one of them?",o:["Legislative Power","Administrative Power","Judicial Power","Religious Power"],c:3,e:"The three parts are legislative, administrative, and judicial power — there is no separate 'religious power.'"},
+{q:"Legislative Power is used through which institution?",o:["The Council of Ministers","The Parliament","The Courts","The King alone"],c:1,e:"The Parliament is the institution that uses legislative power."},
+{q:"Administrative Power is used through which institution?",o:["The Parliament","The Council of Ministers","The Courts","Local governments alone"],c:1,e:"Administrative power is the power of the Council of Ministers (the government)."},
+{q:"Judicial Power is used through which institution?",o:["The Parliament","The Council of Ministers","The Courts","The Election Commission"],c:2,e:"Judicial power is used through the Courts, which judge cases of dispute arising from the enforcement of laws."},
+{q:"What is the main aim of separating sovereign power into three branches?",o:["To increase government revenue","To protect the rights, liberties, and interests of the people","To simplify administration","To reduce the size of government"],c:1,e:"Separating power protects rights, liberties, and interests of the people by limiting, controlling, and examining each branch's power."},
+{q:"Thailand's Parliament applies which system?",o:["A unicameral system","A bicameral system (House of Representatives and Senate)","A tricameral system","No formal legislative system"],c:1,e:"The Parliament applies the bicameral system, consisting of the House of Representatives and the Senate."},
+{q:"Which of the following is a role/duty of the House of Representatives?",o:["Judge constitutional disputes between institutions","Examine and approve draft bills of organic law and other draft bills","Appoint Constitutional Court judges directly","Manage state revenue independently of the Council of Ministers"],c:1,e:"The House of Representatives examines and approves draft bills of organic law and other draft bills, and controls state administration."},
+{q:"How many members does the Senate have according to the constitution?",o:["100","150","200","250"],c:1,e:"According to the provision of the constitution, there are 150 members of the Senate."},
+{q:"Of the Senate's 150 members, how many are directly elected from each province by eligible voters?",o:["50","73","77","100"],c:2,e:"77 senators are directly elected from each province; the remaining 73 are selected by the Senator Selection Committee."},
+{q:"The remaining 73 Senate members are selected by:",o:["The King directly","The House of Representatives","The Senator Selection Committee","Public referendum"],c:2,e:"73 senators are selected by the Senator Selection Committee."},
+{q:"Which of the following is a role/duty of the Senate?",o:["Directly appoint the Prime Minister without process","Consider and approve draft bills of organic law and other drafted bills passed by the House of Representatives","Declare war on other nations","Set the national budget without Parliament"],c:1,e:"The Senate considers and approves draft bills that have passed the House of Representatives, controls state administration, and provides suggestions on key appointments."},
+{q:"The Prime Minister of Thailand must be:",o:["Any Thai citizen over 35","A current member of the House of Representatives","A sitting Senator","A judge of the Supreme Court"],c:1,e:"The Prime Minister must be a current member of the House of Representatives, appointed by the King."},
+{q:"Who formally appoints the Prime Minister?",o:["The Parliament collectively","His Majesty the King","The Council of Ministers","The Election Commission"],c:1,e:"The Prime Minister is appointed by His Majesty the King, with the Royal Command countersigned by the President of the House of Representatives."},
+{q:"The Council of Ministers consists of:",o:["Only the Prime Minister","The Prime Minister together with the number of Ministers stated in the Constitution","Only Senators","Only judges"],c:1,e:"The Council of Ministers consists of the Prime Minister and the number of Ministers as stated in the Constitution."},
+{q:"Which principles must the Council of Ministers hold to when performing duties, according to the text?",o:["Honesty, sacrifice, transparency, and carefulness","Secrecy and speed above all","Personal benefit first","Majority rule only, without transparency"],c:0,e:"The Council of Ministers shall perform duties and use power with regard to honesty, sacrifice, transparency, and carefulness for the utmost benefit of the country and the public."},
+{q:"According to President Abraham Lincoln's definition cited in the text, democracy is government:",o:["By the elite, for the elite","Of the people, by the people, for the people","Of the King, by the King, for the King","Of the majority only, ignoring minorities"],c:1,e:"Lincoln defined democracy as government of the people, by the people, for the people."},
+{q:"Democratic livelihood, as described in the text, means people conduct their lives in accordance with:",o:["Ignoring others' opinions entirely","Respecting rights and liberties of each other, accepting others' opinions, using reason, and majority vote","Avoiding elections altogether","Rejecting compromise on all issues"],c:1,e:"Democratic livelihood means respecting others' rights/liberties, accepting opinions, using reason, and using majority vote to solve problems."},
+{q:"How many court systems make up Thailand's court system?",o:["Two","Three","Four","Five"],c:2,e:"Thailand's court system consists of four systems: the Constitutional Court, Court of Justice, Administrative Court, and Military Court."},
+{q:"The Constitutional Court consists of the President and how many judges?",o:["5 judges","7 judges","8 judges","9 judges"],c:2,e:"The Constitutional Court consists of the President and 8 judges."},
+{q:"Constitutional Court judges are appointed by the King upon the advice of:",o:["The Prime Minister","The Senate","The House of Representatives","The Council of Ministers"],c:1,e:"Constitutional Court judges are appointed by the King upon the advice of the Senate."},
+{q:"What is the maximum term and age limit for a Constitutional Court judge?",o:["9 years, and not older than 70 years old","5 years, and not older than 60 years old","10 years, with no age limit","A lifetime appointment"],c:0,e:"Each judge has a maximum term of 9 years, can take the position only once, and must not be older than 70 years old."},
+{q:"How many levels does the Court of Justice have?",o:["Two","Three","Four","Five"],c:1,e:"The Court of Justice has three levels: the Court of First Instance, the Court of Appeal, and the Supreme Court."},
+{q:"The Court of Appeal has the authority to judge cases where:",o:["A plaintiff or defendant appeals the verdict of the Court of First Instance","Only criminal cases involving ministers are at issue","Only administrative disputes are at issue","Only constitutional disputes are at issue"],c:0,e:"The Court of Appeal judges cases where the plaintiff or defendant appeals the verdict or judicial order of the Court of First Instance."},
+{q:"The verdict of the Supreme Court is:",o:["Subject to further appeal","Final and must be respected by all parties","Only advisory in nature","Reviewed annually by Parliament"],c:1,e:"The verdict of the Supreme Court is final and must be respected by all parties."},
+{q:"The Administrative Court has authority to judge disputes between:",o:["Only private individuals","State organizations or officials and individuals, or between administrative organizations/state officials","Only religious organizations","Only foreign governments"],c:1,e:"The Administrative Court judges disputes between state organizations/officials and individuals, and disputes between administrative organizations or state officials themselves."},
+{q:"The Military Court has the power to judge criminal cases where the offender is:",o:["Any civilian","A person holding a military position","Only foreign nationals","Only government ministers"],c:1,e:"The Military Court judges criminal cases where the offender holds a military position, plus other cases stipulated by law."},
+{q:"Balancing of power of the legislative branch over the Council of Ministers can be conducted through general debate leading to:",o:["A vote of confidence by the House of Representatives","Direct dismissal by the Senate","A Royal Decree alone","A public referendum only"],c:0,e:"After a general debate, only the House of Representatives can vote of confidence regarding the Council of Ministers."},
+{q:"Balancing of power of the administrative branch over the legislative branch (Parliament) can be conducted by:",o:["Increasing taxes on Parliament members","Dissolving the Parliament, which is the King's authority on the Prime Minister's advice","Removing judges directly","Amending the constitution unilaterally"],c:1,e:"The administrative branch can balance the legislative branch by dissolving Parliament, which is the King's authority exercised on the Prime Minister's advice."},
+{q:"Which of the following is listed as a duty of Thai people, apart from rights and liberties provided by the constitution?",o:["Own a private business","Uphold the nation, religions, and the King","Travel abroad freely","Attend a private university"],c:1,e:"Upholding the nation, religions, and the King is one of the duties of Thai people shown in the diagram."},
+{q:"Which of the following is also listed as a duty of Thai people in the diagram?",o:["Avoid voting whenever possible","Exercise the right to vote in an election or referendum","Refuse compulsory education","Ignore taxes owed"],c:1,e:"Exercising the right to vote in an election or referendum is listed as a duty of Thai people, alongside obeying the law, paying taxes, and serving in the armed forces as provided by law."}
+];
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+
+const qnum = document.getElementById('qnum');
+const qtext = document.getElementById('qtext');
+const optionsEl = document.getElementById('options');
+const explanationEl = document.getElementById('explanation');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const scoreText = document.getElementById('scoreText');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const quizArea = document.getElementById('quizArea');
+const resultsEl = document.getElementById('results');
+
+function updateProgress(){
+  const answeredCount = answers.filter(a => a !== null).length;
+  const correctCount = answers.filter((a,i) => a === questions[i].c).length;
+  progressFill.style.width = (answeredCount / questions.length * 100) + '%';
+  progressText.textContent = `Question ${current+1} of ${questions.length}`;
+  scoreText.textContent = `Score: ${correctCount} / ${answeredCount}`;
+}
+
+function render(){
+  const q = questions[current];
+  qnum.textContent = `Question ${current+1}`;
+  qtext.textContent = q.q;
+  optionsEl.innerHTML = '';
+  const userAnswer = answers[current];
+
+  q.o.forEach((opt, i) => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    div.textContent = opt;
+    if(userAnswer !== null){
+      div.classList.add('locked');
+      if(i === q.c) div.classList.add('reveal-correct');
+      if(i === userAnswer && userAnswer !== q.c) div.classList.add('selected-wrong');
+    } else {
+      div.onclick = () => selectAnswer(i);
+    }
+    optionsEl.appendChild(div);
+  });
+
+  if(userAnswer !== null){
+    explanationEl.classList.add('show');
+    explanationEl.innerHTML = `<strong>Explanation:</strong> ${q.e}`;
+  } else {
+    explanationEl.classList.remove('show');
+    explanationEl.innerHTML = '';
+  }
+
+  prevBtn.disabled = current === 0;
+  nextBtn.textContent = current === questions.length - 1 ? 'Finish' : 'Next →';
+  updateProgress();
+}
+
+function selectAnswer(i){
+  answers[current] = i;
+  render();
+}
+
+prevBtn.onclick = () => { if(current > 0){ current--; render(); } };
+nextBtn.onclick = () => {
+  if(current < questions.length - 1){ current++; render(); }
+  else { showResults(); }
+};
+
+function showResults(){
+  quizArea.classList.add('hidden');
+  resultsEl.classList.add('show');
+  const correctCount = answers.filter((a,i) => a === questions[i].c).length;
+  const pct = Math.round(correctCount / questions.length * 100);
+  document.getElementById('finalScore').textContent = `${correctCount} / ${questions.length}`;
+  document.getElementById('finalPct').textContent = `${pct}% correct`;
+
+  const unanswered = answers.filter(a => a === null).length;
+  const breakdown = document.getElementById('breakdown');
+  breakdown.innerHTML = `
+    <div><span>Correct</span><span>${correctCount}</span></div>
+    <div><span>Incorrect</span><span>${questions.length - correctCount - unanswered}</span></div>
+    <div><span>Unanswered</span><span>${unanswered}</span></div>
+  `;
+}
+
+document.getElementById('restartBtn').onclick = () => {
+  current = 0;
+  answers = new Array(questions.length).fill(null);
+  quizArea.classList.remove('hidden');
+  resultsEl.classList.remove('show');
+  render();
+};
+
+render();
+</script>
+</body>
+</html>
