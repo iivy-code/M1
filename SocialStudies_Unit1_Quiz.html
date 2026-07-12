@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Studies Unit 1 — Interactive Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E2761;
+    --navy-dark:#0D1B2A;
+    --slate:#2C3E50;
+    --lightblue:#CADCFC;
+    --bg:#F2F2F2;
+    --text:#1A1A1A;
+    --correct:#1565C0;
+    --correct-bg:#E8F0FE;
+    --wrong-bg:#FBE9E9;
+    --wrong-border:#B3261E;
+    --muted:#5B6472;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:'Sarabun','TH Sarabun New',Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    margin:0;
+    padding:24px 12px 60px;
+    font-size:15px;
+    line-height:1.6;
+  }
+  .container{max-width:760px;margin:0 auto;}
+  header{
+    background:var(--navy);
+    color:#fff;
+    padding:22px 26px;
+    border-radius:10px;
+    margin-bottom:20px;
+  }
+  header .eyebrow{
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--lightblue);
+    margin:0 0 6px;
+    font-weight:600;
+  }
+  header h1{margin:0 0 4px;font-size:20px;font-weight:700;}
+  header p{margin:0;font-size:13px;color:var(--lightblue);}
+
+  /* Progress */
+  .progress-wrap{margin-bottom:18px;}
+  .progress-bar-bg{
+    width:100%;height:8px;background:#DDE3EA;border-radius:4px;overflow:hidden;
+  }
+  .progress-bar-fill{
+    height:100%;background:var(--correct);width:0%;
+    transition:width .3s ease;
+  }
+  .progress-labels{
+    display:flex;justify-content:space-between;
+    font-size:12px;color:var(--muted);margin-top:6px;
+  }
+  .score-badge{
+    font-weight:700;color:var(--navy);
+  }
+
+  /* Question card */
+  .card{
+    background:#fff;border-radius:10px;padding:24px 26px;
+    box-shadow:0 1px 3px rgba(0,0,0,.08);margin-bottom:16px;
+  }
+  .qnum{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+  .qtext{font-size:17px;font-weight:600;color:var(--navy-dark);margin:0 0 18px;}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .option{
+    border:1.5px solid #D7DCE4;border-radius:8px;padding:13px 16px;
+    cursor:pointer;font-size:14.5px;transition:background .15s,border-color .15s;
+    background:#fff;
+  }
+  .option:hover:not(.locked){border-color:var(--navy);background:#F7F9FC;}
+  .option.selected-correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);font-weight:600;}
+  .option.selected-wrong{background:var(--wrong-bg);border-color:var(--wrong-border);color:var(--wrong-border);font-weight:600;}
+  .option.reveal-correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);font-weight:600;}
+  .option.locked{cursor:default;}
+
+  .explanation{
+    margin-top:16px;padding:14px 16px;border-radius:8px;
+    background:#F5F7FA;border-left:4px solid var(--navy);
+    font-size:13.5px;color:var(--slate);display:none;
+  }
+  .explanation.show{display:block;}
+  .explanation strong{color:var(--navy);}
+
+  .nav-row{display:flex;justify-content:space-between;gap:10px;margin-top:4px;}
+  button.nav-btn{
+    background:var(--navy);color:#fff;border:none;border-radius:6px;
+    padding:11px 20px;font-size:14px;font-weight:600;cursor:pointer;
+    font-family:inherit;
+  }
+  button.nav-btn:disabled{background:#B7BEC9;cursor:not-allowed;}
+  button.nav-btn.secondary{background:#fff;color:var(--navy);border:1.5px solid var(--navy);}
+
+  /* Results */
+  .results{display:none;text-align:center;}
+  .results.show{display:block;}
+  .results .big-score{font-size:48px;font-weight:700;color:var(--navy);margin:10px 0 4px;}
+  .results .score-sub{color:var(--muted);font-size:14px;margin-bottom:20px;}
+  .results-breakdown{text-align:left;background:#F5F7FA;border-radius:8px;padding:16px 20px;margin:20px 0;font-size:13.5px;}
+  .results-breakdown div{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #E2E6EC;}
+  .results-breakdown div:last-child{border-bottom:none;}
+
+  #quizArea.hidden{display:none;}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <p class="eyebrow">Social Studies — Unit 1</p>
+    <h1>Roles &amp; Duties of Youth · Rights &amp; Liberties</h1>
+    <p>32 questions · Multiple choice · Instant feedback</p>
+  </header>
+
+  <div id="quizArea">
+    <div class="progress-wrap">
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+      <div class="progress-labels">
+        <span id="progressText">Question 1 of 32</span>
+        <span class="score-badge" id="scoreText">Score: 0 / 0</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="qnum" id="qnum">Question 1</div>
+      <p class="qtext" id="qtext"></p>
+      <div class="options" id="options"></div>
+      <div class="explanation" id="explanation"></div>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn secondary" id="prevBtn">← Previous</button>
+      <button class="nav-btn" id="nextBtn">Next →</button>
+    </div>
+  </div>
+
+  <div class="card results" id="results">
+    <p class="qnum">Quiz Complete</p>
+    <div class="big-score" id="finalScore">0 / 32</div>
+    <div class="score-sub" id="finalPct">0%</div>
+    <div class="results-breakdown" id="breakdown"></div>
+    <button class="nav-btn" id="restartBtn">Restart Quiz</button>
+  </div>
+</div>
+
+<script>
+const questions = [
+{q:"Thai society expects youth to be quality citizens with knowledge, abilities, wisdom, virtue, and ___.",o:["Wealth","Ethics","Fame","Power"],c:1,e:"The text states youth should have knowledge, abilities, wisdom, virtue, and ethics, and be self-disciplined and responsible."},
+{q:'What does "public mind" mean, as described in the text?',o:["Owning public property","A conscience in taking part and knowing one's rights, freedoms, and duties","The right to vote","Working for the government"],c:1,e:"Public mind means a conscience in taking part and knowing one's rights, freedoms, own duties, and the duties of others in society."},
+{q:'"Public mind" can be categorized into how many characteristics?',o:["2","3","4","5"],c:1,e:"The text lists three characteristics: knowing the value of things, expressing participation, and protecting the interests of society/nation."},
+{q:"Which is NOT one of the three public-mind characteristics listed in the text?",o:["Knowing the value of public things without destroying them","Expressing participation using rights, freedoms, and responsibilities","Avoiding all social activities","Protecting the interests of the society and nation"],c:2,e:"Avoiding social activities contradicts the concept — public mind is about active, willing participation."},
+{q:'Under "Behaving as a Quality Youth," guideline #1 is:',o:["Be honest","Respect rules and regulations of the society","Abide by laws","Be disciplined"],c:1,e:"Guideline 1 is to respect the rules and regulations of society, which exist to help people live peacefully."},
+{q:"Rules and regulations exist to help people live peacefully and prevent people from:",o:["Studying too much","Taking advantage of or harming each other","Voting","Traveling freely"],c:1,e:"They prevent people from taking advantage of or harming one another."},
+{q:'Guideline #2, "Abide by laws," cites which document as the source of the duty to abide by laws?',o:["The Constitution","Local bylaws","The school handbook","The UN Charter"],c:0,e:"The constitution, the supreme law of the country, provides that a person has a duty to abide by laws."},
+{q:"Which behavior is explicitly discouraged under the 'Abide by laws' guideline?",o:["Racing on the highways","Reading books","Playing sports","Visiting temples"],c:0,e:"The text lists not racing on highways as part of not harming oneself, others, or the country."},
+{q:'Guideline #3, "Eager to learn," states that education makes a person into:',o:["A wealthy person","A skillful person","A famous person","A powerful person"],c:1,e:"Education during youth makes a person a skillful person who can apply knowledge to solve life's problems."},
+{q:"According to guideline #3, where should youth gain knowledge?",o:["Only in the classroom","Only from teachers","From different branches of knowledge, not limited to the classroom, but also from surrounding sources","Only from books"],c:2,e:"Youth should spend time learning different branches of knowledge, not limited only to the classroom."},
+{q:'Guideline #4, "Be honest," identifies which problem as substantially affecting the country\'s development?',o:["Pollution","Corruption","Traffic congestion","Unemployment"],c:1,e:"Corruption spreads to all areas and causes a huge loss of government budget."},
+{q:'Guideline #5, "Be disciplined," states that discipline makes people:',o:["Rich","Do what they should do and refrain from what they should not","Famous","Powerful"],c:1,e:"Discipline makes people do what they should do and refrain from doing things they should not do."},
+{q:'Guideline #6, "Have virtue and ethics," states that this helps:',o:["Create peaceful coexistence and prevent people from hurting or exploiting each other","Increase wealth","Improve exam grades","Reduce traffic congestion"],c:0,e:"Virtue and ethics help create peaceful coexistence and prevent people from hurting or taking advantage of each other."},
+{q:'Under "Conduct Oneself as a Public-minded Person," item #1 is:',o:["Take part in social activity","Take care of pets","Avoid others","Stay home"],c:0,e:"Item 1 is taking part in social activity, since developing society requires members to work together."},
+{q:"Examples of social activity participation include helping with public works, campaigning against drugs, and:",o:["Playing video games","Joining religious ceremonies","Watching television","Shopping"],c:1,e:"The text lists joining religious ceremonies alongside public works and anti-drug campaigns."},
+{q:'Item #2, "Take part in conserving natural resources," advises against catching fish during:',o:["Winter","The spawning season","Summer","The rainy season"],c:1,e:"Youth should avoid catching fish in the spawning season as part of conserving natural resources."},
+{q:"Examples of public property mentioned under item #3 include roads, public telephones, bus stops, road lights, and:",o:["Private cars","Bridges","Private homes","Farms"],c:1,e:"Bridges are listed alongside roads, telephones, bus stops, and road lights as shared public property."},
+{q:'Item #4, "Preserve and maintain Thai traditions," associates Pla Ra (fermented fish) with which region?',o:["North","South","Northeast","Central"],c:2,e:"Pla Ra is described as local wisdom of the Northeast in preserving food."},
+{q:"Which tradition is associated with the North of Thailand per the text?",o:["Pla Ra (fermented fish)","Ruean (house-building with vines)","Celebrating the city's fate","Lumtad performance"],c:2,e:"The North has a tradition to celebrate the city's fate; Ruean is from the South and Lumtad is a local performance culture region."},
+{q:"According to the text, at what age should men be recruited as soldiers?",o:["18","20","21","25"],c:2,e:"For men, when they reach the age of 21, they should be recruited as a soldier."},
+{q:"At what age should Thai citizens begin using their right to vote?",o:["16","18","20","21"],c:1,e:"Youth should use their right to vote when they turn 18."},
+{q:'Per "What Thai Society Should Be," a Democratic Society allows people to take part in:',o:["Only voting","Brainstorming, decision-making, examining, sharing profits, and verifying state authority","Only paying taxes","Only working"],c:1,e:"A Democratic Society allows participation in brainstorming, decision-making, examining, sharing profits, and verifying state authority."},
+{q:"A Strong Society is defined by fundamental units of society (people, family, local groups) being responsible for activities such as:",o:["Building factories","Preserving local traditions, wisdom, arts, and culture, plus education, nurture, and healthcare","Increasing exports","None of the above"],c:1,e:"A Strong Society preserves local traditions/wisdom/arts/culture and develops children's education, nurture, and healthcare."},
+{q:"A Moral Society means people are united and use:",o:["Government rules only","The teachings of the religions they believe in as daily life guidelines","Peer pressure","Social media trends"],c:1,e:"A Moral Society's people use religious teachings as guidelines for daily life, even across different religions."},
+{q:"A Supportive Society means people should:",o:["Compete with each other","Love, care for, and help each other, and foster the elderly, impoverished, and handicapped","Focus only on personal gain","Avoid people with disabilities"],c:1,e:"A Supportive Society means people love, care, help each other, and properly foster elders, the impoverished, and the handicapped."},
+{q:'Per Section 2.1, "Right" means:',o:["Freedom without any limits","A benefit certified and protected by laws to do or get something legally","A privilege given by parents","An obligation to the state"],c:1,e:"Right means having a benefit certified and protected by laws, such as the right to property or the right to vote."},
+{q:'"Liberty" means:',o:["Complete freedom without restriction","Freedom to do things that do not violate others' rights or oppose peace and virtue","The right to vote","Ownership of property"],c:1,e:"Liberty is freedom to act as long as it doesn't violate others' rights or go against peace and virtue."},
+{q:"Which constitutional provision states Thai people must not be treated unfairly based on birthplace, race, gender, or similar differences?",o:["Recognition of human dignity","Equality","Freedom of religious belief","Rights to property"],c:1,e:"Equality provides that Thai people have equal rights and must not be treated unfairly based on such differences."},
+{q:"Which provision protects a person's own residence from being entered without the owner's permission?",o:["Freedom of one's own residence","Freedom of traveling and settling down","Rights to property","Freedom of communication"],c:0,e:"Freedom of one's own residence protects a person's private living area from being entered without permission."},
+{q:"Freedom of communication forbids checking, detaining, or intercepting conversations EXCEPT for:",o:["Business purposes","National security or the maintenance of peace and morality","Personal curiosity","Media reporting"],c:1,e:"The constitution forbids interception of communication except for national security or maintenance of peace and morality."},
+{q:"In a criminal case, a person must be presumed:",o:["Guilty until proven innocent","Innocent until proven guilty","Neither innocent nor guilty","Automatically guilty once arrested"],c:1,e:"The accused or defendant is presumed innocent until proven guilty by final judgment."},
+{q:"Which right allows a person to receive public information, present petitions, and sue a state agency over an omitted act?",o:["Consumer rights","Rights to information and petition","Rights to property","Rights in the process of judgment"],c:1,e:"Rights to information and petition cover access to public information, petitions, and the right to sue a state agency."},
+{q:"Which right addresses free medical treatment for people over 60 with insufficient income?",o:["Consumer rights","Rights to public health services and welfare","Rights to property","Freedom of religious belief"],c:1,e:"Rights to public health services and welfare include free medical treatment for the elderly poor and appropriate state aid."},
+{q:"Liberties to association may be restricted only for preventing public interest harm, maintaining order or morals, or preventing:",o:["Personal disagreements","Economic monopoly","Religious activity","Travel"],c:1,e:"Restrictions on the liberty to associate are limited to public interest, order/morals, or preventing economic monopoly."},
+{q:"Liberties to assembly protect people assembling:",o:["With weapons for protection","Peacefully and without arms","Only in private spaces","Only for political purposes"],c:1,e:"A person shall enjoy the liberty to assemble peacefully and without arms."},
+{q:'How many core values are listed in "The 12 Core Values of Thai People"?',o:["10","12","15","8"],c:1,e:"The infographic lists exactly 12 core values Thai people should hold."},
+{q:"Core value #10 relates to applying King Bhumibol Adulyadej's philosophy of:",o:["Sufficiency Economy","Free Market Economy","Global Trade","Digital Transformation"],c:0,e:"Core value #10 is applying the Sufficiency Economy philosophy — saving, moderation, and good immunity while sharing surpluses."}
+];
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+
+const qnum = document.getElementById('qnum');
+const qtext = document.getElementById('qtext');
+const optionsEl = document.getElementById('options');
+const explanationEl = document.getElementById('explanation');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const scoreText = document.getElementById('scoreText');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const quizArea = document.getElementById('quizArea');
+const resultsEl = document.getElementById('results');
+
+function updateProgress(){
+  const answeredCount = answers.filter(a => a !== null).length;
+  const correctCount = answers.filter((a,i) => a === questions[i].c).length;
+  progressFill.style.width = (answeredCount / questions.length * 100) + '%';
+  progressText.textContent = `Question ${current+1} of ${questions.length}`;
+  scoreText.textContent = `Score: ${correctCount} / ${answeredCount}`;
+}
+
+function render(){
+  const q = questions[current];
+  qnum.textContent = `Question ${current+1}`;
+  qtext.textContent = q.q;
+  optionsEl.innerHTML = '';
+  const userAnswer = answers[current];
+
+  q.o.forEach((opt, i) => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    div.textContent = opt;
+    if(userAnswer !== null){
+      div.classList.add('locked');
+      if(i === q.c) div.classList.add('reveal-correct');
+      if(i === userAnswer && userAnswer !== q.c) div.classList.add('selected-wrong');
+    } else {
+      div.onclick = () => selectAnswer(i);
+    }
+    optionsEl.appendChild(div);
+  });
+
+  if(userAnswer !== null){
+    explanationEl.classList.add('show');
+    explanationEl.innerHTML = `<strong>Explanation:</strong> ${q.e}`;
+  } else {
+    explanationEl.classList.remove('show');
+    explanationEl.innerHTML = '';
+  }
+
+  prevBtn.disabled = current === 0;
+  nextBtn.textContent = current === questions.length - 1 ? 'Finish' : 'Next →';
+  updateProgress();
+}
+
+function selectAnswer(i){
+  answers[current] = i;
+  render();
+}
+
+prevBtn.onclick = () => { if(current > 0){ current--; render(); } };
+nextBtn.onclick = () => {
+  if(current < questions.length - 1){ current++; render(); }
+  else { showResults(); }
+};
+
+function showResults(){
+  quizArea.classList.add('hidden');
+  resultsEl.classList.add('show');
+  const correctCount = answers.filter((a,i) => a === questions[i].c).length;
+  const pct = Math.round(correctCount / questions.length * 100);
+  document.getElementById('finalScore').textContent = `${correctCount} / ${questions.length}`;
+  document.getElementById('finalPct').textContent = `${pct}% correct`;
+
+  const unanswered = answers.filter(a => a === null).length;
+  const breakdown = document.getElementById('breakdown');
+  breakdown.innerHTML = `
+    <div><span>Correct</span><span>${correctCount}</span></div>
+    <div><span>Incorrect</span><span>${questions.length - correctCount - unanswered}</span></div>
+    <div><span>Unanswered</span><span>${unanswered}</span></div>
+  `;
+}
+
+document.getElementById('restartBtn').onclick = () => {
+  current = 0;
+  answers = new Array(questions.length).fill(null);
+  quizArea.classList.remove('hidden');
+  resultsEl.classList.remove('show');
+  render();
+};
+
+render();
+</script>
+</body>
+</html>
