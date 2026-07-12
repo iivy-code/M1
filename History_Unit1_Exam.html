@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Studies — Unit 1 History Exam</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E2761;
+    --navy-dark:#0D1B2A;
+    --slate:#2C3E50;
+    --lightblue:#CADCFC;
+    --bg:#F2F2F2;
+    --text:#1A1A1A;
+    --correct:#1565C0;
+    --correct-bg:#E8F0FE;
+    --wrong-bg:#FBE9E9;
+    --wrong-border:#B3261E;
+    --muted:#5B6472;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:'Sarabun','TH Sarabun New',Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    margin:0;
+    padding:24px 12px 60px;
+    font-size:15px;
+    line-height:1.6;
+  }
+  .container{max-width:760px;margin:0 auto;}
+
+  header{
+    background:var(--navy);
+    color:#fff;
+    padding:22px 26px;
+    border-radius:10px;
+    margin-bottom:20px;
+  }
+  header .eyebrow{
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--lightblue);
+    margin:0 0 6px;
+    font-weight:600;
+  }
+  header h1{margin:0 0 4px;font-size:20px;font-weight:700;}
+  header p{margin:0;font-size:13px;color:var(--lightblue);}
+
+  /* Progress */
+  .progress-wrap{margin-bottom:18px;}
+  .progress-bar-bg{
+    width:100%;height:8px;background:#DDE3EA;border-radius:4px;overflow:hidden;
+  }
+  .progress-bar-fill{
+    height:100%;background:var(--correct);width:0%;
+    transition:width .3s ease;
+  }
+  .progress-labels{
+    display:flex;justify-content:space-between;
+    font-size:12px;color:var(--muted);margin-top:6px;
+  }
+  .score-badge{
+    font-weight:700;
+    color:var(--navy);
+    white-space:nowrap;
+    font-size:13px;
+  }
+
+  /* Question card */
+  .card{
+    background:#fff;
+    border-radius:10px;
+    padding:22px 24px;
+    margin-bottom:16px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    border-left:4px solid var(--navy);
+  }
+  .qnum{
+    display:inline-block;
+    background:var(--navy);
+    color:#fff;
+    font-weight:700;
+    font-size:11px;
+    padding:3px 10px;
+    border-radius:4px;
+    margin-bottom:10px;
+    letter-spacing:.03em;
+  }
+  .qtext{
+    font-size:15.5px;
+    font-weight:600;
+    color:var(--slate);
+    margin:0 0 4px;
+  }
+
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin:14px 0 0;
+  }
+  .option{
+    padding:12px 16px;
+    border:1px solid #DADFE6;
+    border-radius:8px;
+    cursor:pointer;
+    transition:border-color .15s, background .15s;
+    background:#fff;
+    font-size:14.5px;
+  }
+  .option:hover{border-color:var(--navy); background:#F8F9FC;}
+  .option.locked{cursor:default;}
+  .option.locked:hover{border-color:#DADFE6; background:#fff;}
+  .option.reveal-correct{
+    background:var(--correct-bg);
+    border-color:var(--correct);
+    color:var(--navy);
+    font-weight:600;
+  }
+  .option.selected-wrong{
+    background:var(--wrong-bg);
+    border-color:var(--wrong-border);
+    color:var(--wrong-border);
+    font-weight:600;
+  }
+
+  .explanation{
+    margin-top:14px;
+    padding:12px 16px;
+    background:#F5F7FA;
+    border-left:3px solid var(--navy);
+    border-radius:6px;
+    font-size:13.5px;
+    color:var(--slate);
+    display:none;
+  }
+  .explanation.show{display:block;}
+  .explanation strong{color:var(--navy);}
+
+  /* Nav */
+  .nav-row{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    margin-top:4px;
+  }
+  .nav-btn{
+    flex:1;
+    padding:13px;
+    border-radius:8px;
+    border:none;
+    background:var(--navy);
+    color:#fff;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .nav-btn.secondary{
+    background:#fff;
+    color:var(--navy);
+    border:1px solid var(--navy);
+  }
+  .nav-btn:disabled{opacity:.4; cursor:not-allowed;}
+  .nav-btn:hover:not(:disabled){opacity:.9;}
+
+  #quizArea.hidden{display:none;}
+
+  /* Results */
+  .results{display:none; text-align:center;}
+  .results.show{display:block;}
+  .big-score{font-size:48px;font-weight:700;color:var(--navy);margin:10px 0 4px;}
+  .score-sub{color:var(--muted);font-size:14px;margin-bottom:20px;}
+  .results-breakdown{
+    text-align:left;
+    background:#F5F7FA;
+    border-radius:8px;
+    padding:16px 20px;
+    margin:20px 0;
+    font-size:13.5px;
+  }
+  .results-breakdown div{
+    display:flex;
+    justify-content:space-between;
+    padding:4px 0;
+    border-bottom:1px solid #E2E6EC;
+  }
+  .results-breakdown div:last-child{border-bottom:none;}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <p class="eyebrow">Social Studies — Unit 1</p>
+    <h1>History, Eras, and Historical Methods</h1>
+    <p>40 questions · Multiple choice · Instant feedback</p>
+  </header>
+
+  <div id="quizArea">
+    <div class="progress-wrap">
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+      <div class="progress-labels">
+        <span id="progressText">Question 1 of 40</span>
+        <span class="score-badge" id="scoreText">Score: 0 / 0</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="qnum" id="qnum">Question 1</div>
+      <p class="qtext" id="qtext"></p>
+      <div class="options" id="options"></div>
+      <div class="explanation" id="explanation"></div>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn secondary" id="prevBtn">← Previous</button>
+      <button class="nav-btn" id="nextBtn">Next →</button>
+    </div>
+  </div>
+
+  <div class="card results" id="results">
+    <p class="qnum">Quiz Complete</p>
+    <div class="big-score" id="finalScore">0 / 40</div>
+    <div class="score-sub" id="finalPct">0%</div>
+    <div class="results-breakdown" id="breakdown"></div>
+    <button class="nav-btn" id="restartBtn">Restart Quiz</button>
+  </div>
+</div>
+
+<script>
+const questions = [
+{q:"An \"Affidavit\" (n.) refers to:", o:["A calendar based on astrology","A written statement given as testimony","A record of chronological events","A type of ancient tool"], c:1, e:"Affidavit = คำให้การที่เป็นลายลักษณ์อักษร, a written sworn statement."},
+{q:"Which term means \"the science that studies human societies and cultures,\" and whose practitioners categorised prehistoric periods by human lifestyle?", o:["Astrology","Anthropology","Archaeology","Chronology"], c:1, e:"Anthropologists (นักมานุษยวิทยา) classified prehistoric periods according to human lifestyles (hunter-gatherer, agrarian village, urban society)."},
+{q:"\"Ascend\" (v.) as used to describe a king taking the throne means:", o:["To retire from ruling","To rise to a position / to accede to the throne","To conquer a rival kingdom","To sign a treaty"], c:1, e:"Ascend = ขึ้นตำแหน่ง/ขึ้นครองราชย์ — used for King Yodfa Chulalok the Great \"ascending\" the throne in 2325 B.E."},
+{q:"\"Nomadic\" (adj.) describes a lifestyle that is:", o:["Settled in permanent villages","Based on trade between cities","Wandering from place to place without permanent settlement","Governed by written law"], c:2, e:"Nomadic = ซึ่งเร่ร่อนไปในที่ต่าง ๆ, describing Paleolithic/hunter-gatherer humans who followed game and had no permanent settlements."},
+{q:"\"Globalisation\" as defined in the text refers to:", o:["The spread of a single religion worldwide","Human communication no longer constrained by geographical boundaries","The unification of all calendars into one system","The end of colonial expansion"], c:1, e:"Globalisation (โลกาภิวัตน์) means the world becoming \"boundary-free,\" with cultures and civilisations increasingly interconnected."},
+{q:"Historical chronology is generally separated into which two broad eras?", o:["Ancient History and Modern History","Prehistory and the Recorded Historical Era","Stone Age and Metal Age","Buddhist Era and Christian Era"], c:1, e:"Section 1.1 states chronology is separated into prehistory and the recorded historical era, based on the invention of written language."},
+{q:"Prehistory is defined as the era:", o:["Before the invention of agriculture","Before the invention of written language","Before the discovery of fire","Before the Bronze Age began"], c:1, e:"Prehistory is the era preceding the invention of written language; it relies on archaeological evidence rather than written records."},
+{q:"The Stone Age is divided (in order) into which three periods?", o:["Bronze, Iron, Copper","Paleolithic, Mesolithic, Neolithic","Hunter-gatherer, Agrarian, Urban","Ancient, Middle, Modern"], c:1, e:"The Stone Age is divided into the Paleolithic Age, the Mesolithic Age, and the Neolithic Age, in that chronological order."},
+{q:"According to the text, the Paleolithic Age dates back to approximately:", o:["10,000–6,000 years ago","6,000–4,000 years ago","500,000–10,000 years ago","4,000–2,500 years ago"], c:2, e:"The Paleolithic Age dated back to about 500,000 to 10,000 years ago; humans lived nomadic lives and made chipped-stone tools."},
+{q:"During the Mesolithic Age, which development is specifically noted?", o:["Fusing bronze and tin","Establishing permanent walled cities","Domesticating animals such as goats and dogs, and making polished stone tools","Inventing written language"], c:2, e:"The Mesolithic Age (~10,000–6,000 years ago) saw domesticated animals, polished/refined stone tools, bows and arrows, harpoons, and dugout boats."},
+{q:"The Neolithic Age is considered the end of prehistory because during this period:", o:["Humans discovered fire","Humans learned to establish permanent settlements and, in some regions, began fusing copper and bronze","The first kingdoms of Southeast Asia were founded","Humans invented the wheel"], c:1, e:"In the Neolithic Age (~6,000–4,000 years ago), humans stopped living as nomads, developed weaving/pottery, and some kingdoms began fusing copper and bronze from 4,000 years ago."},
+{q:"The Metal Age is divided into which two periods, based on the type of metal used?", o:["Copper Age and Tin Age","Bronze Age and Iron Age","Gold Age and Silver Age","Steel Age and Alloy Age"], c:1, e:"The Metal Age (4,000–1,500 years ago) is divided into the Bronze Age and the Iron Age, based on the type of metal fused for tools and weapons."},
+{q:"The Bronze Age is characterised by humans combining which two metals?", o:["Iron and tin","Copper and iron","Copper and tin","Gold and copper"], c:2, e:"The Bronze Age (~4,000–2,500 years ago): humans combined copper and tin to produce bronze for tools, weapons, and accessories."},
+{q:"Why were societies that mastered iron-working at an advantage over other societies?", o:["Iron was more decorative than bronze","Iron ore is more durable, allowing for stronger tools and weapons, enabling expansion of power","Iron was easier to trade internationally","Iron was required for written records"], c:1, e:"Societies able to produce durable iron weapons gained a military/technological advantage and could expand their power over others."},
+{q:"Classifying prehistoric periods by human lifestyle, which stage came FIRST?", o:["Urban society","Agrarian village","Hunter-gatherer culture","Iron Age society"], c:2, e:"The lifestyle-based sequence is: hunter-gatherer culture → agrarian village → urban society."},
+{q:"The \"agrarian village\" stage of human lifestyle is dated to approximately:", o:["2,500 years ago to present","6,000 to 2,500 years ago","500,000 to 10,000 years ago","1,500 years ago to 544 B.E."], c:1, e:"The agrarian village dated back to around 6,000 to 2,500 years ago, when humans built simple shelters, grew crops, wove cloth, and made pottery."},
+{q:"According to international classification, historians divide historical eras into which four periods?", o:["Prehistory, Bronze Age, Iron Age, Modern Age","Ancient History, the Middle Ages, Modern History, Contemporary History","Buddhist Era, Christian Era, Hijri Era, Rattanakosin Era","Sukhothai, Ayutthaya, Thonburi, Rattanakosin"], c:1, e:"Historians classify historical eras into Ancient History, the Middle Ages, Modern History, and Contemporary History."},
+{q:"Ancient History (international classification) covers approximately which timeframe?", o:["6,000 years ago to 1019 B.E.","1019 B.E. to the 20th century B.E.","1996 B.E. to 2488 B.E.","2488 B.E. to the present"], c:0, e:"Ancient History spans approximately 6,000 years ago to 1019 B.E., the period when major world civilisations (Mesopotamia, Egypt, India, China, Greece, Rome) developed."},
+{q:"The end of the Middle Ages (international classification) is marked by which development?", o:["The fall of the Roman Empire","Greater marine travel technology, enabling European explorers to discover new lands","The invention of the printing press only","The start of the Bronze Age"], c:1, e:"Towards the end of the Middle Ages, marine travel technology advanced, allowing European explorers to explore the globe and discover new lands."},
+{q:"Modern History (international classification, 1996–2488 B.E.) is most associated with:", o:["The invention of writing","The scientific revolution and the Industrial Revolution","The founding of the Rattanakosin Kingdom","The spread of the Hijri Era"], c:1, e:"Modern History was the time of the \"scientific revolution,\" which contributed to the Industrial Revolution and major political, economic, and social change."},
+{q:"When did Contemporary History (international classification) begin, and why?", o:["1019 B.E., with the fall of ancient civilisations","2488 B.E., following the end of World War II","2325 B.E., when Bangkok became the capital","544 B.E., the birth of Christ"], c:1, e:"Contemporary History is generally considered to begin after World War II (2488 B.E.), a time of rapid technological advancement and global information access."},
+{q:"In Thai historical classification by kingdom period, which group refers to kingdoms of indigenous peoples that existed BEFORE the settlement of the Thai ethnic group?", o:["Sukhothai and Ayutthaya","Dvaravati, Srivijaya, Lopburi, and Haripunjaya","Thonburi and Rattanakosin","Lanna and Suphanabhumi"], c:1, e:"Ancient kingdoms/states preceding the Thai ethnic group include Dvaravati, Srivijaya, Lopburi, and Haripunjaya."},
+{q:"Which Thai kingdom period lasted the LONGEST, according to the text?", o:["Sukhothai (~200 years)","Ayutthaya (~417 years)","Thonburi (~15 years)","Rattanakosin (from 2325 B.E. to present, so far comparable)"], c:1, e:"Among the fixed-duration kingdoms listed, Ayutthaya lasted about 417 years — the longest of Sukhothai (~200), Thonburi (~15), and Ayutthaya (~417)."},
+{q:"The Rattanakosin period, according to the classification by kingdom, began in which year?", o:["2325 B.E.","2455 B.E.","2475 B.E.","2488 B.E."], c:0, e:"The Rattanakosin period is dated from 2325 B.E. (when King Yodfa Chulalok the Great ascended the throne) to the present day, with Bangkok as capital."},
+{q:"The classification system based on \"dynasties\" during the Ayutthaya period includes which dynasty NOT mentioned for that period?", o:["U Thong Dynasty","Suphanabhumi Dynasty","Chakri Dynasty","Ban Phlu Luang Dynasty"], c:2, e:"Ayutthaya-period dynasties listed are U Thong, Suphanabhumi, Sukhothai, Prasat Thong, and Ban Phlu Luang. The Chakri Dynasty belongs to the Rattanakosin period."},
+{q:"Under the classification system based on government systems, which period featured a \"close relationship between governor and people\" in small regions/states?", o:["The patriarchal system period","The absolute monarchy period","The democracy period","The colonial period"], c:0, e:"The patriarchal system period was early Thai history's simple government system, with a close governor–people relationship in small states; some expanded into kingdoms like Sukhothai and Ayutthaya."},
+{q:"The absolute monarchy period (government-system classification) lasted until which year?", o:["2325 B.E.","2455 B.E.","2475 B.E.","2488 B.E."], c:2, e:"The absolute monarchy period began in the 20th century (B.E.) when Ayutthaya consolidated power under a god-king, and lasted until 2475 B.E."},
+{q:"What event marked the beginning of the democracy period in Thailand?", o:["The signing of the Bowring Treaty","Thailand's transition to a government system under a constitution, with the king as head of state (2475 B.E.)","The end of World War II","The founding of Bangkok as capital"], c:1, e:"The democracy period began in 2475 B.E., when Thailand transitioned to a constitutional system allowing people's participation, with the king as head of state."},
+{q:"Under classification by international historical events applied to Thai history, the \"Modern period\" is marked by the signing of which treaty?", o:["The Anglo-Siamese Treaty of 1826","The Bowring Treaty (2398 B.E.)","The Treaty of Versailles","The United States–Siam Treaty of 1833"], c:1, e:"The Modern period (Thai-context classification) began with the signing of the Bowring Treaty in 2398 B.E., resulting from colonial expansion into Southeast Asia."},
+{q:"According to the text, which fields still classify periods by cultural era (e.g., Dvaravati, Srivijaya, Lopburi, Sukhothai) rather than political classification?", o:["Economics and sociology","Archaeology and art history","Law and government studies","Linguistics and literature"], c:1, e:"In fields connected to history such as archaeology and art history, categorisation still follows cultural eras like Dvaravati, Srivijaya, Lopburi, and Sukhothai."},
+{q:"The Buddhist Era (B.E.) began in the year of the Buddha's:", o:["Birth","Enlightenment","Parinibbana (death)","First sermon"], c:2, e:"The Buddhist Era began in the year of the Buddha's Parinibbana (death), though the exact starting year (0 vs 1) differs by country."},
+{q:"How does Thailand's counting of the Buddhist Era differ from Sri Lanka's and Myanmar's?", o:["Thailand starts counting from the Buddha's birth, not death","Thailand considers the year of the Buddha's death as year zero and the following year as year one","Thailand does not use the Buddhist Era at all","Thailand counts in lunar months, not years"], c:1, e:"Sri Lanka and Myanmar consider the year of the Buddha's death as year one, while Thailand considers it year zero, counting the following year as year one."},
+{q:"In which reign did Thailand officially announce the use of the Buddhist Era, and in what year?", o:["King Narai the Great, 2325 B.E.","King Mongkut (Chomklao Chaoyuhua), 2455 B.E.","King Yodfa Chulalok, 2432 B.E.","General Plaek Phibunsongkhram, 2484 B.E."], c:1, e:"Thailand officially announced use of the Buddhist Era in 2455 B.E. during the reign of King Chomklao Chaoyuhua (King Mongkut), also setting 1st April as New Year's Day at that time."},
+{q:"Which era conversion formula is CORRECT?", o:["Buddhist Era = Shalivahana Era + 621","Buddhist Era = Chulasakraj Era + 1122","Buddhist Era = Hijri Era + 1181","Buddhist Era = Christian Era + 1826"], c:0, e:"The text gives: Buddhist Era = Shalivahana Era + 621; Buddhist Era = Chulasakraj Era + 1181; Buddhist Era = Hijri Era + 1122; Buddhist Era = Christian Era + 543."},
+{q:"The Chulasakraj Era originated in which country before spreading to Thailand?", o:["India","Sri Lanka","Myanmar","Saudi Arabia"], c:2, e:"The Chulasakraj Era originated in Myanmar, 1181 years after the Buddhist Era began, and first appeared in Thailand in the Ninth Sukhothai Inscription."},
+{q:"The Hijri Era (A.H.) begins with which historical event?", o:["The birth of the Prophet Muhammad","The Prophet Muhammad's escape (Hegira) from Mecca to Medina","The founding of Mecca","The compilation of the Quran"], c:1, e:"The Hijri Era began following the Hegira — the Prophet Muhammad's escape from Mecca to Medina — on 27th September 1165 B.E. (622 A.D.)."},
+{q:"Why does the Islamic (Hijri) calendar require an extra year added every 32.5 years compared to the solar calendar?", o:["Because it follows the Buddhist lunar calendar","Because it is a lunar calendar, which is shorter than the solar calendar","Because it was adjusted to match the Christian calendar","Because Ramadan changes date each year"], c:1, e:"The Islamic community follows the lunar calendar, which is shorter than the solar calendar, so an extra year is added roughly every 32.5 years to stay aligned."},
+{q:"The first year of the Christian Era (1 A.D.) corresponds to which Buddhist Era year, and marks what event?", o:["544 B.E.; the birth of Jesus Christ","622 B.E.; the Hegira","2325 B.E.; the founding of Bangkok","1181 B.E.; the founding of the Chulasakraj Era"], c:0, e:"The first year of the Christian Era began in 544 B.E., the year of the birth of Jesus Christ; years before this are counted as B.C."},
+{q:"Which of the following correctly orders the international system's units of time from shortest to longest?", o:["Century → Decade → Millennium","Millennium → Century → Decade","Decade → Century → Millennium","Decade → Millennium → Century"], c:2, e:"10 years = a decade; 100 years = a century; 1,000 years = a millennium — so the correct ascending order is decade, century, millennium."},
+{q:"According to the text's definition, \"history\" refers to:", o:["Any story about the past, whether verified or not","Past events and facts deduced and compiled by historians through careful analysis of credible evidence using scientific methods","Only events recorded in official government documents","Only events witnessed directly by the researcher"], c:1, e:"History refers to incidents/events of the past supported by verifiable evidence, deduced and compiled by historians using scientific, hypothesis-based analysis."},
+{q:"\"Historical methods\" are best described as:", o:["A list of famous historical dates","Processes for studying history that rely on logic to synthesise verifiable, accurate, and unbiased facts about the past","A system for translating ancient inscriptions only","A method used exclusively by archaeologists"], c:1, e:"Historical methods are processes for studying history relying on logic to synthesise knowledge and answers that reflect verifiable, accurate, unbiased facts about the past."},
+{q:"What is the CORRECT order of the five steps in historical methods?", o:["Evidence selection → gathering → analysis → presentation → determining relationships","Evidence gathering → evidence selection → analysis/interpretation/assessment → determining relationships among evidence → presentation of facts","Presentation of facts → evidence gathering → analysis → selection → relationships","Analysis → gathering → selection → presentation → relationships"], c:1, e:"The correct sequence is: (1) evidence gathering, (2) evidence selection, (3) evidence analysis/interpretation/assessment, (4) determining relationships among evidence, (5) presentation of facts."},
+{q:"In the \"evidence analysis/interpretation/assessment\" step, what is the difference between \"external assessment\" and \"internal assessment\"?", o:["External assessment evaluates the source/recorder itself; internal assessment evaluates the accuracy of the data compared with other contemporary evidence","External assessment is done by foreign scholars; internal assessment is done by local scholars","External assessment concerns physical condition of documents; internal assessment concerns the ink used","There is no real difference between the two"], c:0, e:"External assessment evaluates the source or recorder of the evidence itself; internal assessment evaluates the accuracy of the data against other contemporary evidence and the recorder's manner of presentation."},
+{q:"Which of the following is classified as \"recorded/communicable\" historical evidence rather than \"archaeological and artistic\" evidence?", o:["A skeleton found at a burial site","A palm-leaf manuscript written in the Lanna language","A bronze axe head","A pottery shard"], c:1, e:"Written documents (such as palm-leaf manuscripts, inscriptions, and paper records) are recorded/communicable evidence; skeletons, axes, and pottery are archaeological/artistic evidence that cannot communicate meaning directly."},
+{q:"Why do historians generally regard primary source evidence as the most reliable, yet still need to use secondary sources?", o:["Because primary sources are always written in a foreign language","Because primary sources clearly reflect the state of society but are scarce, especially from distant periods","Because secondary sources are always more accurate than primary sources","Because primary sources cannot be verified at all"], c:1, e:"Primary sources most clearly reflect a period's true conditions but are scarce (especially older evidence, e.g. few surviving Sukhothai inscriptions), so scholars supplement with contemporary and secondary evidence."},
+{q:"Which of the following is an example of PRIMARY source evidence for the Sukhothai period, as given in the text?", o:["A 21st-century textbook chapter about Sukhothai","A modern encyclopaedia article about Thai history","Sukhothai Inscription steles","A documentary film produced in 2020"], c:2, e:"The Sukhothai Inscription steles are cited as a widely recognised primary source for studying the Sukhothai period, though they are limited in number."}
+];
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+
+const qnum = document.getElementById('qnum');
+const qtext = document.getElementById('qtext');
+const optionsEl = document.getElementById('options');
+const explanationEl = document.getElementById('explanation');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const scoreText = document.getElementById('scoreText');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const quizArea = document.getElementById('quizArea');
+const results = document.getElementById('results');
+const finalScore = document.getElementById('finalScore');
+const finalPct = document.getElementById('finalPct');
+const breakdown = document.getElementById('breakdown');
+const restartBtn = document.getElementById('restartBtn');
+
+function updateProgress(){
+  const answeredCount = answers.filter(a => a !== null).length;
+  const correctCount = answers.filter((a,i) => a === questions[i].c).length;
+  progressFill.style.width = (answeredCount / questions.length * 100) + '%';
+  progressText.textContent = `Question ${current+1} of ${questions.length}`;
+  scoreText.textContent = `Score: ${correctCount} / ${answeredCount}`;
+}
+
+function selectAnswer(i){
+  answers[current] = i;
+  render();
+}
+
+function render(){
+  const q = questions[current];
+  qnum.textContent = `Question ${current+1}`;
+  qtext.textContent = q.q;
+  optionsEl.innerHTML = '';
+  const userAnswer = answers[current];
+
+  q.o.forEach((opt, i) => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    div.textContent = String.fromCharCode(65+i) + '.  ' + opt;
+    if(userAnswer !== null){
+      div.classList.add('locked');
+      if(i === q.c) div.classList.add('reveal-correct');
+      if(i === userAnswer && userAnswer !== q.c) div.classList.add('selected-wrong');
+    } else {
+      div.onclick = () => selectAnswer(i);
+    }
+    optionsEl.appendChild(div);
+  });
+
+  if(userAnswer !== null){
+    explanationEl.classList.add('show');
+    explanationEl.innerHTML = `<strong>Explanation:</strong> ${q.e}`;
+  } else {
+    explanationEl.classList.remove('show');
+    explanationEl.innerHTML = '';
+  }
+
+  prevBtn.disabled = current === 0;
+  nextBtn.textContent = current === questions.length - 1 ? 'See Results →' : 'Next →';
+  updateProgress();
+}
+
+prevBtn.addEventListener('click', () => {
+  if(current > 0){
+    current--;
+    render();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+});
+
+nextBtn.addEventListener('click', () => {
+  if(current === questions.length - 1){
+    showResults();
+  } else {
+    current++;
+    render();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+});
+
+function showResults(){
+  quizArea.classList.add('hidden');
+  results.classList.add('show');
+
+  const correctCount = answers.filter((a,i) => a === questions[i].c).length;
+  const answeredCount = answers.filter(a => a !== null).length;
+
+  finalScore.textContent = `${correctCount} / ${questions.length}`;
+  const pct = Math.round(correctCount / questions.length * 100);
+  finalPct.textContent = pct + '%' + (answeredCount < questions.length ? ` · ${questions.length - answeredCount} unanswered` : '');
+
+  let grade, msg;
+  if(pct >= 90){ grade='Excellent'; msg='Outstanding mastery of Unit 1 content.'; }
+  else if(pct >= 80){ grade='Very Good'; msg='Strong understanding — review a few missed items.'; }
+  else if(pct >= 70){ grade='Good'; msg='Solid grasp — revisit the sections tied to missed items.'; }
+  else if(pct >= 60){ grade='Fair'; msg='Passing — recommend reviewing Unit 1 before the next assessment.'; }
+  else { grade='Needs Improvement'; msg='Recommend re-studying Unit 1, especially era systems and historical methods.'; }
+
+  breakdown.innerHTML = `
+    <div><span>Correct answers</span><span>${correctCount} / ${questions.length}</span></div>
+    <div><span>Result</span><span>${grade}</span></div>
+    <div><span>Recommendation</span><span>${msg}</span></div>
+  `;
+
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+restartBtn.addEventListener('click', () => {
+  current = 0;
+  answers = new Array(questions.length).fill(null);
+  quizArea.classList.remove('hidden');
+  results.classList.remove('show');
+  render();
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+render();
+</script>
+</body>
+</html>
