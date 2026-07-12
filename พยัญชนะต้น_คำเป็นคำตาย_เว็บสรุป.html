@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>พยัญชนะต้น พยัญชนะควบ คำเป็น คำตาย — สรุปเนื้อหา</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0D1B2A; --navy2:#16273D; --gold:#C9A227; --gold-light:#E7CE7A;
+    --cream:#F6F1E4; --ink:#1A1A1A; --grey:#5B5B5B; --line:#E4DCC4;
+    --p1:#4C7BB0; --p2:#8B7BC7; --p3:#5FA37A; --p4:#C77B93;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:'Sarabun',sans-serif; background:var(--cream); color:var(--ink); line-height:1.7;}
+  .container{max-width:980px; margin:0 auto; padding:0 20px;}
+
+  .hero{
+    background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);
+    padding:64px 20px 56px; text-align:center; color:#fff;
+  }
+  .eyebrow{color:var(--gold-light); letter-spacing:.12em; font-size:13px; font-weight:600; text-transform:uppercase;}
+  .hero h1{font-size:clamp(28px,5vw,44px); font-weight:800; margin:10px 0 12px;}
+  .hero p.sub{color:#D7CBAE; font-size:16px; max-width:600px; margin:0 auto;}
+
+  section{padding:52px 0;}
+  .section-label{color:var(--gold); font-weight:700; font-size:13px; letter-spacing:.1em; text-transform:uppercase; margin-bottom:8px;}
+  h2.section-title{font-size:clamp(24px,4vw,30px); font-weight:800; color:var(--navy); margin-bottom:10px;}
+  .lead{color:var(--grey); font-size:15px; max-width:700px; margin-bottom:24px;}
+
+  .block{border-radius:14px; padding:28px 26px; margin-bottom:22px; color:#fff;}
+  .block .section-label{color:rgba(255,255,255,.75);}
+  .block h2.section-title{color:#fff;}
+  .block .lead{color:rgba(255,255,255,.85);}
+  .b1{background:var(--p1);} .b2{background:var(--p2);} .b3{background:var(--p3);} .b4{background:var(--p4);}
+
+  .card-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-top:16px;}
+  .mini-card{background:rgba(255,255,255,.95); border-radius:10px; padding:14px 16px; color:var(--ink);}
+  .mini-card .k{font-weight:700; color:var(--navy); font-size:14px; margin-bottom:4px;}
+  .mini-card .v{font-size:13px; color:var(--grey);}
+
+  .wtable{width:100%; border-collapse:collapse; background:rgba(255,255,255,.96); border-radius:10px; overflow:hidden; margin-top:16px;}
+  .wtable th{background:rgba(13,27,42,.85); color:#fff; font-size:13px; padding:10px; text-align:left;}
+  .wtable td{padding:10px 12px; font-size:13.5px; color:var(--ink); border-bottom:1px solid #EEE7D3;}
+  .wtable tr:last-child td{border-bottom:none;}
+  .example{background:rgba(255,255,255,.92); border-left:4px solid var(--navy); border-radius:6px; padding:12px 14px; margin-top:16px; font-size:13.5px; color:var(--navy);}
+
+  .rule-list{display:flex; flex-direction:column; gap:10px; margin-top:16px;}
+  .rule{background:rgba(255,255,255,.95); border-radius:8px; padding:12px 16px; color:var(--ink); font-size:14px; display:flex; gap:12px; align-items:flex-start;}
+  .rule .num{flex-shrink:0; width:26px; height:26px; border-radius:50%; background:var(--navy); color:var(--gold-light); font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center;}
+
+  .compare{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;}
+  .compare .col{border-radius:10px; padding:16px 18px;}
+  .compare .col.live{background:rgba(95,163,122,.18); border:1.5px solid #5FA37A;}
+  .compare .col.dead{background:rgba(199,123,147,.18); border:1.5px solid #C77B93;}
+  .compare h4{font-size:15px; font-weight:700; margin-bottom:8px; color:var(--navy);}
+  .compare p{font-size:13px; color:var(--ink); line-height:1.6;}
+  .compare .words{margin-top:8px; font-weight:700; color:var(--navy); font-size:13.5px;}
+
+  footer{background:var(--navy); color:#B9C2CE; text-align:center; padding:34px 20px; font-size:13px;}
+  footer strong{color:var(--gold-light);}
+
+  @media (max-width:700px){
+    .compare{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="eyebrow">หลักภาษาไทย · เสียงและการผันวรรณยุกต์</div>
+  <h1>พยัญชนะต้น พยัญชนะควบ<br>คำเป็น คำตาย</h1>
+  <p class="sub">ความรู้พื้นฐานเรื่องเสียงพยัญชนะต้นในภาษาไทย ที่เป็นกุญแจสำคัญของการอ่านออกเสียงและผันวรรณยุกต์ให้ถูกต้อง</p>
+</div>
+
+<div class="container">
+
+  <!-- พยัญชนะต้นเดี่ยว -->
+  <section>
+    <div class="block b1">
+      <div class="section-label">ส่วนที่ 1</div>
+      <h2 class="section-title">พยัญชนะต้นเดี่ยว</h2>
+      <p class="lead">พยัญชนะต้นเดี่ยว คือเสียงพยัญชนะหนึ่งเสียงที่อยู่ต้นพยางค์ ทำหน้าที่เป็นตัวเริ่มเสียงก่อนสระ ภาษาไทยมีพยัญชนะต้นเดี่ยวทั้งหมด 21 หน่วยเสียง</p>
+      <div class="card-grid">
+        <div class="mini-card"><div class="k">21 หน่วยเสียง</div><div class="v">แม้ตัวอักษรพยัญชนะไทยมี 44 รูป แต่หลายตัวออกเสียงซ้ำกัน เช่น ข ฃ ค ฅ ฆ ออกเสียง /ค/ เหมือนกันทั้งหมด</div></div>
+        <div class="mini-card"><div class="k">หน้าที่</div><div class="v">เป็นเสียงเริ่มต้นพยางค์ ก่อนเสียงสระ เช่น กา = /ก/ + /อา/</div></div>
+        <div class="mini-card"><div class="k">ตัวอย่าง</div><div class="v">ก ข ค ง จ ช ซ ญ ด ต ถ ท น บ ป พ ฟ ม ย ร ล ว ส ห อ ฮ</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- พยัญชนะควบกล้ำ -->
+  <section>
+    <div class="block b2">
+      <div class="section-label">ส่วนที่ 2</div>
+      <h2 class="section-title">พยัญชนะต้นควบกล้ำ</h2>
+      <p class="lead">พยัญชนะต้นควบกล้ำ คือพยัญชนะต้น 2 เสียงที่ปรากฏอยู่ในพยางค์เดียวกัน แบ่งเป็น 2 ประเภทตามลักษณะการออกเสียง</p>
+
+      <table class="wtable">
+        <tr><th>ประเภท</th><th>ลักษณะ</th><th>ตัวอย่าง</th></tr>
+        <tr><td><b>ควบกล้ำแท้</b></td><td>ออกเสียงควบกันจริงทั้ง 2 เสียงพร้อมกัน มี 11 หน่วยเสียง: กร กล กว คร/ขร คล/ขล คว/ขว ตร ปร ปล ผล/พล พร</td><td>กราบ, กลาง, แกว่ง, ครู, คลอง, ความ, ตรง, ปราบ, ปลา, เพลง, พริก</td></tr>
+        <tr><td><b>ควบกล้ำไม่แท้</b></td><td>เขียนควบกับ ร แต่ออกเสียงเพียงพยัญชนะตัวหน้า หรือเปลี่ยนเป็นเสียงอื่น</td><td>จริง (จิง), ไซร้ (ไซ้), สร้าง (ส้าง), ศรี (สี), ทราบ (ซาบ)</td></tr>
+      </table>
+      <div class="example">
+        <b>สังเกต:</b> คำว่า "ทร" มักเปลี่ยนเสียงเป็น /ซ/ เช่น ทราย ออกเสียง /ซาย/ ทรง ออกเสียง /ซง/ เป็นลักษณะเด่นของควบกล้ำไม่แท้กลุ่มนี้
+      </div>
+    </div>
+  </section>
+
+  <!-- คำเป็น -->
+  <section>
+    <div class="block b3">
+      <div class="section-label">ส่วนที่ 3</div>
+      <h2 class="section-title">คำเป็น</h2>
+      <p class="lead">คำเป็น คือพยางค์ที่ออกเสียงได้ยาวและไม่ถูกกักเสียงกะทันหัน มี 3 ลักษณะ ดังนี้</p>
+      <div class="rule-list">
+        <div class="rule"><div class="num">1</div><div>ประสมด้วย<b>สระเสียงยาว</b>ในแม่ ก กา (ไม่มีตัวสะกด) เช่น กา ดู มี ปู่</div></div>
+        <div class="rule"><div class="num">2</div><div>มี<b>ตัวสะกด</b>ในแม่ กง กน กม เกย เกอว (ตัวสะกดเสียงก้อง ง น ม ย ว) เช่น กิน นาง คำ ควาย</div></div>
+        <div class="rule"><div class="num">3</div><div>ประสมด้วยสระ <b>อำ ไอ ใอ เอา</b> ถือเป็นคำเป็นเสมอ แม้จะออกเสียงสั้น เช่น น้ำ ไป ใจ เขา</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- คำตาย -->
+  <section>
+    <div class="block b4">
+      <div class="section-label">ส่วนที่ 4</div>
+      <h2 class="section-title">คำตาย</h2>
+      <p class="lead">คำตาย คือพยางค์ที่ออกเสียงสั้นและถูกกักเสียงทันที มี 2 ลักษณะ ดังนี้</p>
+      <div class="rule-list">
+        <div class="rule"><div class="num">1</div><div>ประสมด้วย<b>สระเสียงสั้น</b>ในแม่ ก กา ไม่มีตัวสะกด (ยกเว้น อำ ไอ ใอ เอา) เช่น กะ ดุ นะ</div></div>
+        <div class="rule"><div class="num">2</div><div>มี<b>ตัวสะกด</b>ในแม่ กก กด กบ (ตัวสะกดเสียง ก ด บ) เช่น จาก นก มด กบ</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- เปรียบเทียบ -->
+  <section>
+    <div class="section-label">สรุปเปรียบเทียบ</div>
+    <h2 class="section-title">คำเป็น vs คำตาย</h2>
+    <p class="lead">ความรู้เรื่องคำเป็น-คำตาย สำคัญมากต่อการผันเสียงวรรณยุกต์ให้ถูกต้อง เพราะกฎการผันของคำเป็นและคำตายแตกต่างกัน</p>
+    <div class="compare">
+      <div class="col live">
+        <h4>✅ คำเป็น</h4>
+        <p>สระเสียงยาวไม่มีตัวสะกด / มีตัวสะกดแม่ กง กน กม เกย เกอว / สระ อำ ไอ ใอ เอา</p>
+        <div class="words">ตัวอย่าง: กา · กิน · นาง · คำ · ไป · ใจ · เขา</div>
+      </div>
+      <div class="col dead">
+        <h4>⛔ คำตาย</h4>
+        <p>สระเสียงสั้นไม่มีตัวสะกด (ยกเว้น อำ ไอ ใอ เอา) / มีตัวสะกดแม่ กก กด กบ</p>
+        <div class="words">ตัวอย่าง: กะ · จาก · นก · มด · กบ · ดุ</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  สรุปเนื้อหาเพื่อการศึกษา อ้างอิงจากบทเรียนวิชาภาษาไทย เรื่อง <strong>พยัญชนะต้น พยัญชนะควบ คำเป็น คำตาย</strong>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>แบบทดสอบ พยัญชนะต้น-ควบกล้ำ-คำเป็นคำตาย</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0D1B2A; --navy2:#16273D; --gold:#C9A227; --gold-light:#E7CE7A;
+    --cream:#F6F1E4; --ink:#1A1A1A; --grey:#6B6B6B; --green:#2E7D32; --red:#B3261E;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; font-family:'Sarabun',sans-serif; background:var(--navy); color:var(--ink); min-height:100vh;}
+  .wrap{max-width:760px;margin:0 auto;padding:28px 18px 60px;}
+  header{text-align:center;color:var(--cream);margin-bottom:18px;}
+  header h1{font-size:22px;font-weight:800;margin:0 0 4px;color:var(--gold-light);}
+  header p{font-size:13px;margin:0;color:#B9C2CE;}
+
+  .qcount{text-align:center;color:var(--gold-light);font-size:13px;font-weight:600;margin-bottom:10px;}
+  .dots{display:flex;justify-content:center;gap:5px;flex-wrap:wrap;margin-bottom:22px;max-width:640px;margin-left:auto;margin-right:auto;}
+  .dot{width:11px;height:11px;border-radius:50%;background:#2A3B4E;transition:.2s;}
+  .dot.done{background:var(--gold);}
+  .dot.current{background:var(--gold-light);transform:scale(1.3);}
+
+  .card{
+    background:var(--cream); border-radius:10px; padding:24px 22px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35); border:1px solid #E4DCC4;
+  }
+  .cat{
+    display:inline-block; font-size:11px; font-weight:700; letter-spacing:.03em;
+    color:var(--navy); background:var(--gold-light); padding:3px 10px; border-radius:20px; margin-bottom:12px;
+  }
+  .qtext{font-size:16px;font-weight:700;line-height:1.6;margin:0 0 16px;color:var(--navy);}
+  .choices{display:flex;flex-direction:column;gap:9px;}
+  .choice{
+    text-align:left; padding:11px 14px; border:1.5px solid #D8CFB0; background:#FFFEF9;
+    border-radius:7px; font-family:'Sarabun',sans-serif; font-size:14.5px; cursor:pointer;
+    transition:.15s; color:var(--ink);
+  }
+  .choice:hover:not(.locked){border-color:var(--gold); background:#FBF3DD;}
+  .choice.correct{background:#E5F3E6;border-color:var(--green);color:var(--green);font-weight:700;}
+  .choice.wrong{background:#FBE7E6;border-color:var(--red);color:var(--red);font-weight:700;}
+  .choice.locked{cursor:default;}
+
+  .explain{
+    margin-top:14px; padding:12px 14px; background:#F0EAD6; border-left:4px solid var(--gold);
+    border-radius:4px; font-size:13.5px; line-height:1.6; display:none; color:#3A3120;
+  }
+  .explain.show{display:block;}
+
+  .nav{display:flex;justify-content:space-between;align-items:center;margin-top:20px;}
+  .btn{font-family:'Sarabun',sans-serif; font-weight:700; font-size:14px; padding:10px 20px; border-radius:7px; border:none; cursor:pointer; transition:.15s;}
+  .btn-primary{background:var(--gold);color:var(--navy);}
+  .btn-primary:hover{background:var(--gold-light);}
+  .btn-primary:disabled{background:#4A4636;color:#8a8570;cursor:not-allowed;}
+  .btn-back{background:rgba(201,162,39,.16);color:var(--gold-light);border:2px solid var(--gold);}
+  .btn-back:hover{background:rgba(201,162,39,.3);}
+  .btn-back:disabled{opacity:.35;cursor:not-allowed;border-color:#445569;color:#8a94a3;background:transparent;}
+
+  .result{text-align:center;color:var(--cream);}
+  .result .score{font-size:52px;font-weight:800;color:var(--gold-light);margin:8px 0;}
+  .result .sub{color:#B9C2CE;font-size:14px;margin-bottom:20px;}
+  .breakdown{background:var(--cream);border-radius:10px;padding:18px 20px;text-align:left;color:var(--navy);margin-top:10px;}
+  .breakdown h3{margin:0 0 10px;font-size:14px;color:var(--navy);}
+  .breakdown .row{display:flex;justify-content:space-between;font-size:13.5px;padding:5px 0;border-bottom:1px dashed #D8CFB0;}
+  .breakdown .row:last-child{border-bottom:none;}
+  .restart{margin-top:22px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🔤 แบบทดสอบ พยัญชนะต้น-ควบกล้ำ-คำเป็นคำตาย</h1>
+    <p>พยัญชนะต้นเดี่ยว · พยัญชนะต้นควบกล้ำ · คำเป็น · คำตาย | 20 ข้อ พร้อมเฉลย</p>
+  </header>
+
+  <div id="quizArea">
+    <div class="qcount" id="qcount">ข้อที่ 1 / 20</div>
+    <div class="dots" id="dots"></div>
+
+    <div class="card">
+      <div class="cat" id="qcat">หมวดหมู่</div>
+      <p class="qtext" id="qtext">คำถาม</p>
+      <div class="choices" id="choices"></div>
+      <div class="explain" id="explain"></div>
+      <div class="nav">
+        <button class="btn btn-back" id="backBtn">← ย้อนกลับ</button>
+        <button class="btn btn-primary" id="nextBtn" disabled>ข้อถัดไป →</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="resultArea" style="display:none;">
+    <div class="result">
+      <p>คุณทำแบบทดสอบเสร็จแล้ว!</p>
+      <div class="score" id="scoreText">0/20</div>
+      <div class="sub" id="scoreMsg"></div>
+      <div class="breakdown" id="breakdown"></div>
+      <button class="btn btn-primary restart" id="restartBtn">ทำแบบทดสอบอีกครั้ง</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = [
+{c:"พยัญชนะต้นเดี่ยว",q:"พยัญชนะต้นเดี่ยวในภาษาไทยมีทั้งหมดกี่หน่วยเสียง?",ch:["19 หน่วยเสียง","21 หน่วยเสียง","24 หน่วยเสียง","44 หน่วยเสียง"],a:1,e:"พยัญชนะต้นเดี่ยวในภาษาไทยมี 21 หน่วยเสียง แม้ตัวอักษรพยัญชนะไทยจะมี 44 ตัว แต่หลายตัวออกเสียงซ้ำกัน"},
+{c:"พยัญชนะต้นเดี่ยว",q:"พยัญชนะไทย 44 ตัวอักษร ทำไมจึงมีหน่วยเสียงพยัญชนะต้นเพียง 21 เสียง?",ch:["เพราะตัวอักษรหลายตัวออกเสียงซ้ำกัน","เพราะบางตัวไม่ใช้แล้ว","เพราะเป็นกฎที่กำหนดขึ้นเอง","เพราะพยัญชนะบางตัวไม่มีเสียง"],a:0,e:"ตัวอักษรพยัญชนะไทยมี 44 รูป แต่หลายตัวออกเสียงเหมือนกัน เช่น ข ฃ ค ฅ ฆ ออกเสียง /ค/ เหมือนกัน จึงเหลือหน่วยเสียงจริง 21 เสียง"},
+{c:"พยัญชนะควบกล้ำ",q:"พยัญชนะต้นควบกล้ำในภาษาไทยมีกี่หน่วยเสียง (ตามที่หลักสูตรกำหนด)?",ch:["9 หน่วยเสียง","11 หน่วยเสียง","15 หน่วยเสียง","21 หน่วยเสียง"],a:1,e:"พยัญชนะต้นควบกล้ำ (ควบแท้) มี 11 หน่วยเสียง ได้แก่ กร กล กว คร/ขร คล/ขล คว/ขว ตร ปร ปล ผล/พล พร"},
+{c:"พยัญชนะควบกล้ำ",q:"พยัญชนะควบกล้ำแท้ มีลักษณะอย่างไร?",ch:["เขียนควบ ร แต่ออกเสียงเพียงตัวเดียว","พยัญชนะต้น 2 เสียงที่ออกเสียงควบกันจริงพร้อมกัน","พยัญชนะที่ไม่มีเสียงสระตามมา","พยัญชนะท้ายพยางค์ 2 ตัว"],a:1,e:"พยัญชนะควบกล้ำแท้ คือพยัญชนะต้น 2 เสียงที่ออกเสียงควบกันจริง ทั้งสองเสียงต้องออกเสียงไปพร้อมกันในพยางค์เดียว เช่น กราบ ครู ปลา"},
+{c:"พยัญชนะควบกล้ำ",q:"คำว่า 'กราบ' 'ครู' 'ปลา' เป็นตัวอย่างของพยัญชนะควบกล้ำประเภทใด?",ch:["ควบกล้ำแท้","ควบกล้ำไม่แท้","ควบกล้ำพิเศษ","ไม่ใช่คำควบกล้ำ"],a:0,e:"'กราบ' (กร) 'ครู' (คร) 'ปลา' (ปล) ล้วนออกเสียงควบกันจริงทั้งสองเสียง จึงเป็นควบกล้ำแท้"},
+{c:"พยัญชนะควบกล้ำ",q:"พยัญชนะควบกล้ำไม่แท้ มีลักษณะอย่างไร?",ch:["ออกเสียงควบกันจริงทั้งสองเสียง","เขียนควบ ร แต่ออกเสียงเพียงพยัญชนะตัวหน้า หรือเปลี่ยนเป็นเสียงอื่น","เป็นพยัญชนะท้ายพยางค์","ไม่มีในภาษาไทย"],a:1,e:"พยัญชนะควบกล้ำไม่แท้ คือคำที่เขียนรูปควบกับ ร แต่เวลาออกเสียงจริงจะออกเสียงเพียงพยัญชนะตัวหน้าเท่านั้น หรือเปลี่ยนเสียงไปเป็นเสียงอื่น"},
+{c:"พยัญชนะควบกล้ำ",q:"คำว่า 'จริง' เป็นควบกล้ำไม่แท้ เพราะเหตุใด?",ch:["ออกเสียงว่า /จิง/ ไม่ออกเสียง ร","ออกเสียงว่า /จริง/ ควบเต็มเสียง","เป็นคำยืมจากภาษาอังกฤษ","มีตัวสะกดแม่ กน"],a:0,e:"คำว่า 'จริง' เขียนควบกับ ร แต่ออกเสียงจริงว่า /จิง/ ไม่ออกเสียง ร เลย จึงเป็นควบกล้ำไม่แท้"},
+{c:"พยัญชนะควบกล้ำ",q:"คำว่า 'สร้าง' และ 'ทราบ' ออกเสียงจริงว่าอย่างไร?",ch:["ส้าง / ทราบ (ควบเต็มเสียง)","ส้าง / ซาบ (เปลี่ยนเป็นเสียง ซ)","สะ-ร้าง / ทะ-ราบ","ไม่ออกเสียง ร ทั้งคำ"],a:1,e:"'สร้าง' ออกเสียงว่า /ส้าง/ และ 'ทราบ' ออกเสียงว่า /ซาบ/ ซึ่งเสียง ซ มาจากการเปลี่ยนเสียงของ ทร เป็นตัวอย่างควบกล้ำไม่แท้ที่เปลี่ยนเป็นเสียงอื่น"},
+{c:"พยัญชนะควบกล้ำ",q:"พยัญชนะควบกล้ำไม่แท้ที่พบบ่อยในภาษาไทย ได้แก่ชุดใด?",ch:["กร กล กว","จร ซร ศร สร ทร","ตร ปร ปล","คร ขร คล"],a:1,e:"พยัญชนะควบกล้ำไม่แท้ที่พบบ่อย ได้แก่ จร (จริง) ซร ศร (ศรี) สร (สร้าง) และ ทร (ทราบ, แทรก)"},
+{c:"คำเป็น",q:"คำเป็น คือพยางค์ที่มีลักษณะใดต่อไปนี้?",ch:["ประสมสระเสียงสั้นในแม่ ก กา ไม่มีตัวสะกด","ประสมสระเสียงยาวในแม่ ก กา (ไม่มีตัวสะกด)","มีตัวสะกดแม่ กก กด กบ เท่านั้น","ไม่มีเสียงวรรณยุกต์"],a:1,e:"คำเป็นมีได้ 3 ลักษณะ หนึ่งในนั้นคือพยางค์ที่ประสมด้วยสระเสียงยาวในแม่ ก กา (ไม่มีตัวสะกด) เช่น กา ดู มี"},
+{c:"คำเป็น",q:"คำเป็นที่มีตัวสะกด จะอยู่ในแม่ใดบ้าง?",ch:["แม่กก กด กบ","แม่กง กน กม เกย เกอว","แม่ ก กา เท่านั้น","ไม่มีตัวสะกดเลย"],a:1,e:"คำเป็นที่มีตัวสะกดจะอยู่ในแม่ กง กน กม เกย เกอว (ตัวสะกดที่เป็นเสียงก้อง เช่น ง น ม ย ว) เช่น กิน นาง คำ ควาย"},
+{c:"คำเป็น",q:"สระใดที่ทำให้พยางค์เป็น 'คำเป็น' เสมอ แม้จะเป็นเสียงสั้น?",ch:["อะ อิ อุ","อำ ไอ ใอ เอา","เอะ แอะ โอะ","อือ อึ"],a:1,e:"สระ อำ ไอ ใอ เอา ถือเป็นคำเป็นเสมอ แม้จะออกเสียงสั้น เพราะถือว่ามีเสียงพยัญชนะท้าย ว หรือ ย แฝงอยู่ เช่น น้ำ ไป ใจ เขา"},
+{c:"คำตาย",q:"คำตาย คือพยางค์ที่มีลักษณะใด?",ch:["สระเสียงสั้นไม่มีตัวสะกด (ยกเว้น อำ ไอ ใอ เอา) หรือมีตัวสะกดแม่ กก กด กบ","สระเสียงยาวไม่มีตัวสะกด","มีตัวสะกดแม่ กง กน กม","มีเสียงวรรณยุกต์ตรี"],a:0,e:"คำตายมี 2 ลักษณะ คือ (1) สระเสียงสั้นในแม่ ก กา ไม่มีตัวสะกด (ยกเว้น อำ ไอ ใอ เอา) และ (2) พยางค์ที่มีตัวสะกดในแม่ กก กด กบ"},
+{c:"คำตาย",q:"คำว่า 'กะ' เป็นคำเป็นหรือคำตาย?",ch:["คำเป็น เพราะสระเสียงยาว","คำตาย เพราะสระเสียงสั้น ไม่มีตัวสะกด","คำเป็น เพราะมีตัวสะกด","ไม่สามารถระบุได้"],a:1,e:"'กะ' ประสมด้วยสระ อะ ซึ่งเป็นเสียงสั้น และไม่มีตัวสะกด จึงเป็นคำตาย"},
+{c:"คำตาย",q:"คำว่า 'กา' เป็นคำเป็นหรือคำตาย?",ch:["คำเป็น เพราะสระเสียงยาว ไม่มีตัวสะกด","คำตาย เพราะสระเสียงสั้น","คำเป็น เพราะมีตัวสะกดแม่กง","คำตาย เพราะมีตัวสะกดแม่กก"],a:0,e:"'กา' ประสมด้วยสระ อา ซึ่งเป็นเสียงยาว และไม่มีตัวสะกด จึงเป็นคำเป็น"},
+{c:"คำตาย",q:"คำว่า 'จาก' เป็นคำเป็นหรือคำตาย?",ch:["คำเป็น เพราะสระเสียงยาว","คำตาย เพราะมีตัวสะกดแม่กก","คำเป็น เพราะมีตัวสะกดแม่กง","คำตาย เพราะสระเสียงสั้น"],a:1,e:"'จาก' มีตัวสะกด ก ซึ่งอยู่ในแม่กก (ตัวสะกดเสียง /ก/) จึงเป็นคำตาย แม้สระจะเป็นเสียงยาวก็ตาม"},
+{c:"คำเป็น",q:"คำว่า 'กิน' เป็นคำเป็นหรือคำตาย?",ch:["คำเป็น เพราะมีตัวสะกดแม่กน","คำตาย เพราะมีตัวสะกดแม่กด","คำเป็น เพราะสระเสียงยาว","คำตาย เพราะสระเสียงสั้นไม่มีตัวสะกด"],a:0,e:"'กิน' มีตัวสะกด น ซึ่งอยู่ในแม่กน (เสียงก้อง) จึงเป็นคำเป็น"},
+{c:"คำตาย",q:"คำว่า 'นก' เป็นคำเป็นหรือคำตาย?",ch:["คำเป็น เพราะมีตัวสะกดแม่กง","คำตาย เพราะมีตัวสะกดแม่กก","คำเป็น เพราะสระเสียงยาว","คำตาย เพราะไม่มีตัวสะกด"],a:1,e:"'นก' มีตัวสะกด ก อยู่ในแม่กก จึงเป็นคำตาย"},
+{c:"คำเป็น",q:"คำว่า 'ไป' เป็นคำเป็นหรือคำตาย?",ch:["คำตาย เพราะสระเสียงสั้น","คำเป็น เพราะประสมด้วยสระไอ ซึ่งถือเป็นคำเป็นเสมอ","คำตาย เพราะมีตัวสะกดแม่กบ","ไม่สามารถระบุได้เพราะไม่มีตัวสะกด"],a:1,e:"'ไป' ประสมด้วยสระไอ ซึ่งจัดเป็นคำเป็นเสมอ แม้จะไม่มีตัวสะกดปรากฏชัดเจน เพราะถือว่ามีเสียง ย แฝงอยู่"},
+{c:"สรุปรวม",q:"ความรู้เรื่องคำเป็น-คำตาย มีประโยชน์สำคัญที่สุดในด้านใด?",ch:["ใช้แต่งกลอนเท่านั้น","ใช้ในการผันวรรณยุกต์และอ่านออกเสียงคำได้ถูกต้อง","ใช้แยกคำไทยแท้กับคำยืมเท่านั้น","ไม่มีประโยชน์ในการเรียนภาษาไทย"],a:1,e:"ความรู้เรื่องคำเป็น-คำตาย มีความสำคัญอย่างยิ่งต่อการผันเสียงวรรณยุกต์ เพราะกฎการผันวรรณยุกต์ของคำเป็นและคำตายแตกต่างกัน จึงจำเป็นต้องเข้าใจเพื่ออ่านออกเสียงคำในภาษาไทยได้ถูกต้อง"}
+];
+
+let current = 0, score = 0, answered = new Array(QUESTIONS.length).fill(null);
+const catStats = {};
+QUESTIONS.forEach(q=>{ if(!catStats[q.c]) catStats[q.c]={correct:0,total:0}; catStats[q.c].total++; });
+
+const qcount=document.getElementById('qcount'), qcat=document.getElementById('qcat'),
+      qtext=document.getElementById('qtext'), choicesEl=document.getElementById('choices'),
+      explainEl=document.getElementById('explain'), nextBtn=document.getElementById('nextBtn'),
+      backBtn=document.getElementById('backBtn'), dotsEl=document.getElementById('dots');
+
+function buildDots(){
+  dotsEl.innerHTML = '';
+  QUESTIONS.forEach((_,i)=>{
+    const d = document.createElement('div');
+    d.className = 'dot';
+    d.id = 'dot'+i;
+    dotsEl.appendChild(d);
+  });
+}
+buildDots();
+
+function updateDots(){
+  QUESTIONS.forEach((_,i)=>{
+    const d = document.getElementById('dot'+i);
+    d.className = 'dot' + (i<current?' done':'') + (i===current?' current':'');
+  });
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[current];
+  qcount.textContent = `ข้อที่ ${current+1} / ${QUESTIONS.length}`;
+  qcat.textContent = q.c;
+  qtext.textContent = q.q;
+  choicesEl.innerHTML = '';
+  explainEl.classList.remove('show');
+  explainEl.textContent = '';
+  nextBtn.disabled = true;
+  backBtn.disabled = (current === 0);
+
+  q.ch.forEach((choice, idx)=>{
+    const btn = document.createElement('button');
+    btn.className = 'choice';
+    btn.textContent = choice;
+    btn.onclick = ()=> selectAnswer(idx);
+    choicesEl.appendChild(btn);
+  });
+
+  const prevAnswer = answered[current];
+  if(prevAnswer !== null){
+    const isCorrect = prevAnswer === q.a;
+    [...choicesEl.children].forEach((btn,i)=>{
+      btn.classList.add('locked');
+      if(i === q.a) btn.classList.add('correct');
+      else if(i === prevAnswer) btn.classList.add('wrong');
+    });
+    explainEl.textContent = (isCorrect ? '✔ ถูกต้อง! ' : '✘ ไม่ถูกต้อง — ') + q.e;
+    explainEl.classList.add('show');
+    nextBtn.disabled = false;
+  }
+
+  updateDots();
+}
+
+function selectAnswer(idx){
+  if(answered[current] !== null) return;
+  const q = QUESTIONS[current];
+  answered[current] = idx;
+  const isCorrect = idx === q.a;
+  if(isCorrect){ score++; catStats[q.c].correct++; }
+
+  [...choicesEl.children].forEach((btn,i)=>{
+    btn.classList.add('locked');
+    if(i === q.a) btn.classList.add('correct');
+    else if(i === idx) btn.classList.add('wrong');
+  });
+
+  explainEl.textContent = (isCorrect ? '✔ ถูกต้อง! ' : '✘ ไม่ถูกต้อง — ') + q.e;
+  explainEl.classList.add('show');
+  nextBtn.disabled = false;
+}
+
+function nextQuestion(){
+  if(current < QUESTIONS.length-1){ current++; renderQuestion(); }
+  else showResult();
+}
+
+backBtn.onclick = ()=>{ if(current > 0){ current--; renderQuestion(); } };
+nextBtn.onclick = nextQuestion;
+
+function showResult(){
+  document.getElementById('quizArea').style.display='none';
+  const resultArea = document.getElementById('resultArea');
+  resultArea.style.display='block';
+  document.getElementById('scoreText').textContent = `${score} / ${QUESTIONS.length}`;
+  const pct = Math.round(score/QUESTIONS.length*100);
+  let msg = '';
+  if(pct>=90) msg='ยอดเยี่ยมมาก! เข้าใจเรื่องนี้อย่างลึกซึ้ง';
+  else if(pct>=70) msg='ดีมาก! เข้าใจเนื้อหาส่วนใหญ่แล้ว';
+  else if(pct>=50) msg='พอใช้ ลองทบทวนเนื้อหาอีกครั้ง';
+  else msg='ควรกลับไปอ่านเนื้อหาเพิ่มเติม แล้วลองใหม่';
+  document.getElementById('scoreMsg').textContent = `${pct}% — ${msg}`;
+
+  const bd = document.getElementById('breakdown');
+  bd.innerHTML = '<h3>คะแนนแยกตามหมวดหมู่</h3>' +
+    Object.entries(catStats).map(([cat,s])=>
+      `<div class="row"><span>${cat}</span><span>${s.correct} / ${s.total}</span></div>`
+    ).join('');
+}
+
+document.getElementById('restartBtn').onclick = ()=>{
+  current=0; score=0; answered=new Array(QUESTIONS.length).fill(null);
+  Object.values(catStats).forEach(s=>s.correct=0);
+  document.getElementById('resultArea').style.display='none';
+  document.getElementById('quizArea').style.display='block';
+  renderQuestion();
+};
+
+renderQuestion();
+</script>
+</body>
+</html>
