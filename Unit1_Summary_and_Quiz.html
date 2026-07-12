@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Unit 1 — Summary & Practice Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E2761;
+    --slate:#2C3E50;
+    --lightbg:#F2F5FA;
+    --line:#CADCFC;
+    --green:#1B8A5A;
+    --red:#B00020;
+    --amber:#B8860B;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:'Sarabun',Arial,sans-serif;
+    max-width:920px; margin:0 auto; padding:30px 36px 80px;
+    color:#1A1A1A; line-height:1.6; background:#fff;
+  }
+  h1{ color:var(--navy); font-size:24px; margin-bottom:4px; }
+  .subtitle{ color:var(--slate); font-size:14px; margin-bottom:28px; }
+
+  h2{
+    color:#fff; background:var(--navy); font-size:17px; font-weight:700;
+    padding:10px 16px; border-radius:4px; margin:34px 0 14px;
+  }
+  h3{ color:var(--slate); font-size:14.5px; font-weight:700; margin:18px 0 6px; }
+
+  .rule-box{
+    background:var(--lightbg); border-left:4px solid var(--navy);
+    padding:12px 16px; margin-bottom:12px; border-radius:0 4px 4px 0;
+  }
+  .rule-box p{ margin:4px 0; font-size:14px; }
+  .example{ color:var(--slate); font-style:italic; }
+  .example b{ color:var(--navy); font-style:normal; }
+
+  table.freq{ width:100%; border-collapse:collapse; margin:10px 0 16px; font-size:13.5px; }
+  table.freq th, table.freq td{ border:1px solid var(--line); padding:6px 10px; text-align:center; }
+  table.freq th{ background:var(--navy); color:#fff; }
+
+  ul.compact{ margin:6px 0 16px; padding-left:20px; font-size:14px; }
+  ul.compact li{ margin-bottom:3px; }
+
+  table.vocab-table{ width:100%; border-collapse:collapse; margin-bottom:16px; font-size:13.5px; }
+  table.vocab-table th{ background:var(--navy); color:#fff; padding:6px 10px; text-align:left; }
+  table.vocab-table td{ border:1px solid var(--line); padding:6px 10px; vertical-align:top; }
+
+  /* ---- Quiz ---- */
+  #scoreBar{
+    position:sticky; top:0; background:#fff; border-bottom:2px solid var(--navy);
+    padding:10px 0; margin-bottom:20px; display:flex; justify-content:space-between;
+    align-items:center; z-index:5;
+  }
+  #scoreBar .label{ font-weight:700; color:var(--navy); font-size:14px; }
+  #scoreBar button{
+    font-family:inherit; font-size:12.5px; padding:7px 14px; border:1px solid var(--navy);
+    background:#fff; color:var(--navy); border-radius:4px; cursor:pointer;
+  }
+  #scoreBar button:hover{ background:var(--navy); color:#fff; }
+
+  .qcard{
+    border:1px solid var(--line); border-radius:6px; padding:16px 18px; margin-bottom:16px;
+  }
+  .qhead{ font-weight:700; font-size:14.5px; margin-bottom:10px; color:#111; }
+  .qsection{ font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--slate); margin-bottom:4px; }
+  .passage-mini{
+    background:var(--lightbg); border-left:3px solid var(--navy); padding:8px 12px;
+    font-size:13px; margin-bottom:12px; border-radius:0 4px 4px 0;
+  }
+  .opt{
+    display:block; width:100%; text-align:left; padding:9px 12px; margin-bottom:7px;
+    border:1px solid #ccc; border-radius:4px; background:#fff; cursor:pointer;
+    font-family:inherit; font-size:13.5px; transition:background .15s;
+  }
+  .opt:hover:not(.locked){ background:#F0F4FF; }
+  .opt.correct{ background:#E4F7EC; border-color:var(--green); color:var(--green); font-weight:600; }
+  .opt.incorrect{ background:#FCE9EB; border-color:var(--red); color:var(--red); font-weight:600; }
+  .opt.reveal{ background:#E4F7EC; border-color:var(--green); }
+  .explain{
+    display:none; margin-top:8px; padding:9px 12px; background:#FFFBEA;
+    border-left:3px solid var(--amber); border-radius:0 4px 4px 0; font-size:13px;
+  }
+  .explain.show{ display:block; }
+
+  .total-box{
+    margin-top:26px; padding:16px; text-align:center; background:var(--navy);
+    color:#fff; border-radius:6px; font-size:16px; font-weight:700;
+  }
+
+  @media print{
+    #scoreBar button{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>UNIT 1 — Summary & Practice Quiz</h1>
+<div class="subtitle">Grade 7 English · Present Simple · Adverbs of Frequency · Prepositions of Time · Vocabulary · Reading</div>
+
+<!-- ============ SUMMARY ============ -->
+<h2>📘 Grammar Summary</h2>
+
+<h3>1. Present Simple</h3>
+<div class="rule-box">
+  <p><b>Affirmative:</b> Subject + verb (add <b>-s/-es</b> for he/she/it)</p>
+  <p class="example">I <b>play</b> football. → She <b>plays</b> football.</p>
+  <p><b>Negative:</b> Subject + don't/doesn't + verb</p>
+  <p class="example">I <b>don't like</b> tea. → He <b>doesn't like</b> tea.</p>
+  <p><b>Question:</b> Do/Does + subject + verb?</p>
+  <p class="example"><b>Do</b> you like tea? → <b>Does</b> she like tea?</p>
+  <p><b>Use it for:</b> routines, habits, facts, and things that are always/usually true.</p>
+</div>
+
+<h3>2. Adverbs of Frequency</h3>
+<table class="freq">
+  <tr><th>always</th><th>usually</th><th>often</th><th>sometimes</th><th>hardly ever</th><th>never</th></tr>
+  <tr><td>100%</td><td>~90%</td><td>~70%</td><td>~40%</td><td>~10%</td><td>0%</td></tr>
+</table>
+<div class="rule-box">
+  <p><b>Position:</b> before the main verb, but after the verb "be".</p>
+  <p class="example">I <b>always</b> brush my teeth. → She <b>is never</b> late.</p>
+</div>
+
+<h3>3. Prepositions of Time</h3>
+<div class="rule-box">
+  <p><b>in</b> — months, years, parts of the day → <span class="example">in July, in 2020, in the morning</span></p>
+  <p><b>on</b> — days, dates → <span class="example">on Monday, on 5th May</span></p>
+  <p><b>at</b> — clock times, night, the weekend → <span class="example">at 7 am, at night, at the weekend</span></p>
+</div>
+
+<h2>📗 Vocabulary Summary</h2>
+<table class="vocab-table">
+  <tr><th>Everyday activities</th><th>Free-time activities</th><th>Places in a town</th></tr>
+  <tr>
+    <td>wake up, get dressed, have breakfast, go to school, do homework, go to bed</td>
+    <td>chat online, play an instrument, hang out with friends, watch films, do sport</td>
+    <td>cinema, library, museum, stadium, shopping centre, park</td>
+  </tr>
+</table>
+
+<!-- ============ QUIZ ============ -->
+<h2>✏️ Practice Quiz (30 questions)</h2>
+<div id="scoreBar">
+  <span class="label" id="scoreLabel">Score: 0 / 30</span>
+  <button onclick="resetQuiz()">Reset Quiz</button>
+</div>
+<div id="quiz"></div>
+<div class="total-box" id="finalBox" style="display:none;"></div>
+
+<script>
+const passage = `<b>School Life in Australia.</b> In Australia, most students start school when they are five
+years old. The school day usually begins at about 9 am and finishes at around 3.30 pm. Students often
+wear a school uniform. Lessons are 50 minutes long, and swimming is a popular sport because the weather
+is warm. The school year starts in late January and finishes in December.`;
+
+const questions = [
+  // ---- Grammar: Present Simple (1-10) ----
+  {section:"Grammar", q:"My sister ______ (not/like) getting up early.", opts:["don't like","doesn't like","not likes","isn't like"], correct:1, exp:"With he/she/it we use 'doesn't' + base verb for negatives."},
+  {section:"Grammar", q:"We ______ (go) to school by bus every day.", opts:["goes","go","going","gone"], correct:1, exp:"With I/we/you/they, the base form is used (no -s)."},
+  {section:"Grammar", q:"He ______ (not/have) breakfast on Sundays.", opts:["doesn't has","don't have","doesn't have","not have"], correct:2, exp:"'doesn't' + base verb 'have' (not 'has')."},
+  {section:"Grammar", q:"Our teacher ______ (give) us homework every Friday.", opts:["give","gives","giving","gave"], correct:1, exp:"He/she/it takes an -s ending: give → gives."},
+  {section:"Grammar", q:"They ______ (not/study) French this year.", opts:["doesn't study","don't studies","don't study","not study"], correct:2, exp:"With 'they' use 'don't' + base verb."},
+  {section:"Grammar", q:"______ you usually walk to school?", opts:["Do","Does","Are","Is"], correct:0, exp:"'you' takes 'Do' in questions."},
+  {section:"Grammar", q:"______ your brother play football on Saturdays?", opts:["Do","Does","Is","Are"], correct:1, exp:"'your brother' = he/she/it, so use 'Does'."},
+  {section:"Grammar", q:"What time ______ the lesson start?", opts:["do","does","is","are"], correct:1, exp:"'the lesson' = it, so use 'does' in the question."},
+  {section:"Grammar", q:"Where ______ she live?", opts:["do","does","is","are"], correct:1, exp:"'she' takes 'does' in present simple questions."},
+  {section:"Grammar", q:"Choose the correct short answer: Does he play tennis? — No, he ______.", opts:["don't","doesn't","not","isn't"], correct:1, exp:"Short negative answers with 'does' use 'doesn't'."},
+
+  // ---- Grammar: Prepositions of time (11-15) ----
+  {section:"Grammar", q:"School starts ______ September.", opts:["in","on","at","by"], correct:0, exp:"Use 'in' with months."},
+  {section:"Grammar", q:"We have PE ______ Mondays.", opts:["in","on","at","by"], correct:1, exp:"Use 'on' with days of the week."},
+  {section:"Grammar", q:"I wake up ______ 6.30 am.", opts:["in","on","at","by"], correct:2, exp:"Use 'at' with clock times."},
+  {section:"Grammar", q:"My birthday is ______ 2011.", opts:["in","on","at","by"], correct:0, exp:"Use 'in' with years."},
+  {section:"Grammar", q:"We don't go to school ______ the weekend.", opts:["in","on","at","by"], correct:2, exp:"'at the weekend' is a fixed time expression."},
+
+  // ---- Grammar: Adverbs of frequency (16-20) ----
+  {section:"Grammar", q:"Which sentence has the adverb in the correct position?", opts:["I brush always my teeth.","I always brush my teeth.","Always I brush my teeth.","I brush my teeth always."], correct:1, exp:"Adverbs of frequency go before the main verb."},
+  {section:"Grammar", q:"Choose the correct sentence.", opts:["She never is late.","She is never late.","Never she is late.","She is late never."], correct:1, exp:"With the verb 'be', the adverb goes AFTER it."},
+  {section:"Grammar", q:"Which adverb means 0%?", opts:["hardly ever","sometimes","never","often"], correct:2, exp:"'Never' = 0% frequency."},
+  {section:"Grammar", q:"Which adverb means 100%?", opts:["usually","often","always","sometimes"], correct:2, exp:"'Always' = 100% frequency."},
+  {section:"Grammar", q:"Put in order: 'goes / He / hardly ever / to the gym'", opts:["He hardly ever goes to the gym.","Hardly ever he goes to the gym.","He goes hardly ever to the gym.","Goes he hardly ever to the gym."], correct:0, exp:"Subject + adverb + main verb: He hardly ever goes..."},
+
+  // ---- Vocabulary (21-27) ----
+  {section:"Vocabulary", q:"What do you call the meal you eat in the morning?", opts:["lunch","dinner","breakfast","snack"], correct:2, exp:"'Breakfast' is the morning meal."},
+  {section:"Vocabulary", q:"Which activity is a 'free-time activity'?", opts:["do homework","go to school","hang out with friends","wake up"], correct:2, exp:"Hanging out with friends happens in free time, not as a daily routine task."},
+  {section:"Vocabulary", q:"Where do you go to watch a film?", opts:["library","cinema","museum","stadium"], correct:1, exp:"A cinema is where films are shown."},
+  {section:"Vocabulary", q:"Where do you go to see historical objects and art?", opts:["museum","stadium","park","gym"], correct:0, exp:"A museum displays historical and cultural objects."},
+  {section:"Vocabulary", q:"Which place is used for sports competitions?", opts:["library","stadium","café","shopping centre"], correct:1, exp:"A stadium hosts sports events."},
+  {section:"Vocabulary", q:"'Chat online' is an example of a...", opts:["everyday routine","free-time activity","place in town","school subject"], correct:1, exp:"Chatting online is something you do in your free time."},
+  {section:"Vocabulary", q:"Complete: I usually ______ my teeth before bed.", opts:["brush","wash","clean","do"], correct:0, exp:"The correct collocation is 'brush your teeth'."},
+
+  // ---- Reading (28-30) ----
+  {section:"Reading", q:passage + "<br><br><b>Q: What time does school usually begin in Australia?</b>", opts:["8 am","9 am","10 am","3.30 pm"], correct:1, exp:"The passage says the school day 'usually begins at about 9 am'."},
+  {section:"Reading", q:"Based on the passage, why is swimming popular at school?", opts:["Because it's cheap","Because the weather is warm","Because it's compulsory","Because there are no other sports"], correct:1, exp:"The text says swimming is popular 'because the weather is warm'."},
+  {section:"Reading", q:"When does the school year in Australia finish?", opts:["June","September","December","March"], correct:2, exp:"The passage states the school year 'finishes in December'."},
+];
+
+let score = 0;
+const answered = new Array(questions.length).fill(false);
+
+function renderQuiz(){
+  const container = document.getElementById("quiz");
+  container.innerHTML = "";
+  questions.forEach((item, qi) => {
+    const card = document.createElement("div");
+    card.className = "qcard";
+
+    let html = `<div class="qsection">${item.section} · Question ${qi+1}</div>`;
+    html += `<div class="qhead">${item.q}</div>`;
+    html += `<div id="opts-${qi}">`;
+    item.opts.forEach((opt, oi) => {
+      html += `<button class="opt" id="opt-${qi}-${oi}" onclick="selectAnswer(${qi}, ${oi})">${String.fromCharCode(65+oi)}. ${opt}</button>`;
+    });
+    html += `</div>`;
+    html += `<div class="explain" id="exp-${qi}"><b>Explanation:</b> ${item.exp}</div>`;
+
+    card.innerHTML = html;
+    container.appendChild(card);
+  });
+}
+
+function selectAnswer(qi, oi){
+  if (answered[qi]) return;
+  answered[qi] = true;
+  const item = questions[qi];
+  const isCorrect = oi === item.correct;
+  if (isCorrect) score++;
+
+  for (let i = 0; i < item.opts.length; i++){
+    const btn = document.getElementById(`opt-${qi}-${i}`);
+    btn.classList.add("locked");
+    if (i === item.correct) btn.classList.add("correct");
+    else if (i === oi) btn.classList.add("incorrect");
+  }
+  document.getElementById(`exp-${qi}`).classList.add("show");
+  updateScore();
+}
+
+function updateScore(){
+  document.getElementById("scoreLabel").textContent = `Score: ${score} / ${questions.length}`;
+  const doneCount = answered.filter(Boolean).length;
+  if (doneCount === questions.length){
+    const box = document.getElementById("finalBox");
+    const pct = Math.round(score/questions.length*100);
+    let msg = "Keep practising!";
+    if (pct >= 90) msg = "Excellent work! 🌟";
+    else if (pct >= 70) msg = "Good job! 👍";
+    else if (pct >= 50) msg = "Nice try — review the explanations above.";
+    box.style.display = "block";
+    box.textContent = `Final Score: ${score} / ${questions.length} (${pct}%) — ${msg}`;
+  }
+}
+
+function resetQuiz(){
+  score = 0;
+  for (let i = 0; i < answered.length; i++) answered[i] = false;
+  document.getElementById("finalBox").style.display = "none";
+  renderQuiz();
+  updateScore();
+}
+
+renderQuiz();
+updateScore();
+</script>
+
+</body>
+</html>
