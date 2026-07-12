@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>แบบทดสอบ คำพ้อง</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0D1B2A; --navy2:#16273D; --gold:#C9A227; --gold-light:#E7CE7A;
+    --cream:#F6F1E4; --ink:#1A1A1A; --grey:#6B6B6B; --green:#2E7D32; --red:#B3261E;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; font-family:'Sarabun',sans-serif; background:var(--navy); color:var(--ink); min-height:100vh;}
+  .wrap{max-width:760px;margin:0 auto;padding:28px 18px 60px;}
+  header{text-align:center;color:var(--cream);margin-bottom:18px;}
+  header h1{font-size:22px;font-weight:800;margin:0 0 4px;color:var(--gold-light);}
+  header p{font-size:13px;margin:0;color:#B9C2CE;}
+
+  .qcount{text-align:center;color:var(--gold-light);font-size:13px;font-weight:600;margin-bottom:10px;}
+  .dots{display:flex;justify-content:center;gap:4px;flex-wrap:wrap;margin-bottom:22px;max-width:640px;margin-left:auto;margin-right:auto;}
+  .dot{width:10px;height:10px;border-radius:50%;background:#2A3B4E;transition:.2s;}
+  .dot.done{background:var(--gold);}
+  .dot.current{background:var(--gold-light);transform:scale(1.3);}
+
+  .card{
+    background:var(--cream); border-radius:10px; padding:24px 22px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35); border:1px solid #E4DCC4;
+  }
+  .cat{
+    display:inline-block; font-size:11px; font-weight:700; letter-spacing:.03em;
+    color:var(--navy); background:var(--gold-light); padding:3px 10px; border-radius:20px; margin-bottom:12px;
+  }
+  .qtext{font-size:16px;font-weight:700;line-height:1.6;margin:0 0 16px;color:var(--navy);}
+  .choices{display:flex;flex-direction:column;gap:9px;}
+  .choice{
+    text-align:left; padding:11px 14px; border:1.5px solid #D8CFB0; background:#FFFEF9;
+    border-radius:7px; font-family:'Sarabun',sans-serif; font-size:14.5px; cursor:pointer;
+    transition:.15s; color:var(--ink);
+  }
+  .choice:hover:not(.locked){border-color:var(--gold); background:#FBF3DD;}
+  .choice.correct{background:#E5F3E6;border-color:var(--green);color:var(--green);font-weight:700;}
+  .choice.wrong{background:#FBE7E6;border-color:var(--red);color:var(--red);font-weight:700;}
+  .choice.locked{cursor:default;}
+
+  .explain{
+    margin-top:14px; padding:12px 14px; background:#F0EAD6; border-left:4px solid var(--gold);
+    border-radius:4px; font-size:13.5px; line-height:1.6; display:none; color:#3A3120;
+  }
+  .explain.show{display:block;}
+
+  .nav{display:flex;justify-content:space-between;align-items:center;margin-top:20px;}
+  .btn{font-family:'Sarabun',sans-serif; font-weight:700; font-size:14px; padding:10px 20px; border-radius:7px; border:none; cursor:pointer; transition:.15s;}
+  .btn-primary{background:var(--gold);color:var(--navy);}
+  .btn-primary:hover{background:var(--gold-light);}
+  .btn-primary:disabled{background:#4A4636;color:#8a8570;cursor:not-allowed;}
+  .btn-back{background:rgba(201,162,39,.16);color:var(--gold-light);border:2px solid var(--gold);}
+  .btn-back:hover{background:rgba(201,162,39,.3);}
+  .btn-back:disabled{opacity:.35;cursor:not-allowed;border-color:#445569;color:#8a94a3;background:transparent;}
+
+  .result{text-align:center;color:var(--cream);}
+  .result .score{font-size:52px;font-weight:800;color:var(--gold-light);margin:8px 0;}
+  .result .sub{color:#B9C2CE;font-size:14px;margin-bottom:20px;}
+  .breakdown{background:var(--cream);border-radius:10px;padding:18px 20px;text-align:left;color:var(--navy);margin-top:10px;}
+  .breakdown h3{margin:0 0 10px;font-size:14px;color:var(--navy);}
+  .breakdown .row{display:flex;justify-content:space-between;font-size:13.5px;padding:5px 0;border-bottom:1px dashed #D8CFB0;}
+  .breakdown .row:last-child{border-bottom:none;}
+  .restart{margin-top:22px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🔤 แบบทดสอบ คำพ้อง</h1>
+    <p>คำพ้องรูป · คำพ้องเสียง · คำพ้องรูปพ้องเสียง · คำพ้องความ | 40 ข้อ พร้อมเฉลย</p>
+  </header>
+
+  <div id="quizArea">
+    <div class="qcount" id="qcount">ข้อที่ 1 / 40</div>
+    <div class="dots" id="dots"></div>
+
+    <div class="card">
+      <div class="cat" id="qcat">หมวดหมู่</div>
+      <p class="qtext" id="qtext">คำถาม</p>
+      <div class="choices" id="choices"></div>
+      <div class="explain" id="explain"></div>
+      <div class="nav">
+        <button class="btn btn-back" id="backBtn">← ย้อนกลับ</button>
+        <button class="btn btn-primary" id="nextBtn" disabled>ข้อถัดไป →</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="resultArea" style="display:none;">
+    <div class="result">
+      <p>คุณทำแบบทดสอบเสร็จแล้ว!</p>
+      <div class="score" id="scoreText">0/40</div>
+      <div class="sub" id="scoreMsg"></div>
+      <div class="breakdown" id="breakdown"></div>
+      <button class="btn btn-primary restart" id="restartBtn">ทำแบบทดสอบอีกครั้ง</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = [
+{c:"นิยาม",q:"คำพ้องรูป คืออะไร?",ch:["เขียนเหมือนกัน อ่านต่างกัน ความหมายต่างกัน","อ่านเหมือนกัน เขียนต่างกัน ความหมายต่างกัน","เขียนและอ่านเหมือนกัน ความหมายต่างกัน","ความหมายเหมือนกัน เขียนและอ่านต่างกัน"],a:0,e:"คำพ้องรูป คือคำที่มีรูปเขียนเหมือนกันทุกประการ แต่อ่านออกเสียงต่างกัน และมีความหมายต่างกัน"},
+{c:"นิยาม",q:"คำพ้องเสียง คืออะไร?",ch:["เขียนเหมือนกัน อ่านต่างกัน ความหมายต่างกัน","อ่านเหมือนกัน เขียนต่างกัน ความหมายต่างกัน","เขียนและอ่านเหมือนกัน ความหมายต่างกัน","ความหมายเหมือนกัน เขียนและอ่านต่างกัน"],a:1,e:"คำพ้องเสียง คือคำที่อ่านออกเสียงเหมือนกัน แต่มีรูปเขียนต่างกัน และมีความหมายต่างกัน"},
+{c:"นิยาม",q:"คำพ้องรูปพ้องเสียง คืออะไร?",ch:["เขียนเหมือนกัน อ่านต่างกัน ความหมายต่างกัน","อ่านเหมือนกัน เขียนต่างกัน ความหมายต่างกัน","เขียนและอ่านเหมือนกัน ความหมายต่างกัน","ความหมายเหมือนกัน เขียนและอ่านต่างกัน"],a:2,e:"คำพ้องรูปพ้องเสียง คือคำที่มีรูปเขียนและอ่านออกเสียงเหมือนกันทุกประการ แต่มีความหมายต่างกัน"},
+{c:"นิยาม",q:"คำพ้องความ คืออะไร?",ch:["เขียนเหมือนกัน อ่านต่างกัน ความหมายต่างกัน","อ่านเหมือนกัน เขียนต่างกัน ความหมายต่างกัน","เขียนและอ่านเหมือนกัน ความหมายต่างกัน","ความหมายเหมือนกัน แต่เขียนและอ่านต่างกัน"],a:3,e:"คำพ้องความ คือคำที่มีความหมายเหมือนกัน แต่มีรูปเขียนและเสียงอ่านต่างกัน"},
+{c:"คำพ้องรูป",q:"'เขมา' ในคำว่า 'โกฐเขมา' อ่านว่าอย่างไร?",ch:["โกด-ขะ-เหมา","เข-มา-พิ-ระ-ตา-ราม","เข-มา","ขะ-เหมา"],a:0,e:"'เขมา' ในคำว่า 'โกฐเขมา' อ่านว่า /โกด-ขะ-เหมา/ หมายถึงชื่อเรียกเหง้าและรากแห้งของไม้ล้มลุกที่ใช้ทำยาสมุนไพร"},
+{c:"คำพ้องรูป",q:"'เขมา' ในคำว่า 'เขมาภิรตาราม' อ่านว่าอย่างไร?",ch:["โกด-ขะ-เหมา","เข-มา-พิ-ระ-ตา-ราม","ขะ-เหมา","เข-มา-ราม"],a:1,e:"'เขมา' ในคำว่า 'เขมาภิรตาราม' (ชื่อวัด) อ่านว่า /เข-มา-พิ-ระ-ตา-ราม/ คำว่า 'เขมา' นี้หมายถึงความสุขสบาย ความพ้นภัย"},
+{c:"คำพ้องรูป",q:"คำว่า 'เขมา' ในตัวอย่างทั้งสองคำข้างต้น จัดเป็นคำพ้องประเภทใด?",ch:["คำพ้องรูป","คำพ้องเสียง","คำพ้องรูปพ้องเสียง","คำพ้องความ"],a:0,e:"ทั้งสองคำเขียนเหมือนกันว่า 'เขมา' แต่อ่านออกเสียงต่างกันและความหมายต่างกัน จึงเป็นคำพ้องรูป"},
+{c:"คำพ้องรูป",q:"'ตนุ' อ่านว่า ตะ-นุ หมายถึงอะไร?",ch:["ตัว ตน ฉัน ข้าพเจ้า","ชื่อเต่าทะเลชนิดหนึ่ง","ชื่อไม้น้ำ","เงิน"],a:0,e:"'ตนุ' อ่านว่า /ตะ-นุ/ หมายถึง ตัว ตน ฉัน ข้าพเจ้า"},
+{c:"คำพ้องรูป",q:"'ตนุ' อ่านว่า ตะ-หนุ หมายถึงอะไร?",ch:["ตัว ตน ฉัน ข้าพเจ้า","ชื่อเต่าทะเลชนิดหนึ่ง","ชื่อไม้น้ำ","เงิน"],a:1,e:"'ตนุ' อ่านว่า /ตะ-หนุ/ หมายถึง ชื่อเต่าทะเลชนิดหนึ่ง"},
+{c:"คำพ้องรูป",q:"'ปรัก' (อ่าน ปฺรัก ไม่ประวิสรรชนีย์) หมายถึงอะไร?",ch:["เงิน","หัก","ทอง","แตก"],a:0,e:"'ปรัก' อ่านว่า /ปฺรัก/ หมายถึง เงิน"},
+{c:"คำพ้องรูป",q:"'ปรัก' อ่านว่า ปะ-หรัก หมายถึงอะไร?",ch:["เงิน","หัก","ทอง","แตก"],a:1,e:"'ปรัก' อ่านว่า /ปะ-หฺรัก/ หมายถึง หัก"},
+{c:"คำพ้องรูป",q:"'พยาธิ' อ่านว่า พะ-ยา-ทิ หมายถึงอะไร?",ch:["ความเจ็บไข้","ชื่อสัตว์ไม่มีกระดูกสันหลัง","ชื่อโรคผิวหนัง","ยารักษาโรค"],a:0,e:"'พยาธิ' อ่านว่า /พะ-ยา-ทิ/ หมายถึง ความเจ็บไข้"},
+{c:"คำพ้องรูป",q:"'พยาธิ' อ่านว่า พะ-ยาด หมายถึงอะไร?",ch:["ความเจ็บไข้","ชื่อสัตว์ไม่มีกระดูกสันหลังที่ดูดเลือด","ชื่อโรคผิวหนัง","ยารักษาโรค"],a:1,e:"'พยาธิ' อ่านว่า /พะ-ยาด/ หมายถึง ชื่อสัตว์ไม่มีกระดูกสันหลังซึ่งอาศัยดูดกินเลือดในมนุษย์และสัตว์"},
+{c:"คำพ้องรูป",q:"'เพลา' อ่านว่า เพ-ลา หมายถึงอะไร?",ch:["กาล คราว เวลา","แกนสำหรับให้ล้อหมุน","ชื่อเครื่องมือช่าง","ส่วนหนึ่งของรถ"],a:0,e:"'เพลา' อ่านว่า /เพ-ลา/ หมายถึง กาล คราว เวลา"},
+{c:"คำพ้องรูป",q:"'เพลา' อ่านว่า เพฺลา หมายถึงอะไร?",ch:["กาล คราว เวลา","แกนสำหรับให้ล้อหรือใบจักรหมุน","ชื่อเครื่องมือช่าง","ช่วงเวลาพักผ่อน"],a:1,e:"'เพลา' อ่านว่า /เพฺลา/ หมายถึง แกนสำหรับให้ล้อหรือใบจักรหมุน"},
+{c:"คำพ้องเสียง",q:"คำว่า 'กาล กาญจน์ กานต์ การ การณ์' ทั้งหมดนี้ล้วนอ่านออกเสียงว่าอะไร?",ch:["กาน","กาญจน์","การ","กา"],a:0,e:"คำเหล่านี้ล้วนอ่านออกเสียงว่า /กาน/ เหมือนกัน แต่เขียนต่างกันและมีความหมายต่างกัน จึงเป็นคำพ้องเสียง"},
+{c:"คำพ้องเสียง",q:"'กาญจน์' หมายถึงอะไร?",ch:["ทอง","เวลา คราว","เป็นที่รัก","เหตุ มูล"],a:0,e:"'กาญจน์' อ่านว่า /กาน/ หมายถึง ทอง"},
+{c:"คำพ้องเสียง",q:"'กานต์' หมายถึงอะไร?",ch:["ทอง","เวลา คราว","เป็นที่รัก","เหตุ มูล"],a:2,e:"'กานต์' อ่านว่า /กาน/ หมายถึง เป็นที่รัก เช่น จันทรกานต์ = เป็นที่รักของพระจันทร์"},
+{c:"คำพ้องเสียง",q:"'การณ์' หมายถึงอะไร?",ch:["ทอง","งาน สิ่งที่ทำ","เป็นที่รัก","เหตุ มูล เช่น รู้เท่าไม่ถึงการณ์"],a:3,e:"'การณ์' อ่านว่า /กาน/ หมายถึง เหตุ มูล เช่น 'รู้เท่าไม่ถึงการณ์'"},
+{c:"คำพ้องเสียง",q:"'กาฬ' หมายถึงอะไร?",ch:["รอยดำ/แดงบนร่างกายคนตายแล้ว","บทกลอนโบราณ","การตัดกิ่งไม้เพื่อให้แตกใหม่","งานที่ทำ"],a:0,e:"'กาฬ' อ่านว่า /กาน/ หมายถึง รอยดำหรือแดงที่ผุดตามร่างกายคนเมื่อตายแล้ว"},
+{c:"คำพ้องเสียง",q:"คำว่า 'จัณฑ์ จัน จันทน์ จันทร์' ทั้งหมดนี้ล้วนอ่านออกเสียงว่าอะไร?",ch:["จัน","จันท์","จันทร์","จัณฑ์"],a:0,e:"คำเหล่านี้ล้วนอ่านออกเสียงว่า /จัน/ เหมือนกัน แต่เขียนต่างกันและความหมายต่างกัน"},
+{c:"คำพ้องเสียง",q:"'จัณฑ์' หมายถึงอะไร?",ch:["ดุร้าย หยาบช้า (ราชาศัพท์ใช้เรียกสุรา)","ชื่อต้นไม้ผลสุกสีเหลือง","ดวงเดือน","พรรณไม้ที่มีเนื้อไม้หอม"],a:0,e:"'จัณฑ์' อ่านว่า /จัน/ หมายถึง ดุร้าย หยาบช้า เกรี้ยวกราด ฉุนเฉียว และเป็นคำราชาศัพท์ใช้เรียกสุราว่า 'น้ำจัณฑ์'"},
+{c:"คำพ้องเสียง",q:"'จันทน์' หมายถึงอะไร?",ch:["ดุร้าย หยาบช้า","ชื่อต้นไม้ขนาดใหญ่ผลสุกสีเหลืองกินได้","ดวงเดือน วันที่สองของสัปดาห์","พรรณไม้ที่มีเนื้อไม้ ดอก หรือผลหอม ใช้ทำยา"],a:3,e:"'จันทน์' อ่านว่า /จัน/ หมายถึง พรรณไม้บางชนิดที่มีเนื้อไม้ ดอก หรือผลหอม ใช้ทำยาและปรุงเครื่องหอม"},
+{c:"คำพ้องเสียง",q:"คำว่า 'ศาสตร์ ศาสน์ สารท สาด' ทั้งหมดนี้ล้วนอ่านออกเสียงว่าอะไร?",ch:["สาด","ศาสตร์","สาน","สาน-ตะ"],a:0,e:"คำเหล่านี้ล้วนอ่านออกเสียงว่า /สาด/ เหมือนกัน แต่เขียนต่างกันและความหมายต่างกัน"},
+{c:"คำพ้องเสียง",q:"'สารท' หมายถึงอะไร?",ch:["ความรู้","ศาสนา","เทศกาลทำบุญในวันสิ้นเดือน 10","เสื่อ"],a:2,e:"'สารท' อ่านว่า /สาด/ หมายถึง เทศกาลทำบุญในวันสิ้นเดือน 10 โดยนำพืชพรรณธัญญาหารแรกเก็บเกี่ยวมาปรุงเป็นข้าวทิพย์ถวายพระสงฆ์"},
+{c:"คำพ้องเสียง",q:"คำกลุ่ม 'กาน จัน พิด เวด สาด' ในบทเรียนนี้ล้วนจัดเป็นคำพ้องประเภทใด?",ch:["คำพ้องรูป","คำพ้องเสียง","คำพ้องรูปพ้องเสียง","คำพ้องความ"],a:1,e:"คำเหล่านี้เป็นชุดคำที่อ่านออกเสียงเหมือนกันแต่เขียนต่างกันและความหมายต่างกัน จึงเป็นคำพ้องเสียง"},
+{c:"คำพ้องเสียง",q:"'เวศย์' หมายถึงอะไร?",ch:["บ้าน เรือน","แพศย์ คนวรรณะพ่อค้า","หมอรักษาโรค","พึงรู้ ควรรู้"],a:1,e:"'เวศย์' อ่านว่า /เวด/ หมายถึง แพศย์ คนในวรรณะที่ 3 แห่งอินเดีย คือพ่อค้า"},
+{c:"คำพ้องรูปพ้องเสียง",q:"'อย่าสลัดน้ำลงไปในจานสลัด' คำว่า 'สลัด' ทั้งสองคำมีความสัมพันธ์แบบใด?",ch:["คำพ้องรูป (อ่านต่างกัน)","คำพ้องเสียง (เขียนต่างกัน)","คำพ้องรูปพ้องเสียง (ความหมายต่างกัน)","คำพ้องความ (ความหมายเหมือนกัน)"],a:2,e:"'สลัด' ทั้งสองคำเขียนเหมือนกัน อ่านเหมือนกัน (/สะ-หฺลัด/) แต่ความหมายต่างกัน (ทำให้หลุด vs ชื่ออาหาร) จึงเป็นคำพ้องรูปพ้องเสียง"},
+{c:"คำพ้องรูปพ้องเสียง",q:"'กัน' ที่แปลว่า 'คำแทนตัวผู้พูดเพศชาย' กับ 'กัน' ที่แปลว่า 'กีดขวางไม่ให้เข้ามา' จัดเป็นคำพ้องประเภทใด?",ch:["คำพ้องรูป","คำพ้องเสียง","คำพ้องรูปพ้องเสียง","คำพ้องความ"],a:2,e:"ทั้งสองคำเขียนและอ่านเหมือนกันทุกประการ (กัน) แต่ความหมายต่างกัน จึงเป็นคำพ้องรูปพ้องเสียง"},
+{c:"คำพ้องรูปพ้องเสียง",q:"'ขัน' มีความหมายใดต่อไปนี้บ้าง?",ch:["ภาชนะตักน้ำ / ทำให้แน่น / อาการร้องของไก่ / หัวเราะ","เฉพาะภาชนะตักน้ำเท่านั้น","เฉพาะอาการร้องของไก่เท่านั้น","ชื่อเครื่องดนตรี"],a:0,e:"'ขัน' เป็นคำพ้องรูปพ้องเสียงที่มีหลายความหมาย ได้แก่ ภาชนะสำหรับตักน้ำ, ทำให้แน่นด้วยการหมุน (ขันเกลียว), อาการร้องของไก่/นก, และอาการอยากหัวเราะ"},
+{c:"คำพ้องรูปพ้องเสียง",q:"'ต่อ' ในบทเรียนมีความหมายใดบ้าง?",ch:["ชื่อแมลงมีพิษ และ เพิ่มให้ยืดออกไป","เฉพาะชื่อแมลงเท่านั้น","เฉพาะการเพิ่มความยาวเท่านั้น","ชื่อเครื่องมือจับปลา"],a:0,e:"'ต่อ' เป็นคำพ้องรูปพ้องเสียง หมายถึงได้ทั้งชื่อแมลงชนิดหนึ่งที่มีเหล็กในมีพิษ และ การเพิ่มให้ยืดออกไป"},
+{c:"คำพ้องรูปพ้องเสียง",q:"'ลอบ' มีความหมายใดบ้าง?",ch:["เครื่องมือดักปลา/กุ้ง และ แอบทำโดยไม่ให้ผู้อื่นรู้เห็น","เฉพาะเครื่องมือดักปลาเท่านั้น","เฉพาะการแอบทำเท่านั้น","ชื่อพืชน้ำชนิดหนึ่ง"],a:0,e:"'ลอบ' เป็นคำพ้องรูปพ้องเสียง หมายถึงทั้งชื่อเครื่องสานสำหรับดักปลาดักกุ้ง และ การแอบทำโดยไม่ให้ผู้อื่นรู้เห็น"},
+{c:"คำพ้องความ",q:"คำว่า 'บุปผา บุษบา บุหงา ผกา มาลี สุมาลี' ทั้งหมดนี้ล้วนหมายถึงอะไร?",ch:["ดอกไม้","ป่า","พระจันทร์","แผ่นดิน"],a:0,e:"คำเหล่านี้ล้วนมีความหมายว่า 'ดอกไม้' แต่เขียนและอ่านต่างกันทั้งหมด จึงเป็นคำพ้องความ"},
+{c:"คำพ้องความ",q:"คำว่า 'ชัฏ ดง เถื่อน พงพี ไพร พนา อรัญ' ทั้งหมดนี้ล้วนหมายถึงอะไร?",ch:["ดอกไม้","ป่า","พระจันทร์","แผ่นดิน"],a:1,e:"คำเหล่านี้ล้วนมีความหมายว่า 'ป่า' เป็นตัวอย่างของคำพ้องความ"},
+{c:"คำพ้องความ",q:"คำว่า 'แถง นิศานาถ บุหลัน รัชนีกร ศศิธร สิตางศุ์' ทั้งหมดนี้ล้วนหมายถึงอะไร?",ch:["ดอกไม้","ป่า","พระจันทร์","แผ่นดิน"],a:2,e:"คำเหล่านี้ล้วนมีความหมายว่า 'พระจันทร์' เป็นตัวอย่างของคำพ้องความ"},
+{c:"คำพ้องความ",q:"คำว่า 'ธรณี ธาตรี ปัถพี พสุนธรา พสุมดี ภูวดล' ทั้งหมดนี้ล้วนหมายถึงอะไร?",ch:["ดอกไม้","ป่า","พระจันทร์","แผ่นดิน"],a:3,e:"คำเหล่านี้ล้วนมีความหมายว่า 'แผ่นดิน' เป็นตัวอย่างของคำพ้องความ"},
+{c:"คำพ้องความ",q:"กลุ่มคำในลักษณะ 'ดอกไม้ ป่า พระจันทร์ แผ่นดิน' ที่มีหลายคำแทนความหมายเดียว จัดเป็นคำพ้องประเภทใด?",ch:["คำพ้องรูป","คำพ้องเสียง","คำพ้องรูปพ้องเสียง","คำพ้องความ"],a:3,e:"กลุ่มคำเหล่านี้มีความหมายเหมือนกันแต่รูปเขียนและเสียงอ่านต่างกันทั้งหมด จึงเป็นคำพ้องความ"},
+{c:"คำพ้องความ",q:"'เชยผกาโกสุมปทุมทอง' คำว่า 'ผกา' และ 'โกสุม' มีความสัมพันธ์แบบใด?",ch:["คำพ้องรูป","คำพ้องเสียง","คำพ้องรูปพ้องเสียง","คำพ้องความ (ทั้งคู่หมายถึงดอกไม้)"],a:3,e:"'ผกา' (อ่านว่า ผะ-กา) และ 'โกสุม' (อ่านว่า โก-สุม) เขียนและอ่านต่างกัน แต่มีความหมายเหมือนกันคือ 'ดอกไม้' จึงเป็นคำพ้องความ"},
+{c:"สรุปรวม",q:"เพราะเหตุใดภาษาไทย (โดยเฉพาะในวรรณคดี) จึงมีคำพ้องความจำนวนมาก?",ch:["เพื่อความไพเราะและหลีกเลี่ยงคำซ้ำ โดยยืมคำจากบาลี-สันสกฤตมาปะปน","เพราะคนไทยชอบใช้คำยาก ๆ โดยไม่มีเหตุผล","เพราะเป็นข้อบังคับทางไวยากรณ์","เพราะคำไทยแท้มีไม่เพียงพอ"],a:0,e:"คำพ้องความจำนวนมากในวรรณคดีไทยมาจากการยืมคำบาลี-สันสกฤตและคำในภาษาอื่นมาใช้ปะปนกับคำไทยแท้ เพื่อสร้างความไพเราะของถ้อยคำและเลี่ยงการใช้คำซ้ำ"},
+{c:"สรุปรวม",q:"การจะเข้าใจความหมายที่ถูกต้องของคำพ้อง (โดยเฉพาะคำพ้องรูปและคำพ้องรูปพ้องเสียง) ต้องอาศัยสิ่งใดเป็นหลัก?",ch:["บริบทของประโยคหรือข้อความแวดล้อม","การท่องจำตัวอักษรอย่างเดียว","การเดาความหมายจากความคุ้นเคย","การนับจำนวนพยางค์"],a:0,e:"เนื่องจากคำพ้องมีรูปเขียนหรือเสียงอ่านที่เหมือนกัน การตีความหมายที่ถูกต้องจึงต้องพิจารณาจากบริบทของประโยคหรือข้อความแวดล้อมเป็นสำคัญ"}
+];
+
+let current = 0, score = 0, answered = new Array(QUESTIONS.length).fill(null);
+const catStats = {};
+QUESTIONS.forEach(q=>{ if(!catStats[q.c]) catStats[q.c]={correct:0,total:0}; catStats[q.c].total++; });
+
+const qcount=document.getElementById('qcount'), qcat=document.getElementById('qcat'),
+      qtext=document.getElementById('qtext'), choicesEl=document.getElementById('choices'),
+      explainEl=document.getElementById('explain'), nextBtn=document.getElementById('nextBtn'),
+      backBtn=document.getElementById('backBtn'), dotsEl=document.getElementById('dots');
+
+function buildDots(){
+  dotsEl.innerHTML = '';
+  QUESTIONS.forEach((_,i)=>{
+    const d = document.createElement('div');
+    d.className = 'dot';
+    d.id = 'dot'+i;
+    dotsEl.appendChild(d);
+  });
+}
+buildDots();
+
+function updateDots(){
+  QUESTIONS.forEach((_,i)=>{
+    const d = document.getElementById('dot'+i);
+    d.className = 'dot' + (i<current?' done':'') + (i===current?' current':'');
+  });
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[current];
+  qcount.textContent = `ข้อที่ ${current+1} / ${QUESTIONS.length}`;
+  qcat.textContent = q.c;
+  qtext.textContent = q.q;
+  choicesEl.innerHTML = '';
+  explainEl.classList.remove('show');
+  explainEl.textContent = '';
+  nextBtn.disabled = true;
+  backBtn.disabled = (current === 0);
+
+  q.ch.forEach((choice, idx)=>{
+    const btn = document.createElement('button');
+    btn.className = 'choice';
+    btn.textContent = choice;
+    btn.onclick = ()=> selectAnswer(idx);
+    choicesEl.appendChild(btn);
+  });
+
+  const prevAnswer = answered[current];
+  if(prevAnswer !== null){
+    const isCorrect = prevAnswer === q.a;
+    [...choicesEl.children].forEach((btn,i)=>{
+      btn.classList.add('locked');
+      if(i === q.a) btn.classList.add('correct');
+      else if(i === prevAnswer) btn.classList.add('wrong');
+    });
+    explainEl.textContent = (isCorrect ? '✔ ถูกต้อง! ' : '✘ ไม่ถูกต้อง — ') + q.e;
+    explainEl.classList.add('show');
+    nextBtn.disabled = false;
+  }
+
+  updateDots();
+}
+
+function selectAnswer(idx){
+  if(answered[current] !== null) return;
+  const q = QUESTIONS[current];
+  answered[current] = idx;
+  const isCorrect = idx === q.a;
+  if(isCorrect){ score++; catStats[q.c].correct++; }
+
+  [...choicesEl.children].forEach((btn,i)=>{
+    btn.classList.add('locked');
+    if(i === q.a) btn.classList.add('correct');
+    else if(i === idx) btn.classList.add('wrong');
+  });
+
+  explainEl.textContent = (isCorrect ? '✔ ถูกต้อง! ' : '✘ ไม่ถูกต้อง — ') + q.e;
+  explainEl.classList.add('show');
+  nextBtn.disabled = false;
+}
+
+function nextQuestion(){
+  if(current < QUESTIONS.length-1){ current++; renderQuestion(); }
+  else showResult();
+}
+
+backBtn.onclick = ()=>{ if(current > 0){ current--; renderQuestion(); } };
+nextBtn.onclick = nextQuestion;
+
+function showResult(){
+  document.getElementById('quizArea').style.display='none';
+  const resultArea = document.getElementById('resultArea');
+  resultArea.style.display='block';
+  document.getElementById('scoreText').textContent = `${score} / ${QUESTIONS.length}`;
+  const pct = Math.round(score/QUESTIONS.length*100);
+  let msg = '';
+  if(pct>=90) msg='ยอดเยี่ยมมาก! เข้าใจเรื่องคำพ้องอย่างลึกซึ้ง';
+  else if(pct>=70) msg='ดีมาก! เข้าใจเนื้อหาส่วนใหญ่แล้ว';
+  else if(pct>=50) msg='พอใช้ ลองทบทวนเนื้อหาอีกครั้ง';
+  else msg='ควรกลับไปอ่านเนื้อหาเพิ่มเติม แล้วลองใหม่';
+  document.getElementById('scoreMsg').textContent = `${pct}% — ${msg}`;
+
+  const bd = document.getElementById('breakdown');
+  bd.innerHTML = '<h3>คะแนนแยกตามหมวดหมู่</h3>' +
+    Object.entries(catStats).map(([cat,s])=>
+      `<div class="row"><span>${cat}</span><span>${s.correct} / ${s.total}</span></div>`
+    ).join('');
+}
+
+document.getElementById('restartBtn').onclick = ()=>{
+  current=0; score=0; answered=new Array(QUESTIONS.length).fill(null);
+  Object.values(catStats).forEach(s=>s.correct=0);
+  document.getElementById('resultArea').style.display='none';
+  document.getElementById('quizArea').style.display='block';
+  renderQuestion();
+};
+
+renderQuestion();
+</script>
+</body>
+</html>

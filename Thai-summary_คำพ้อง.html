@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>คำพ้อง — สรุปเนื้อหาพร้อมภาพประกอบ</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0D1B2A; --navy2:#16273D; --gold:#C9A227; --gold-light:#E7CE7A;
+    --cream:#F6F1E4; --ink:#1A1A1A; --grey:#5B5B5B; --line:#E4DCC4;
+    --p1:#C77B93; --p2:#8B7BC7; --p3:#5FA37A; --p4:#4C7BB0;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:'Sarabun',sans-serif; background:var(--cream); color:var(--ink); line-height:1.7;}
+  img{max-width:100%; display:block; object-fit:cover;}
+  .container{max-width:980px; margin:0 auto; padding:0 20px;}
+
+  .hero{
+    position:relative; min-height:44vh; display:flex; align-items:center; justify-content:center; text-align:center;
+    background:linear-gradient(180deg,rgba(13,27,42,.55),rgba(13,27,42,.92)),
+      url('https://commons.wikimedia.org/wiki/Special:FilePath/Pink_roses_in_the_garden.JPG') center/cover no-repeat;
+  }
+  .hero-inner{padding:40px 20px;}
+  .eyebrow{color:var(--gold-light); letter-spacing:.12em; font-size:13px; font-weight:600; text-transform:uppercase;}
+  .hero h1{color:#fff; font-size:clamp(34px,6vw,52px); font-weight:800; margin:10px 0 8px;}
+  .hero p.sub{color:#D7CBAE; font-size:16px; max-width:560px; margin:0 auto;}
+
+  section{padding:56px 0;}
+  .section-label{color:var(--gold); font-weight:700; font-size:13px; letter-spacing:.1em; text-transform:uppercase; margin-bottom:8px;}
+  h2.section-title{font-size:clamp(24px,4vw,32px); font-weight:800; color:var(--navy); margin-bottom:10px;}
+  .lead{color:var(--grey); font-size:15px; max-width:680px; margin-bottom:26px;}
+
+  .matrix{width:100%; border-collapse:collapse; margin-bottom:10px; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 6px 18px rgba(13,27,42,.08);}
+  .matrix th{background:var(--navy); color:var(--gold-light); font-size:13px; padding:12px 10px; text-align:center;}
+  .matrix td{padding:11px 10px; text-align:center; font-size:14px; border-bottom:1px solid var(--line);}
+  .matrix td.name{text-align:left; font-weight:700; color:var(--navy);}
+  .yes{color:#2E7D32; font-weight:700;} .no{color:#B3261E; font-weight:700;}
+
+  .type-block{border-radius:14px; padding:30px 26px; margin-bottom:26px; color:#fff;}
+  .type-block .section-label{color:rgba(255,255,255,.75);}
+  .type-block h2.section-title{color:#fff;}
+  .type-block .lead{color:rgba(255,255,255,.82);}
+  .t1{background:var(--p1);} .t2{background:var(--p2);} .t3{background:var(--p3);} .t4{background:var(--p4);}
+
+  .wtable{width:100%; border-collapse:collapse; background:rgba(255,255,255,.96); border-radius:10px; overflow:hidden; margin-top:14px;}
+  .wtable th{background:rgba(13,27,42,.85); color:#fff; font-size:13px; padding:10px; text-align:left;}
+  .wtable td{padding:10px 12px; font-size:13.5px; color:var(--ink); border-bottom:1px solid #EEE7D3; vertical-align:top;}
+  .wtable tr:last-child td{border-bottom:none;}
+  .word{font-weight:700; color:var(--navy);}
+
+  .example{background:rgba(255,255,255,.92); border-left:4px solid var(--navy); border-radius:6px; padding:12px 14px; margin-top:16px; font-size:13.5px; color:var(--navy);}
+
+  .img-row{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:16px;}
+  .img-row figure{border-radius:10px; overflow:hidden; background:rgba(255,255,255,.15);}
+  .img-row img{height:150px; width:100%;}
+  .img-row figcaption{background:rgba(13,27,42,.7); color:#fff; font-size:12px; padding:6px 10px; text-align:center;}
+
+  .synonym-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin-top:16px;}
+  .syn-card{background:rgba(255,255,255,.95); border-radius:10px; overflow:hidden; color:var(--ink);}
+  .syn-card img{height:120px;}
+  .syn-card .body{padding:12px 14px;}
+  .syn-card .body h4{color:var(--navy); font-size:14px; margin-bottom:6px;}
+  .syn-card .body p{font-size:12.5px; color:var(--grey); line-height:1.6;}
+
+  footer{background:var(--navy); color:#B9C2CE; text-align:center; padding:34px 20px; font-size:13px;}
+  footer strong{color:var(--gold-light);}
+
+  @media (max-width:700px){
+    .img-row{grid-template-columns:1fr;}
+    .matrix{font-size:12px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">หลักภาษาไทย · การสร้างคำ</div>
+    <h1>คำพ้อง</h1>
+    <p class="sub">คำในภาษาไทยที่ "คล้ายกัน" ในบางแง่มุม — เขียนเหมือนกัน อ่านเหมือนกัน หรือความหมายเหมือนกัน — แต่ต่างกันในแง่มุมอื่น</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ตารางสรุปรวม -->
+  <section>
+    <div class="section-label">ภาพรวม</div>
+    <h2 class="section-title">4 ประเภทของคำพ้อง</h2>
+    <p class="lead">คำพ้องแบ่งออกเป็น 4 ประเภท ตามลักษณะที่ "เหมือน" และ "ต่าง" กันระหว่างรูปเขียน เสียงอ่าน และความหมาย</p>
+    <table class="matrix">
+      <tr><th>ประเภท</th><th>รูปเขียน</th><th>เสียงอ่าน</th><th>ความหมาย</th></tr>
+      <tr><td class="name">คำพ้องรูป</td><td class="yes">เหมือนกัน</td><td class="no">ต่างกัน</td><td class="no">ต่างกัน</td></tr>
+      <tr><td class="name">คำพ้องเสียง</td><td class="no">ต่างกัน</td><td class="yes">เหมือนกัน</td><td class="no">ต่างกัน</td></tr>
+      <tr><td class="name">คำพ้องรูปพ้องเสียง</td><td class="yes">เหมือนกัน</td><td class="yes">เหมือนกัน</td><td class="no">ต่างกัน</td></tr>
+      <tr><td class="name">คำพ้องความ</td><td class="no">ต่างกัน</td><td class="no">ต่างกัน</td><td class="yes">เหมือนกัน</td></tr>
+    </table>
+  </section>
+
+  <!-- 1. คำพ้องรูป -->
+  <section>
+    <div class="type-block t1">
+      <div class="section-label">ประเภทที่ 1</div>
+      <h2 class="section-title">คำพ้องรูป (Homograph)</h2>
+      <p class="lead">คำที่มีรูปเขียนเหมือนกัน แต่อ่านออกเสียงต่างกัน และมีความหมายต่างกัน</p>
+      <table class="wtable">
+        <tr><th>คำศัพท์</th><th>คำอ่าน</th><th>ความหมาย</th></tr>
+        <tr><td class="word">ตนุ</td><td>ตะ-นุ</td><td>ตัว ตน ฉัน ข้าพเจ้า</td></tr>
+        <tr><td class="word">ตนุ</td><td>ตะ-หนุ</td><td>ชื่อเต่าทะเลชนิดหนึ่ง</td></tr>
+        <tr><td class="word">ปรัก</td><td>ปฺรัก</td><td>เงิน</td></tr>
+        <tr><td class="word">ปรัก</td><td>ปะ-หฺรัก</td><td>หัก</td></tr>
+        <tr><td class="word">พยาธิ</td><td>พะ-ยา-ทิ</td><td>ความเจ็บไข้</td></tr>
+        <tr><td class="word">พยาธิ</td><td>พะ-ยาด</td><td>ชื่อสัตว์ไม่มีกระดูกสันหลัง ดูดเลือดในมนุษย์และสัตว์</td></tr>
+        <tr><td class="word">เพลา</td><td>เพ-ลา</td><td>กาล คราว เวลา</td></tr>
+        <tr><td class="word">เพลา</td><td>เพฺลา</td><td>แกนสำหรับให้ล้อหรือใบจักรหมุน</td></tr>
+        <tr><td class="word">แหน</td><td>แหนุ</td><td>ใช้คู่กับคำอื่น เช่น หวงแหน แห่แหน</td></tr>
+        <tr><td class="word">แหน</td><td>แหฺน</td><td>ชื่อไม้น้ำ ใบกลมเล็ก ๆ ลอยตามน้ำนิ่ง</td></tr>
+      </table>
+      <div class="example">ตัวอย่าง: "ฉันจะไปซื้อ<b>โกฐเขมา</b>แถว ๆ <b>วัดเขมา</b>ภิรตาราม" — "เขมา" ทั้งสองคำเขียนเหมือนกัน แต่คำแรกอ่าน /โกด-ขะ-เหมา/ (สมุนไพร) ส่วนคำหลังอ่าน /เข-มา-พิ-ระ-ตา-ราม/ (ความสุขสบาย)</div>
+      <div class="img-row">
+        <figure>
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Green_sea_turtle.JPG" alt="เต่าทะเล ตนุ">
+          <figcaption>"ตนุ" (ตะ-หนุ) = ชื่อเต่าทะเลชนิดหนึ่ง</figcaption>
+        </figure>
+        <figure>
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Common_Duckweed_(Lemna_minor).jpg" alt="แหน ไม้น้ำ">
+          <figcaption>"แหน" (แหฺน) = ชื่อไม้น้ำใบกลมลอยน้ำ</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. คำพ้องเสียง -->
+  <section>
+    <div class="type-block t2">
+      <div class="section-label">ประเภทที่ 2</div>
+      <h2 class="section-title">คำพ้องเสียง (Homophone)</h2>
+      <p class="lead">คำที่อ่านออกเสียงเหมือนกัน แต่มีรูปเขียนต่างกัน และมีความหมายต่างกัน</p>
+      <table class="wtable">
+        <tr><th>อ่านว่า</th><th>คำศัพท์</th><th>ความหมาย</th></tr>
+        <tr><td rowspan="4">กาน</td><td class="word">กาล</td><td>เวลา คราว ครั้ง หน</td></tr>
+        <tr><td class="word">กาญจน์</td><td>ทอง</td></tr>
+        <tr><td class="word">กานต์</td><td>เป็นที่รัก</td></tr>
+        <tr><td class="word">การณ์</td><td>เหตุ มูล เช่น รู้เท่าไม่ถึงการณ์</td></tr>
+        <tr><td rowspan="3">จัน</td><td class="word">จัณฑ์</td><td>ดุร้าย หยาบช้า (ราชาศัพท์เรียกสุรา)</td></tr>
+        <tr><td class="word">จันทน์</td><td>พรรณไม้ที่มีเนื้อไม้ ดอก หรือผลหอม</td></tr>
+        <tr><td class="word">จันทร์</td><td>ดวงเดือน / วันที่ 2 ของสัปดาห์</td></tr>
+        <tr><td rowspan="4">สาด</td><td class="word">ศาสตร์</td><td>ความรู้</td></tr>
+        <tr><td class="word">ศาสน์</td><td>ศาสนา</td></tr>
+        <tr><td class="word">สารท</td><td>เทศกาลทำบุญวันสิ้นเดือน 10</td></tr>
+        <tr><td class="word">สาด</td><td>เสื่อ</td></tr>
+      </table>
+      <div class="example">ตัวอย่าง: "ในอดีตกาล พื้นที่จังหวัด<b>กาญจน</b>บุรีเป็นสมรภูมิรบ" — "กาล" และ "กาญจน์" อ่านเหมือนกัน (/กาน/) แต่เขียนต่างกันและความหมายต่างกัน</div>
+    </div>
+  </section>
+
+  <!-- 3. คำพ้องรูปพ้องเสียง -->
+  <section>
+    <div class="type-block t3">
+      <div class="section-label">ประเภทที่ 3</div>
+      <h2 class="section-title">คำพ้องรูปพ้องเสียง (Homonym)</h2>
+      <p class="lead">คำที่มีรูปเขียนและอ่านออกเสียงเหมือนกันทุกประการ แต่มีความหมายต่างกัน</p>
+      <table class="wtable">
+        <tr><th>คำศัพท์</th><th>ความหมายที่พบได้</th></tr>
+        <tr><td class="word">กัน</td><td>คำแทนตัวผู้พูด (เพศชาย) · กีดขวางไม่ให้เข้า/ออก เช่น กันฝน · โกนให้เสมอกัน เช่น กันคิ้ว</td></tr>
+        <tr><td class="word">ขัน</td><td>ภาชนะตักน้ำ · ทำให้แน่นด้วยการหมุน เช่น ขันเกลียว · อาการร้องของไก่ · รู้สึกอยากหัวเราะ</td></tr>
+        <tr><td class="word">ต่อ</td><td>ชื่อแมลงมีเหล็กใน มีพิษ · เพิ่มให้ยืดออกไป</td></tr>
+        <tr><td class="word">ลอบ</td><td>เครื่องสานดักปลา/กุ้ง · แอบทำโดยไม่ให้ผู้อื่นรู้เห็น</td></tr>
+        <tr><td class="word">สลัด</td><td>ยำแบบตะวันตก · โจรสลัด (โจรปล้นเรือ) · ทำให้สิ่งที่ติดอยู่หลุดไป</td></tr>
+      </table>
+      <div class="example">ตัวอย่าง: "อย่า<b>สลัด</b>น้ำลงไปในจาน<b>สลัด</b>" — คำว่า "สลัด" ทั้งสองคำเขียนและอ่านเหมือนกัน แต่ความหมายต่างกัน (ทำให้หลุด vs ชื่ออาหาร)</div>
+    </div>
+  </section>
+
+  <!-- 4. คำพ้องความ -->
+  <section>
+    <div class="type-block t4">
+      <div class="section-label">ประเภทที่ 4</div>
+      <h2 class="section-title">คำพ้องความ (Synonym)</h2>
+      <p class="lead">คำที่มีความหมายเหมือนกัน แต่มีรูปเขียนและเสียงอ่านต่างกัน — พบมากในวรรณคดีไทยเพื่อความไพเราะและหลีกเลี่ยงคำซ้ำ</p>
+      <div class="synonym-grid">
+        <div class="syn-card">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Pink_roses_in_the_garden.JPG" alt="ดอกไม้">
+          <div class="body"><h4>🌸 ดอกไม้</h4><p>บุปผา, บุษบา, บุหงา, ผกา, มาลี, สุมาลี</p></div>
+        </div>
+        <div class="syn-card">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Thai_rain_forest.jpg" alt="ป่า">
+          <div class="body"><h4>🌳 ป่า</h4><p>ชัฏ, ดง, เถื่อน, พงพี, ไพร, พนา, อรัญ</p></div>
+        </div>
+        <div class="syn-card">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/FullMoon2010.jpg" alt="พระจันทร์">
+          <div class="body"><h4>🌕 พระจันทร์</h4><p>แถง, นิศานาถ, นิศาบดี, บุหลัน, รัชนีกร, ศศิธร, สิตางศุ์</p></div>
+        </div>
+        <div class="syn-card">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Plain_rice_field.jpg" alt="แผ่นดิน">
+          <div class="body"><h4>🌾 แผ่นดิน</h4><p>ธรณี, ธาตรี, ปัถพี, พสุนธรา, พสุมดี, ภูวดล</p></div>
+        </div>
+      </div>
+      <div class="example">ตัวอย่าง: "เชย<b>ผกา</b>โก<b>สุม</b>ปทุมทอง" — "ผกา" (ผะ-กา) และ "โกสุม" (โก-สุม) เขียนและอ่านต่างกัน แต่มีความหมายเหมือนกันคือ "ดอกไม้"</div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  สรุปเนื้อหาเพื่อการศึกษา อ้างอิงจากบทเรียนวิชาภาษาไทย เรื่อง <strong>คำพ้อง</strong><br>
+  ภาพประกอบจาก Wikimedia Commons (Creative Commons License)
+</footer>
+
+</body>
+</html>
