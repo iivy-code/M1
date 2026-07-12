@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 1: Integers — Interactive Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E2761;
+    --navy-dark:#0D1B2A;
+    --slate:#2C3E50;
+    --lightblue:#CADCFC;
+    --bg:#F2F2F2;
+    --text:#1A1A1A;
+    --correct:#1565C0;
+    --correct-bg:#E8F0FE;
+    --wrong-bg:#FBE9E9;
+    --wrong-border:#B3261E;
+    --muted:#5B6472;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:'Sarabun','TH Sarabun New',Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    margin:0;
+    padding:24px 12px 60px;
+    font-size:15px;
+    line-height:1.6;
+  }
+  .container{max-width:760px;margin:0 auto;}
+
+  header{
+    background:var(--navy);
+    color:#fff;
+    padding:22px 26px;
+    border-radius:10px;
+    margin-bottom:16px;
+  }
+  header .eyebrow{
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--lightblue);
+    margin:0 0 6px;
+    font-weight:600;
+  }
+  header h1{margin:0 0 4px;font-size:20px;font-weight:700;}
+  header p{margin:0;font-size:13px;color:var(--lightblue);}
+
+  .set-switch{
+    display:flex;
+    gap:8px;
+    margin-bottom:20px;
+  }
+  .set-btn{
+    flex:1;
+    padding:11px 10px;
+    border-radius:8px;
+    border:1px solid #C7CEDA;
+    background:#fff;
+    color:var(--slate);
+    font-family:'Sarabun',sans-serif;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .set-btn.active{
+    background:var(--navy);
+    color:#fff;
+    border-color:var(--navy);
+  }
+
+  .progress-wrap{margin-bottom:18px;}
+  .progress-bar-bg{
+    height:8px;
+    background:#DDE2EC;
+    border-radius:6px;
+    overflow:hidden;
+    margin-bottom:8px;
+  }
+  .progress-bar-fill{
+    height:100%;
+    width:0%;
+    background:var(--navy);
+    border-radius:6px;
+    transition:width .25s ease;
+  }
+  .progress-labels{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    color:var(--muted);
+  }
+  .score-badge{
+    background:var(--lightblue);
+    color:var(--navy);
+    padding:2px 10px;
+    border-radius:20px;
+    font-weight:600;
+    font-size:12.5px;
+  }
+
+  .card{
+    background:#fff;
+    border-radius:10px;
+    padding:22px 22px 20px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    margin-bottom:16px;
+  }
+  .qtag{
+    display:inline-block;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--navy);
+    background:var(--lightblue);
+    padding:2px 10px;
+    border-radius:20px;
+    font-weight:700;
+    margin-bottom:10px;
+  }
+  .qnum{
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--muted);
+    margin-bottom:6px;
+  }
+  .qtext{
+    font-size:16px;
+    font-weight:600;
+    color:var(--text);
+    margin:0 0 16px;
+    line-height:1.5;
+  }
+
+  .options{display:flex;flex-direction:column;gap:9px;}
+  .option{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    padding:11px 14px;
+    border:1px solid #C7CEDA;
+    border-radius:8px;
+    background:#fff;
+    cursor:pointer;
+    font-size:14.5px;
+    transition:background .12s ease, border-color .12s ease;
+  }
+  .option:hover:not(.locked){border-color:var(--navy);background:#F7F9FD;}
+  .option .letter{font-weight:700;color:var(--navy);min-width:18px;}
+  .option.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);}
+  .option.correct .letter{color:var(--correct);}
+  .option.wrong{background:var(--wrong-bg);border-color:var(--wrong-border);color:var(--wrong-border);}
+  .option.wrong .letter{color:var(--wrong-border);}
+  .option.dim{opacity:.5;}
+  .option.locked{cursor:default;}
+
+  .explain{
+    margin-top:14px;
+    padding:12px 14px;
+    background:#F2F2F2;
+    border-left:3px solid var(--navy);
+    border-radius:0 6px 6px 0;
+    font-size:13.5px;
+    color:var(--slate);
+    display:none;
+  }
+  .explain.show{display:block;}
+  .explain b{color:var(--navy);}
+
+  .nav-row{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .nav-btn{
+    flex:1;
+    font-family:'Sarabun',sans-serif;
+    font-size:14px;
+    font-weight:600;
+    padding:12px 20px;
+    border-radius:8px;
+    border:none;
+    cursor:pointer;
+    background:var(--navy);
+    color:#fff;
+    transition:opacity .15s;
+  }
+  .nav-btn.secondary{
+    background:#fff;
+    color:var(--navy);
+    border:1px solid var(--navy);
+  }
+  .nav-btn:disabled{opacity:.4;cursor:not-allowed;}
+  .nav-btn:hover:not(:disabled){opacity:.88;}
+
+  .results{
+    background:var(--navy-dark);
+    color:#fff;
+    border-radius:10px;
+    padding:32px 28px;
+    text-align:center;
+    display:none;
+  }
+  .results.show{display:block;}
+  .results .tag{
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--lightblue);
+    font-weight:600;
+    margin-bottom:6px;
+  }
+  .results h2{margin:0 0 10px;font-size:20px;}
+  .big-score{font-size:48px;font-weight:700;margin:8px 0 2px;}
+  .score-sub{color:#C9D3E4;font-size:14px;margin-bottom:22px;}
+  .results-breakdown{
+    text-align:left;
+    background:rgba(255,255,255,0.06);
+    border-radius:8px;
+    padding:16px 20px;
+    margin:0 0 22px;
+    font-size:13.5px;
+  }
+  .results-breakdown div{
+    display:flex;
+    justify-content:space-between;
+    padding:5px 0;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+  }
+  .results-breakdown div:last-child{border-bottom:none;}
+  .restart-btn{
+    font-family:'Sarabun',sans-serif;
+    font-size:14px;
+    font-weight:600;
+    padding:12px 30px;
+    border-radius:8px;
+    border:none;
+    background:#fff;
+    color:var(--navy);
+    cursor:pointer;
+  }
+  .restart-btn:hover{opacity:.9;}
+
+  #quizArea.hidden{display:none;}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <p class="eyebrow">Mastering Mathematics · Chapter 1</p>
+    <h1>Integers — Interactive Practice Test</h1>
+    <p id="headerSub">Set A · 22 questions · Multiple choice · Instant feedback</p>
+  </header>
+
+  <div class="set-switch">
+    <button class="set-btn active" id="setABtn" onclick="loadSet('A')">Set A</button>
+    <button class="set-btn" id="setBBtn" onclick="loadSet('B')">Set B</button>
+  </div>
+
+  <div id="quizArea">
+    <div class="progress-wrap">
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+      <div class="progress-labels">
+        <span id="progressText">Question 1 of 22</span>
+        <span class="score-badge" id="scoreText">Score: 0 / 0</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="qtag" id="qtag">Section A</span>
+      <div class="qnum" id="qnum">Question 1</div>
+      <p class="qtext" id="qtext"></p>
+      <div class="options" id="options"></div>
+      <div class="explain" id="explanation"></div>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn secondary" id="prevBtn">← Previous</button>
+      <button class="nav-btn" id="nextBtn">Next →</button>
+    </div>
+  </div>
+
+  <div class="card results" id="results">
+    <p class="tag">Result</p>
+    <h2>Test Complete</h2>
+    <div class="big-score" id="finalScore">0 / 22</div>
+    <div class="score-sub" id="finalPct">0%</div>
+    <div class="results-breakdown" id="breakdown"></div>
+    <button class="restart-btn" id="restartBtn">Restart This Set</button>
+  </div>
+
+</div>
+
+<script>
+// ---------------- Data ----------------
+const SETS = {
+  A: [
+    {sec:"Section A", q:"Which of the following numbers is NOT an integer?", o:["-15","0","7.5","42"], c:2,
+      e:"Integers are whole numbers (positive, negative, or zero) — they never include decimals or fractions. 7.5 has a decimal part, so it is not an integer."},
+    {sec:"Section A", q:"On a number line, which number is closer to 0?", o:["-9","6","They are equally close","Cannot be determined"], c:1,
+      e:"Distance from 0 is the absolute value. |−9| = 9 and |6| = 6. Since 6 < 9, the number 6 is closer to 0."},
+    {sec:"Section A", q:"Which statement is TRUE?", o:["-12 > -8","-12 < -8","-12 = -8","-12 > 8"], c:1,
+      e:"On the number line, -12 is further left than -8, and numbers further left are smaller. So -12 < -8."},
+    {sec:"Section A", q:"The absolute value of -23 is:", o:["-23","23","0","1/23"], c:1,
+      e:"Absolute value is the distance from 0 on the number line, which is always non-negative. |−23| = 23."},
+    {sec:"Section A", q:"Which of the following gives a POSITIVE result?", o:["(-6) × 4","(-15) ÷ 3","(-9) × (-2)","8 + (-10)"], c:2,
+      e:"Negative × Negative = Positive. (-9) × (-2) = 18. The other three options all give negative results."},
+
+    {sec:"Section B", q:"Arrange in ascending order: 8, -15, 0, -3, 21, -1", o:["-15, -3, -1, 0, 8, 21","-1, -3, -15, 0, 8, 21","21, 8, 0, -1, -3, -15","-15, -1, -3, 0, 8, 21"], c:0,
+      e:"Ascending order goes from smallest to largest: -15, -3, -1, 0, 8, 21."},
+    {sec:"Section B", q:"Fill in the box: -34 ▢ -40", o:["<",">","=","None of these"], c:1,
+      e:"-34 is further right on the number line than -40 (it is 'less negative'), so -34 is greater: -34 > -40."},
+    {sec:"Section B", q:"Evaluate: (-18) + 25", o:["7","-7","43","-43"], c:0,
+      e:"Since 25 is larger in magnitude and positive, subtract: 25 - 18 = 7. Result takes the sign of the larger-magnitude number (positive)."},
+    {sec:"Section B", q:"Evaluate: 14 - (-9)", o:["23","5","-5","-23"], c:0,
+      e:"Subtracting a negative is the same as adding its opposite: 14 - (-9) = 14 + 9 = 23."},
+    {sec:"Section B", q:"Evaluate: (-7) × (-8)", o:["56","-56","15","-15"], c:0,
+      e:"Negative × Negative = Positive. 7 × 8 = 56, so (-7) × (-8) = 56."},
+    {sec:"Section B", q:"Evaluate: (-56) ÷ 7", o:["-8","8","-63","63"], c:0,
+      e:"Negative ÷ Positive = Negative. 56 ÷ 7 = 8, so (-56) ÷ 7 = -8."},
+    {sec:"Section B", q:"Evaluate: |-19| - |12|", o:["7","-7","31","-31"], c:0,
+      e:"First find each absolute value: |-19| = 19 and |12| = 12. Then subtract: 19 - 12 = 7."},
+    {sec:"Section B", q:"Evaluate: -|-45|", o:["-45","45","0","90"], c:0,
+      e:"Work inside the bars first: |-45| = 45. Then apply the negative sign outside: -(45) = -45."},
+    {sec:"Section B", q:"Evaluate: 6 - 15 + (-4)", o:["-13","13","-5","5"], c:0,
+      e:"Work left to right: 6 - 15 = -9. Then -9 + (-4) = -13."},
+    {sec:"Section B", q:"Evaluate: [(-3) × 8] ÷ (-4)", o:["6","-6","11","-11"], c:0,
+      e:"First the brackets: (-3) × 8 = -24. Then (-24) ÷ (-4) = 6 (Negative ÷ Negative = Positive)."},
+
+    {sec:"Section C", q:"Name the property: 7 + (-5) = (-5) + 7", o:["Commutative Property of Addition","Associative Property","Distributive Property","Property of Zero"], c:0,
+      e:"Swapping the order of the two numbers being added (a + b = b + a) without changing the result is the Commutative Property of Addition."},
+    {sec:"Section C", q:"Fill in the missing value: 6 × [(-9) + 4] = (6 × ▢) + (6 × 4)", o:["-9","9","4","-4"], c:0,
+      e:"Distributive Property: a × (b + c) = (a × b) + (a × c). The blank must be -9, matching the bracket term."},
+    {sec:"Section C", q:"Evaluate: 20 + (-8) × 3", o:["-4","36","4","-36"], c:0,
+      e:"Order of operations: multiply before adding. (-8) × 3 = -24. Then 20 + (-24) = -4."},
+    {sec:"Section C", q:"Evaluate: [(-24) ÷ 6] + [5 × (-2)]", o:["-14","14","-2","2"], c:0,
+      e:"Evaluate each bracket first: (-24) ÷ 6 = -4, and 5 × (-2) = -10. Then add: (-4) + (-10) = -14."},
+    {sec:"Section C", q:"Find the missing value: (-15) × 1 = ▢", o:["-15","15","0","-14"], c:0,
+      e:"Property of One: any integer multiplied by 1 stays the same (a × 1 = a). So (-15) × 1 = -15."},
+
+    {sec:"Section D", q:"Midnight temperature was -6°C. By noon it rose 11°C. What was the noon temperature?", o:["5°C","-5°C","17°C","-17°C"], c:0,
+      e:"'Rose by 11°C' means add 11: (-6) + 11 = 5°C."},
+    {sec:"Section D", q:"A submarine at -85 m rises 32 m. What is its new depth, and how much further must it rise to reach sea level (0 m)?", o:["-53 m; 53 m more to rise","-117 m; 117 m more to rise","53 m; 53 m more to rise","-53 m; 85 m more to rise"], c:0,
+      e:"New depth: (-85) + 32 = -53 m. Distance still to rise to reach 0 m is the absolute value of the new depth: |-53| = 53 m."}
+  ],
+
+  B: [
+    {sec:"Section A", q:"Which set contains only negative integers?", o:["-4, 0, -9","-2, -17, -30","-6, 3, -1","5, -5, 0"], c:1,
+      e:"Every number in option B (-2, -17, -30) is negative. The other sets each include 0 or a positive number."},
+    {sec:"Section A", q:"Which point lies furthest to the left on a number line?", o:["-40","-14","0","-4"], c:0,
+      e:"Furthest left means the smallest (most negative) value. Of these, -40 is the smallest."},
+    {sec:"Section A", q:"Which statement is FALSE?", o:["-20 < -5","-5 > -20","-5 < -20","0 > -5"], c:2,
+      e:"-5 is greater than -20 (further right / less negative), so '-5 < -20' is false. The other three statements are all true."},
+    {sec:"Section A", q:"|-17| + |-3| is equal to:", o:["-20","20","-14","14"], c:1,
+      e:"Find each absolute value first: |-17| = 17 and |-3| = 3. Then add: 17 + 3 = 20."},
+    {sec:"Section A", q:"Which expression gives a NEGATIVE result?", o:["(-12) × (-3)","(-40) ÷ (-8)","18 ÷ (-2)","(-9) × (-9)"], c:2,
+      e:"Positive ÷ Negative = Negative. 18 ÷ (-2) = -9. The other three all involve two negatives, giving a positive result."},
+
+    {sec:"Section B", q:"Arrange in descending order: -12, 9, -30, 0, 4, -1", o:["9, 4, 0, -1, -12, -30","-30, -12, -1, 0, 4, 9","9, 4, 0, -1, -30, -12","-12, 9, -30, 0, 4, -1"], c:0,
+      e:"Descending order goes from largest to smallest: 9, 4, 0, -1, -12, -30."},
+    {sec:"Section B", q:"Fill in the box: -18 ▢ -9", o:["<",">","=","None of these"], c:0,
+      e:"-18 is further left on the number line than -9 (more negative), so -18 is smaller: -18 < -9."},
+    {sec:"Section B", q:"Evaluate: (-27) + 13", o:["-14","14","-40","40"], c:0,
+      e:"27 is larger in magnitude and negative, so subtract and keep the negative sign: -(27 - 13) = -14."},
+    {sec:"Section B", q:"Evaluate: (-16) - (-24)", o:["8","-8","-40","40"], c:0,
+      e:"Subtracting a negative is the same as adding its opposite: (-16) - (-24) = (-16) + 24 = 8."},
+    {sec:"Section B", q:"Evaluate: (-9) × 6", o:["-54","54","-15","15"], c:0,
+      e:"Negative × Positive = Negative. 9 × 6 = 54, so (-9) × 6 = -54."},
+    {sec:"Section B", q:"Evaluate: (-72) ÷ (-8)", o:["9","-9","64","-64"], c:0,
+      e:"Negative ÷ Negative = Positive. 72 ÷ 8 = 9, so (-72) ÷ (-8) = 9."},
+    {sec:"Section B", q:"Evaluate: |-30| - |-11|", o:["19","-19","41","-41"], c:0,
+      e:"Find each absolute value first: |-30| = 30 and |-11| = 11. Then subtract: 30 - 11 = 19."},
+    {sec:"Section B", q:"Evaluate: -(-52)", o:["52","-52","0","104"], c:0,
+      e:"The negative of a negative number is positive: -(-52) = 52."},
+    {sec:"Section B", q:"Evaluate: 10 + (-17) - (-5)", o:["-2","2","-22","22"], c:0,
+      e:"Work left to right: 10 + (-17) = -7. Then -7 - (-5) = -7 + 5 = -2."},
+    {sec:"Section B", q:"Evaluate: [(-4) × (-9)] ÷ 6", o:["6","-6","36","-36"], c:0,
+      e:"First the brackets: (-4) × (-9) = 36. Then 36 ÷ 6 = 6."},
+
+    {sec:"Section C", q:"Name the property: (-4 × 5) × 2 = -4 × (5 × 2)", o:["Associative Property of Multiplication","Commutative Property","Distributive Property","Property of One"], c:0,
+      e:"Regrouping which two numbers are multiplied first, without changing the order, is the Associative Property of Multiplication."},
+    {sec:"Section C", q:"Fill in the missing value: (-3) × [8 + (-6)] = [(-3) × 8] + [(-3) × ▢]", o:["-6","6","8","-8"], c:0,
+      e:"Distributive Property: a × (b + c) = (a × b) + (a × c). The blank must match the second bracket term, -6."},
+    {sec:"Section C", q:"Evaluate: (-5) × 4 + 30 ÷ (-5)", o:["-26","26","-14","14"], c:0,
+      e:"Multiply and divide before adding: (-5) × 4 = -20, and 30 ÷ (-5) = -6. Then (-20) + (-6) = -26."},
+    {sec:"Section C", q:"Evaluate: [18 - (-2)] ÷ [(-10) + 5]", o:["-4","4","-2","2"], c:0,
+      e:"Evaluate each bracket first: 18 - (-2) = 20, and (-10) + 5 = -5. Then 20 ÷ (-5) = -4."},
+    {sec:"Section C", q:"Find the missing value: 0 × (-88) = ▢", o:["0","-88","88","-1"], c:0,
+      e:"Property of Zero: any integer multiplied by 0 equals 0 (a × 0 = 0)."},
+
+    {sec:"Section D", q:"A hiker at 120 m above sea level descends 185 m. What is the new elevation?", o:["-65 m","65 m","-305 m","305 m"], c:0,
+      e:"'Descends' means subtract (or add a negative): 120 + (-185) = -65 m, i.e. 65 m below sea level."},
+    {sec:"Section D", q:"Monday's profit was -฿450. Tuesday's profit was ฿620. What was the total, and was the shop profitable overall?", o:["฿170 profit — yes, profitable","฿170 loss — not profitable","฿1,070 profit","฿70 profit"], c:0,
+      e:"Add the two days: (-450) + 620 = 170. A positive total means an overall profit of ฿170, so yes, the shop was profitable overall."}
+  ]
+};
+
+// ---------------- State ----------------
+let questions = [];
+let current = 0;
+let answers = [];
+let currentSetKey = 'A';
+
+const quizArea = document.getElementById('quizArea');
+const results = document.getElementById('results');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const scoreText = document.getElementById('scoreText');
+const qtag = document.getElementById('qtag');
+const qnum = document.getElementById('qnum');
+const qtext = document.getElementById('qtext');
+const optionsEl = document.getElementById('options');
+const explanationEl = document.getElementById('explanation');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const restartBtn = document.getElementById('restartBtn');
+const headerSub = document.getElementById('headerSub');
+const setABtn = document.getElementById('setABtn');
+const setBBtn = document.getElementById('setBBtn');
+
+function loadSet(key){
+  currentSetKey = key;
+  questions = SETS[key];
+  current = 0;
+  answers = new Array(questions.length).fill(null);
+  setABtn.classList.toggle('active', key === 'A');
+  setBBtn.classList.toggle('active', key === 'B');
+  headerSub.textContent = `Set ${key} · ${questions.length} questions · Multiple choice · Instant feedback`;
+  quizArea.classList.remove('hidden');
+  results.classList.remove('show');
+  render();
+}
+
+function letterFor(i){ return String.fromCharCode(65+i); }
+
+function render(){
+  const item = questions[current];
+  qtag.textContent = item.sec;
+  qnum.textContent = `Question ${current+1}`;
+  qtext.textContent = item.q;
+
+  optionsEl.innerHTML = '';
+  const picked = answers[current];
+
+  item.o.forEach((optText, oi) => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    div.innerHTML = `<span class="letter">${letterFor(oi)}.</span><span>${optText}</span>`;
+    if(picked !== null){
+      div.classList.add('locked');
+      if(oi === item.c) div.classList.add('correct');
+      else if(oi === picked) div.classList.add('wrong');
+      else div.classList.add('dim');
+    } else {
+      div.onclick = () => selectOption(oi);
+    }
+    optionsEl.appendChild(div);
+  });
+
+  if(picked !== null){
+    const wasCorrect = picked === item.c;
+    explanationEl.className = 'explain show';
+    explanationEl.innerHTML = `<b>${wasCorrect ? 'Correct.' : 'Not quite.'}</b> ${item.e}`;
+  } else {
+    explanationEl.className = 'explain';
+    explanationEl.innerHTML = '';
+  }
+
+  prevBtn.disabled = current === 0;
+  nextBtn.textContent = current === questions.length - 1 ? 'Finish →' : 'Next →';
+  nextBtn.disabled = picked === null;
+
+  updateProgress();
+}
+
+function selectOption(oi){
+  answers[current] = oi;
+  render();
+}
+
+function updateProgress(){
+  const answeredCount = answers.filter(a => a !== null).length;
+  const score = answers.reduce((sum, a, i) => sum + (a === questions[i].c ? 1 : 0), 0);
+  progressFill.style.width = `${((current+1)/questions.length)*100}%`;
+  progressText.textContent = `Question ${current+1} of ${questions.length}`;
+  scoreText.textContent = `Score: ${score} / ${answeredCount}`;
+}
+
+prevBtn.onclick = () => {
+  if(current > 0){ current--; render(); }
+};
+
+nextBtn.onclick = () => {
+  if(current < questions.length - 1){
+    current++;
+    render();
+  } else {
+    showResults();
+  }
+};
+
+restartBtn.onclick = () => loadSet(currentSetKey);
+
+function showResults(){
+  quizArea.classList.add('hidden');
+  results.classList.add('show');
+
+  const score = answers.reduce((sum, a, i) => sum + (a === questions[i].c ? 1 : 0), 0);
+  const total = questions.length;
+  const pct = Math.round((score/total)*100);
+
+  document.getElementById('finalScore').textContent = `${score} / ${total}`;
+  document.getElementById('finalPct').textContent = `${pct}%`;
+
+  const bySec = {};
+  questions.forEach((item, i) => {
+    if(!bySec[item.sec]) bySec[item.sec] = {correct:0, total:0};
+    bySec[item.sec].total++;
+    if(answers[i] === item.c) bySec[item.sec].correct++;
+  });
+
+  const breakdown = document.getElementById('breakdown');
+  breakdown.innerHTML = '';
+  Object.keys(bySec).forEach(sec => {
+    const row = document.createElement('div');
+    row.innerHTML = `<span>${sec}</span><span>${bySec[sec].correct} / ${bySec[sec].total}</span>`;
+    breakdown.appendChild(row);
+  });
+}
+
+// ---------------- Init ----------------
+loadSet('A');
+</script>
+</body>
+</html>
