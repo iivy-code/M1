@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Grade 7 Science — Comprehensive Exam (Set 2)</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E2761;
+    --navy-dark:#0D1B2A;
+    --accent:#1565C0;
+    --bg:#F5F5F5;
+    --text:#1A1A1A;
+    --grey:#666666;
+    --border:#D6DCE4;
+    --green:#1E7E34;
+    --green-bg:#E7F3EA;
+    --red:#B02A2A;
+    --red-bg:#FBEAEA;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:'Sarabun','TH Sarabun New',Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    margin:0;
+    padding:0 0 60px 0;
+    font-size:15px;
+    line-height:1.5;
+  }
+  header{
+    background:var(--navy-dark);
+    color:#fff;
+    padding:28px 24px;
+    text-align:center;
+  }
+  header h1{margin:0 0 6px 0;font-size:22px;font-weight:700;}
+  header p{margin:2px 0;font-size:13px;color:#CADCFC;}
+  .container{max-width:840px;margin:0 auto;padding:0 20px;}
+  .info-bar{
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    background:#fff;border:1px solid var(--border);border-radius:6px;
+    padding:14px 18px;margin-top:20px;font-size:13px;color:var(--grey);
+  }
+  .info-bar strong{color:var(--navy);}
+  .name-row{
+    display:flex;gap:20px;flex-wrap:wrap;margin-top:16px;
+    background:#fff;border:1px solid var(--border);border-radius:6px;
+    padding:14px 18px;font-size:13px;
+  }
+  .name-row label{margin-right:6px;color:var(--grey);}
+  .name-row input{border:none;border-bottom:1px solid var(--border);font-family:inherit;font-size:13px;padding:2px 4px;width:220px;}
+  h2.section-title{
+    font-size:16px;color:var(--navy);border-bottom:2px solid var(--navy);
+    padding-bottom:6px;margin:32px 0 16px 0;
+  }
+  h3.part-header{
+    font-size:14px;color:#fff;background:var(--navy);
+    padding:8px 14px;border-radius:4px;margin:26px 0 12px 0;
+  }
+  .question{
+    background:#fff;border:1px solid var(--border);border-radius:6px;
+    padding:16px 18px;margin-bottom:12px;
+  }
+  .question .q-text{font-weight:600;margin-bottom:10px;font-size:14.5px;}
+  .q-number{color:var(--accent);margin-right:6px;}
+  .options label{
+    display:block;padding:7px 10px;border-radius:4px;cursor:pointer;font-size:14px;
+    border:1px solid transparent;
+  }
+  .options label:hover{background:#F2F5FA;}
+  .options label.correct{background:var(--green-bg);color:var(--green);font-weight:600;border-color:var(--green);}
+  .options label.incorrect{background:var(--red-bg);color:var(--red);font-weight:600;border-color:var(--red);}
+  .options label.disabled{cursor:default;pointer-events:none;}
+  .explain{
+    display:none;margin-top:10px;padding:10px 12px;
+    background:#F2F5FA;border-left:3px solid var(--accent);
+    border-radius:4px;font-size:13.5px;color:#233;
+  }
+  .explain.show{display:block;}
+  .explain b{color:var(--navy);}
+  .btn-row{text-align:center;margin:30px 0;}
+  button{
+    font-family:inherit;background:var(--navy);color:#fff;border:none;
+    padding:12px 32px;font-size:15px;font-weight:600;border-radius:4px;cursor:pointer;
+  }
+  button:hover{background:var(--accent);}
+  #scoreBox{
+    display:none;max-width:840px;margin:0 auto 20px auto;background:var(--navy-dark);
+    color:#fff;text-align:center;padding:18px;border-radius:6px;font-size:17px;font-weight:700;
+  }
+  #scoreBox span{color:#CADCFC;font-weight:400;font-size:13px;display:block;margin-top:4px;}
+  footer{text-align:center;font-size:12px;color:var(--grey);margin-top:40px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Grade 7 Science — Comprehensive Exam (Set 2)</h1>
+  <p>Matter, Atoms &amp; Radioactivity + Introduction to Science — All New Questions</p>
+</header>
+
+<div class="container">
+
+  <div class="info-bar">
+    <div><strong>Multiple Choice</strong> — 40 items</div>
+    <div><strong>Time:</strong> 35 minutes (suggested)</div>
+    <div><strong>Total:</strong> 40 points</div>
+  </div>
+
+  <div class="name-row">
+    <div><label>Name:</label><input type="text"></div>
+    <div><label>Class:</label><input type="text" style="width:100px;"></div>
+    <div><label>Date:</label><input type="text" style="width:120px;"></div>
+  </div>
+
+  <h2 class="section-title">Instructions</h2>
+  <p style="font-size:13.5px;color:var(--grey);">Click an option to answer each question. The correct answer will be highlighted in <strong style="color:var(--green);">green</strong> immediately, along with a short explanation. If you pick a wrong option, it will be shown in <strong style="color:var(--red);">red</strong>. Scroll to the bottom to see your final score.</p>
+
+  <div id="quiz"></div>
+
+  <div class="btn-row">
+    <button onclick="finishQuiz()">Show Final Score</button>
+  </div>
+
+  <div id="scoreBox"></div>
+
+  <footer>
+    Prepared for Grade 7 (M.1) Science Review — Set 2 (all questions different from Set 1)
+  </footer>
+</div>
+
+<script>
+const questions = [
+// ===== PART A: Matter, Atoms & Radioactivity (emphasized) — new questions =====
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Which of the following best describes the nucleus of an atom?", opts:["It contains protons and neutrons and holds most of the atom's mass","It contains only electrons","It is located outside the atom","It carries a negative charge"], ans:0, explain:"The <b>nucleus</b> is made up of protons and neutrons and contains almost all of the atom's mass."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Where are electrons found in an atom?", opts:["Inside the nucleus","Orbiting around the nucleus","Fused together with protons","Completely outside the atom"], ans:1, explain:"<b>Electrons</b> move around the nucleus, occupying most of the atom's volume even though they contribute little mass."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"An electron is approximately how many times lighter than a proton?", opts:["About the same mass","About 10 times lighter","About 1840 times lighter","About 100 times lighter"], ans:2, explain:"An electron's mass is only about <b>1/1840</b> of a proton's mass, making it far lighter."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Which two subatomic particles have approximately the same mass (about 1 amu each)?", opts:["Proton and neutron","Proton and electron","Neutron and electron","All three particles"], ans:0, explain:"<b>Protons and neutrons</b> have almost identical masses, roughly 1 amu each, while electrons are far lighter."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Most of the volume of an atom is occupied by:", opts:["The nucleus","The space where electrons move","Protons alone","Neutrons alone"], ans:1, explain:"Although the nucleus holds nearly all the mass, the <b>space occupied by the moving electrons</b> makes up most of the atom's volume."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"A pure substance made of two or more elements chemically combined in a fixed ratio is called a(n):", opts:["Element","Compound","Mixture","Solution"], ans:1, explain:"A <b>compound</b> forms when elements combine chemically in a fixed, definite ratio, e.g. H₂O."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Which of the following is an example of a heterogeneous mixture?", opts:["Salt solution","Sugar solution","Sand and water","Air"], ans:2, explain:"Sand and water form a <b>suspension</b>, a heterogeneous mixture in which particles are unevenly distributed and settle over time."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Colloids and suspensions differ mainly because:", opts:["Colloids are homogeneous while suspensions are heterogeneous","Colloids are elements while suspensions are compounds","Colloids contain no water at all","Suspensions cannot be observed at all"], ans:0, explain:"<b>Colloids</b> are classified as homogeneous mixtures, whereas <b>suspensions</b> are heterogeneous."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Which statement about a solution is correct?", opts:["It is a heterogeneous mixture","Its particles settle out over time","It is a homogeneous mixture where the solute is fully dissolved","It cannot be separated by any method"], ans:2, explain:"A <b>solution</b> is a homogeneous mixture where the solute particles are evenly and completely dissolved."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Which set of elements is classified as non-metals?", opts:["Fe, Cu, Ag","O, N, S","B, Si, As","Na, Ca, Mg"], ans:1, explain:"Oxygen, nitrogen and sulfur are classified as <b>non-metals</b>."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"An atom with atomic number 17 and mass number 35 has how many neutrons?", opts:["17","18","35","52"], ans:1, explain:"Neutrons = mass number − atomic number = 35 − 17 = <b>18</b>."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"If an atom has 20 protons and 20 neutrons, its mass number is:", opts:["20","40","10","400"], ans:1, explain:"Mass number = protons + neutrons = 20 + 20 = <b>40</b>."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Which statement about isotopes is TRUE?", opts:["They have different atomic numbers","They have the same number of protons but different numbers of neutrons","They always have the same mass number","They are always radioactive"], ans:1, explain:"<b>Isotopes</b> of an element always share the same atomic number (protons) but differ in neutron number."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Which pair of atoms could be considered isobars?", opts:["Two atoms with the same number of protons","Two atoms of different elements with the same mass number","Two atoms with the same number of neutrons","Two atoms of the same element"], ans:1, explain:"<b>Isobars</b> are atoms of different elements that share the same mass number, even though their proton counts differ."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Radiation that can pass through paper but is stopped by aluminum is:", opts:["Alpha","Beta","Gamma","None of these"], ans:1, explain:"<b>Beta particles</b> penetrate paper but are blocked by a sheet of aluminum."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Beta particles, which are negatively charged, are deflected in an electric field toward the:", opts:["Positive electrode","Negative electrode","They are not deflected","Same direction as alpha particles"], ans:0, explain:"Negatively charged beta particles are attracted toward the <b>positive electrode</b>."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Gamma rays are NOT deflected by an electric field because:", opts:["They travel too fast to be affected","They carry no electric charge","They are too heavy to move","They are absorbed immediately"], ans:1, explain:"Gamma rays are electromagnetic waves with <b>no electric charge</b>, so electric fields do not deflect them."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Iodine-131 (I-131) is a radioactive isotope mainly used for:", opts:["Making batteries","Medical diagnosis and treatment","Jewelry making","Construction work"], ans:1, explain:"<b>I-131</b> is used in medicine, particularly for diagnosing and treating thyroid-related conditions."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Which of the following elements is primarily used to make computer chips?", opts:["Silicon (Si)","Sodium (Na)","Iron (Fe)","Helium (He)"], ans:0, explain:"<b>Silicon</b> is a semiconductor widely used in manufacturing computer chips."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"In carbon dioxide (CO₂), the ratio of carbon atoms to oxygen atoms is:", opts:["1:1","1:2","2:1","1:3"], ans:1, explain:"Each CO₂ molecule has 1 carbon atom and 2 oxygen atoms, giving a ratio of <b>1:2</b>."},
+
+// ===== PART B: Introduction to Science, Measuring Tools & Elements — new questions =====
+{part:"Part B — Introduction to Science & Measuring Tools", q:"Science is best defined as:", opts:["The systematic study of nature and its effects on us and our environment","The invention of gadgets and machines","A single career path","The study of mathematics only"], ans:0, explain:"<b>Science</b> is the systematic study of nature and how it affects us and our environment."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"The application of scientific knowledge for practical human use is called:", opts:["A hypothesis","Technology","An experiment","A variable"], ans:1, explain:"<b>Technology</b> is the application of scientific knowledge for the benefit of mankind."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"A person who designs buildings and advises on their construction is a(n):", opts:["Engineer","Architect","Pharmacist","Veterinarian"], ans:1, explain:"An <b>architect</b> designs buildings and advises on their construction."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"Meteorology is the branch of science that studies:", opts:["Rocks and minerals","Weather and climate","Chemical processes in living things","Planets and stars"], ans:1, explain:"<b>Meteorology</b> is the study of weather and climate."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"Which apparatus is used to heat solids to extremely high temperatures?", opts:["Beaker","Crucible","Pipette","Filter funnel"], ans:1, explain:"A <b>crucible</b> is designed to withstand and be used for heating solids to extremely high temperatures."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"Which apparatus provides the most precise measurement of liquid volume, accurate to 0.1 cm³?", opts:["Measuring cylinder","Beaker","Burette","Conical flask"], ans:2, explain:"A <b>burette</b> has fine graduations that allow measurement of liquid volume to an accuracy of 0.1 cm³."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"An evaporating dish is mainly used for:", opts:["Measuring exact liquid volumes","Evaporating excess solvent to produce a concentrated solution","Heating solids to extreme temperatures","Collecting gas"], ans:1, explain:"An <b>evaporating dish</b> is used to evaporate excess solvent, concentrating the remaining solution."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"Which laboratory safety rule is correct?", opts:["Taste unknown chemicals cautiously to identify them","Pour unused chemicals back into their original bottle","Never touch chemicals with bare hands — use a spatula","Run to get help if a chemical spills"], ans:2, explain:"Chemicals should <b>never be touched with bare hands</b>; a spatula should always be used instead."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"A hazard symbol showing a skull and crossbones indicates that a substance is:", opts:["Explosive","Toxic/poisonous","Flammable","Radioactive"], ans:1, explain:"The skull-and-crossbones symbol warns that a substance is <b>toxic/poisonous</b> and can cause death or harm."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"Sodium and potassium are typically labelled with which hazard warning symbol?", opts:["Corrosive","Explosive","Irritant","Toxic"], ans:1, explain:"Sodium and potassium react violently and can explode when mixed with other substances (especially water), so they carry the <b>explosive</b> symbol."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"When the air-hole of a Bunsen burner is fully open, the flame produced is:", opts:["Yellow and luminous","Blue and non-luminous","Red and smoky","Invisible"], ans:1, explain:"An open air-hole produces a <b>blue, non-luminous</b> flame, which burns hotter because the gas is fully combusted."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"Which is the correct FIRST step when lighting a Bunsen burner?", opts:["Open the air-hole fully","Close the air-hole by turning the collar","Turn on the gas fully before lighting","Hold the match inside the barrel"], ans:1, explain:"The first step is to <b>close the air-hole</b> by turning the collar, before lighting the match and turning on the gas."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"According to the science process skills, \"classifying\" means:", opts:["Using the five senses to gather information","Grouping things based on similar characteristics","Making an initial reasonable conclusion","Forecasting future events"], ans:1, explain:"<b>Classifying</b> means grouping things or phenomena based on their similar characteristics."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"In a scientific investigation, the variable that is measured as a result of changing the manipulated variable is called the:", opts:["Constant variable","Responding variable","Controlled variable","Independent variable"], ans:1, explain:"The <b>responding (dependent) variable</b> is the one measured to see how it changes in response to the manipulated variable."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"Which is the correct order of the main steps in a scientific investigation?", opts:["Conclusion → Hypothesis → Problem → Report","Identifying the problem → Forming a hypothesis → Planning → Carrying out → Analysing → Conclusion → Report","Report → Analysing → Problem", "Planning → Problem → Hypothesis"], ans:1, explain:"The correct sequence is: <b>identify the problem, form a hypothesis, plan, carry out the experiment, analyse data, conclude, then report.</b>"},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"The SI unit for time is the:", opts:["Kelvin","Second","Ampere","Metre"], ans:1, explain:"Time is measured in <b>seconds (s)</b>, the SI base unit for time."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"The prefix \"milli\" represents a numerical value of:", opts:["1,000","0.001","1,000,000","0.1"], ans:1, explain:"The prefix <b>milli</b> represents 0.001, or 10⁻³."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"Why did the world eventually adopt SI units as a standard system of measurement?", opts:["Because body-part-based units were inconsistent between people","Because SI units are shorter to write","Because only scientists use measurements","Because SI units were the most recently invented"], ans:0, explain:"Early measurement systems based on <b>body parts</b> varied between individuals, making trade and science unreliable — SI units solved this by being universally standardised."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"The mass of an object is typically measured using a:", opts:["Spring balance","Compression balance","Lever balance, beam balance, or electronic balance","Newton meter"], ans:2, explain:"Mass is measured using a <b>lever balance, beam balance, or electronic balance</b>, unlike weight which uses a spring or compression balance."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"Internal calipers are used to measure:", opts:["The external diameter of an object","The internal diameter of an object","The volume of a liquid","The length of a curved line"], ans:1, explain:"<b>Internal calipers</b> are designed to measure the internal diameter of an object, such as the inside of a beaker."}
+];
+
+const quizDiv = document.getElementById('quiz');
+let lastPart = "";
+
+questions.forEach((item, i)=>{
+  if(item.part !== lastPart){
+    const ph = document.createElement('h3');
+    ph.className = 'part-header';
+    ph.textContent = item.part;
+    quizDiv.appendChild(ph);
+    lastPart = item.part;
+  }
+  const qDiv = document.createElement('div');
+  qDiv.className='question';
+  qDiv.id = 'q-'+i;
+  qDiv.innerHTML = `<div class="q-text"><span class="q-number">${i+1}.</span>${item.q}</div>
+    <div class="options" id="opts-${i}">
+      ${item.opts.map((o,j)=>`<label id="opt-${i}-${j}" onclick="selectAnswer(${i},${j})"><input type="radio" name="q${i}" value="${j}" style="display:none;"> ${String.fromCharCode(65+j)}. ${o}</label>`).join('')}
+    </div>
+    <div class="explain" id="explain-${i}"><b>Explanation:</b> ${item.explain}</div>`;
+  quizDiv.appendChild(qDiv);
+});
+
+const userAnswers = new Array(questions.length).fill(null);
+
+function selectAnswer(i, j){
+  if(userAnswers[i] !== null) return;
+  userAnswers[i] = j;
+  const item = questions[i];
+  const labels = document.querySelectorAll(`#opts-${i} label`);
+  labels.forEach((lab, k)=>{
+    lab.classList.add('disabled');
+    if(k === item.ans){ lab.classList.add('correct'); }
+    else if(k === j){ lab.classList.add('incorrect'); }
+  });
+  document.getElementById(`explain-${i}`).classList.add('show');
+}
+
+function finishQuiz(){
+  questions.forEach((item, i)=>{
+    if(userAnswers[i] === null){
+      const labels = document.querySelectorAll(`#opts-${i} label`);
+      labels.forEach((lab, k)=>{
+        lab.classList.add('disabled');
+        if(k === item.ans){ lab.classList.add('correct'); }
+      });
+      document.getElementById(`explain-${i}`).classList.add('show');
+    }
+  });
+  let score = 0;
+  questions.forEach((item,i)=>{ if(userAnswers[i] === item.ans) score++; });
+  const box = document.getElementById('scoreBox');
+  box.style.display='block';
+  box.innerHTML = `Score: ${score} / ${questions.length}<span>Green highlights show the correct answer for every question, with explanations above.</span>`;
+  box.scrollIntoView({behavior:'smooth', block:'center'});
+}
+</script>
+
+</body>
+</html>

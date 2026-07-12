@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Grade 7 Science — Comprehensive Exam</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E2761;
+    --navy-dark:#0D1B2A;
+    --accent:#1565C0;
+    --bg:#F5F5F5;
+    --text:#1A1A1A;
+    --grey:#666666;
+    --border:#D6DCE4;
+    --green:#1E7E34;
+    --green-bg:#E7F3EA;
+    --red:#B02A2A;
+    --red-bg:#FBEAEA;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:'Sarabun','TH Sarabun New',Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    margin:0;
+    padding:0 0 60px 0;
+    font-size:15px;
+    line-height:1.5;
+  }
+  header{
+    background:var(--navy-dark);
+    color:#fff;
+    padding:28px 24px;
+    text-align:center;
+  }
+  header h1{margin:0 0 6px 0;font-size:22px;font-weight:700;}
+  header p{margin:2px 0;font-size:13px;color:#CADCFC;}
+  .container{max-width:840px;margin:0 auto;padding:0 20px;}
+  .info-bar{
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    background:#fff;border:1px solid var(--border);border-radius:6px;
+    padding:14px 18px;margin-top:20px;font-size:13px;color:var(--grey);
+  }
+  .info-bar strong{color:var(--navy);}
+  .name-row{
+    display:flex;gap:20px;flex-wrap:wrap;margin-top:16px;
+    background:#fff;border:1px solid var(--border);border-radius:6px;
+    padding:14px 18px;font-size:13px;
+  }
+  .name-row label{margin-right:6px;color:var(--grey);}
+  .name-row input{border:none;border-bottom:1px solid var(--border);font-family:inherit;font-size:13px;padding:2px 4px;width:220px;}
+  h2.section-title{
+    font-size:16px;color:var(--navy);border-bottom:2px solid var(--navy);
+    padding-bottom:6px;margin:32px 0 16px 0;
+  }
+  h3.part-header{
+    font-size:14px;color:#fff;background:var(--navy);
+    padding:8px 14px;border-radius:4px;margin:26px 0 12px 0;
+  }
+  .question{
+    background:#fff;border:1px solid var(--border);border-radius:6px;
+    padding:16px 18px;margin-bottom:12px;
+  }
+  .question .q-text{font-weight:600;margin-bottom:10px;font-size:14.5px;}
+  .q-number{color:var(--accent);margin-right:6px;}
+  .options label{
+    display:block;padding:7px 10px;border-radius:4px;cursor:pointer;font-size:14px;
+    border:1px solid transparent;
+  }
+  .options label:hover{background:#F2F5FA;}
+  .options label.correct{background:var(--green-bg);color:var(--green);font-weight:600;border-color:var(--green);}
+  .options label.incorrect{background:var(--red-bg);color:var(--red);font-weight:600;border-color:var(--red);}
+  .options label.disabled{cursor:default;pointer-events:none;}
+  .explain{
+    display:none;margin-top:10px;padding:10px 12px;
+    background:#F2F5FA;border-left:3px solid var(--accent);
+    border-radius:4px;font-size:13.5px;color:#233;
+  }
+  .explain.show{display:block;}
+  .explain b{color:var(--navy);}
+  .btn-row{text-align:center;margin:30px 0;}
+  button{
+    font-family:inherit;background:var(--navy);color:#fff;border:none;
+    padding:12px 32px;font-size:15px;font-weight:600;border-radius:4px;cursor:pointer;
+  }
+  button:hover{background:var(--accent);}
+  #scoreBox{
+    display:none;max-width:840px;margin:0 auto 20px auto;background:var(--navy-dark);
+    color:#fff;text-align:center;padding:18px;border-radius:6px;font-size:17px;font-weight:700;
+  }
+  #scoreBox span{color:#CADCFC;font-weight:400;font-size:13px;display:block;margin-top:4px;}
+  footer{text-align:center;font-size:12px;color:var(--grey);margin-top:40px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Grade 7 Science — Comprehensive Exam</h1>
+  <p>Matter, Atoms &amp; Radioactivity + Introduction to Science</p>
+</header>
+
+<div class="container">
+
+  <div class="info-bar">
+    <div><strong>Multiple Choice</strong> — 40 items</div>
+    <div><strong>Time:</strong> 35 minutes (suggested)</div>
+    <div><strong>Total:</strong> 40 points</div>
+  </div>
+
+  <div class="name-row">
+    <div><label>Name:</label><input type="text"></div>
+    <div><label>Class:</label><input type="text" style="width:100px;"></div>
+    <div><label>Date:</label><input type="text" style="width:120px;"></div>
+  </div>
+
+  <h2 class="section-title">Instructions</h2>
+  <p style="font-size:13.5px;color:var(--grey);">Click an option to answer each question. The correct answer will be highlighted in <strong style="color:var(--green);">green</strong> immediately, along with a short explanation. If you pick a wrong option, it will be shown in <strong style="color:var(--red);">red</strong>. Scroll to the bottom to see your final score.</p>
+
+  <div id="quiz"></div>
+
+  <div class="btn-row">
+    <button onclick="finishQuiz()">Show Final Score</button>
+  </div>
+
+  <div id="scoreBox"></div>
+
+  <footer>
+    Prepared for Grade 7 (M.1) Science Review — Matter/Atoms/Radioactivity emphasis, plus Chapters 1 &amp; 5 (intro)
+  </footer>
+</div>
+
+<script>
+const questions = [
+// ===== PART A: Matter, Atoms, Radioactivity, Elements, Compounds (emphasized) =====
+{part:"Part A — Matter, Atoms & Radioactivity", q:"What is a pure substance made of only one type of atom called?", opts:["Element","Compound","Mixture","Solution"], ans:0, explain:"An <b>element</b> is a pure substance made up of only one type of atom, e.g. oxygen or sodium."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"A compound is formed when:", opts:["Two or more elements are chemically combined","Two substances are physically mixed together","A single atom exists alone","A mixture is separated by filtration"], ans:0, explain:"Compounds are formed through the <b>chemical combination</b> of two or more elements in fixed ratios, e.g. NaCl."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Which of the following is a homogeneous mixture?", opts:["Salt solution","Sand and water","Oil and water","Muddy water"], ans:0, explain:"A <b>solution</b> is a homogeneous mixture — the solute is completely and evenly dissolved."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Solution and colloid are grouped together as:", opts:["Heterogeneous mixtures","Homogeneous mixtures","Elements","Compounds"], ans:1, explain:"Both solutions and colloids are classified as <b>homogeneous mixtures</b>; suspensions are heterogeneous."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Which subatomic particle has a positive charge?", opts:["Electron","Neutron","Proton","Photon"], ans:2, explain:"The <b>proton (p⁺)</b> carries a positive charge; the neutron is neutral, and the electron is negative."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"In a nuclear symbol, the top (larger) number represents the:", opts:["Atomic number","Mass number","Number of electrons","Ionic charge"], ans:1, explain:"The <b>mass number</b> (top number) equals the total number of protons and neutrons in the nucleus."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"In a nuclear symbol, the bottom (smaller) number represents the:", opts:["Mass number","Atomic number","Number of neutrons only","Ionic charge"], ans:1, explain:"The <b>atomic number</b> (bottom number) equals the number of protons in the atom."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Mercury (Hg) has a mass number of 201 and an atomic number of 80. How many neutrons does it have?", opts:["80","121","201","281"], ans:1, explain:"Neutrons = mass number − atomic number = 201 − 80 = <b>121</b>."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Sodium (Na) has a mass number of 23 and an atomic number of 11. How many protons does it have?", opts:["11","12","23","34"], ans:0, explain:"The number of protons always equals the atomic number, which is <b>11</b> for sodium."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"A sodium ion, Na⁺, has 11 protons but only 10 electrons because it has:", opts:["Gained a neutron","Lost one electron","Lost one proton","Gained one electron"], ans:1, explain:"Losing one negatively charged electron leaves the ion with a net <b>positive charge</b>, forming Na⁺."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Which group consists entirely of metals?", opts:["O, N, S","Fe, Cu, Hg, Ag, Au","B, Si, As","Ne, Ar, Kr"], ans:1, explain:"Fe, Cu, Hg, Ag and Au are all classified as <b>metals</b> in the periodic table."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Which group consists entirely of metalloids?", opts:["B, Si, As, Ge","Fe, Hg","O, N","Na, Ca"], ans:0, explain:"Boron, silicon, arsenic and germanium are <b>metalloids</b> — they show properties between metals and non-metals."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Isotopes are atoms of the same element with:", opts:["The same number of protons but different numbers of neutrons","The same number of neutrons but different protons","The same mass number only","Different elements entirely"], ans:0, explain:"<b>Isotopes</b> share the same atomic number (protons) but differ in neutron number, giving different mass numbers."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Isotones are atoms that have:", opts:["The same number of protons","The same number of neutrons","The same mass number","The same number of electrons"], ans:1, explain:"<b>Isotones</b> have equal numbers of neutrons, though they may be different elements."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Isobars are atoms that have:", opts:["The same number of protons","The same number of neutrons","The same mass number","The same atomic number"], ans:2, explain:"<b>Isobars</b> are atoms of different elements that happen to share the same mass number."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Which type of radiation is stopped by a sheet of paper?", opts:["Alpha","Beta","Gamma","X-ray"], ans:0, explain:"<b>Alpha particles</b> are large and have low penetrating power, so a sheet of paper stops them."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Which type of radiation requires thick lead to be blocked?", opts:["Alpha","Beta","Gamma","Alpha and Beta"], ans:2, explain:"<b>Gamma rays</b> have the highest penetrating power and need thick lead to be absorbed."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"In an electric field, positively charged alpha particles are deflected toward the:", opts:["Positive electrode","Negative electrode","They are not deflected","Same direction as gamma rays"], ans:1, explain:"Positively charged alpha particles are attracted toward the <b>negative electrode</b>."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"Cobalt-60 (Co-60) is commonly used for:", opts:["Sterilizing food only","Cancer treatment","Fertilizer production","Making jewelry"], ans:1, explain:"Co-60 emits gamma radiation used in radiotherapy to treat <b>cancer</b>."},
+{part:"Part A — Matter, Atoms & Radioactivity", q:"In water (H₂O), the ratio of hydrogen to oxygen atoms is:", opts:["1:1","1:2","2:1","3:1"], ans:2, explain:"Each water molecule has 2 hydrogen atoms and 1 oxygen atom, giving a ratio of <b>2:1</b>."},
+
+// ===== PART B: Introduction to Science, Measuring Tools & Elements/Periodic Table =====
+{part:"Part B — Introduction to Science & Measuring Tools", q:"An element is best defined as:", opts:["A pure substance made of only one type of atom","A mixture of two substances","A compound of two elements","A physical blend of solids"], ans:0, explain:"Elements consist of <b>only one type of atom</b> and cannot be broken down into simpler substances chemically."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"The Periodic Table has how many groups and periods?", opts:["18 groups and 7 periods","7 groups and 18 periods","8 groups and 4 periods","20 groups and 10 periods"], ans:0, explain:"The Periodic Table has <b>18 vertical groups</b> and <b>7 horizontal periods</b>."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"Which property is typical of metals?", opts:["Brittle and poor conductors","Malleable, ductile, and good conductors of heat/electricity","Dull surfaces and low density","Mostly exist as gases"], ans:1, explain:"Most metals are shiny, <b>malleable, ductile</b>, and good conductors of heat and electricity."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"Which property is typical of non-metals?", opts:["High melting points and always solid","Malleable and ductile","Brittle, poor conductors, often low density","Always liquid at room temperature"], ans:2, explain:"Non-metals tend to be <b>brittle, non-ductile, poor conductors</b>, and generally have low density (carbon is an exception for melting point)."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"A substance labelled with the corrosive hazard symbol:", opts:["Easily explodes","Causes damage to skin or eyes upon contact","Gives out radiation","Is safe to touch"], ans:1, explain:"<b>Corrosive</b> substances such as concentrated acids and alkalis damage skin and eyes on contact."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"In an experiment, the variable that is deliberately changed by the investigator is called the:", opts:["Constant variable","Manipulated variable","Responding variable","Controlled variable"], ans:1, explain:"The <b>manipulated (independent) variable</b> is the one intentionally changed to observe its effect."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"The SI unit for mass is the:", opts:["Newton","Kilogram","Metre","Litre"], ans:1, explain:"Mass is measured in <b>kilograms (kg)</b>, the SI base unit for mass."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"In standard form, a × 10ⁿ, the value of a must be:", opts:["Any positive number","Between 1 and 10","Always greater than 10","Always a whole number"], ans:1, explain:"In standard/scientific notation, <b>1 ≤ a &lt; 10</b> by convention."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"The weight of an object is defined as:", opts:["The amount of matter it contains","The pull of the Earth's gravity on it","A quantity that never changes","Always measured in kilograms"], ans:1, explain:"Weight is the <b>gravitational force</b> acting on an object's mass, so it varies with location."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"Weight is typically measured using a:", opts:["Beam balance","Spring balance or compression balance","Electronic balance","Lever balance"], ans:1, explain:"A <b>spring balance or compression balance</b> measures the force (weight) pulling on an object; ordinary balances measure mass."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"A metre rule can measure length to an accuracy of about:", opts:["1 cm","0.1 cm","1 mm with zero error","10 cm"], ans:1, explain:"A standard metre rule allows readings accurate to about <b>0.1 cm</b>."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"Parallax error occurs when:", opts:["The ruler is too short","The eye is not positioned vertically above the reading mark","The object being measured is curved","The measurement is repeated too many times"], ans:1, explain:"Parallax error happens when the eye's line of sight isn't <b>perpendicular</b> to the scale, causing an inaccurate reading."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"When taking a length reading, the eye should be positioned:", opts:["To the left of the mark","To the right of the mark","Vertically above the mark","Below the ruler"], ans:2, explain:"The eye must be directly above (perpendicular to) the mark to avoid <b>parallax error</b>."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"The length of a curved line can be measured using a piece of thread together with a:", opts:["Ruler","Beaker","Pipette","Crucible"], ans:0, explain:"The thread is laid along the curve, marked at both ends, then straightened and measured against a <b>ruler</b>."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"External calipers are used to measure:", opts:["The internal diameter of an object","The external diameter of an object","The volume of a liquid","The mass of an object"], ans:1, explain:"External calipers measure the outer (<b>external</b>) diameter of objects such as a beaker."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"To estimate the area of an irregular shape like a leaf, you should:", opts:["Use a mathematical formula only","Trace it on graph paper and count fully/half-covered squares","Weigh it on a balance","Measure only its length"], ans:1, explain:"Tracing the shape on graph paper and counting the covered squares gives an <b>estimated area in cm²</b>."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"Which of the following is a correct unit conversion for area?", opts:["1 m² = 100 cm²","1 m² = 10,000 cm²","1 m² = 1,000 cm²","1 m² = 1,000,000 cm²"], ans:1, explain:"Since 1 m = 100 cm, 1 m² = 100 cm × 100 cm = <b>10,000 cm²</b>."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"When reading the volume of water in a measuring cylinder, you should read at:", opts:["The top of the meniscus","The bottom of the meniscus","Either the top or bottom","The nearest whole number only"], ans:1, explain:"Water forms a concave meniscus, so the correct reading is taken at the <b>bottom</b> of the curve."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"The volume of an irregularly shaped solid, such as a stone, can be measured using the:", opts:["Standard form method","Water displacement method","Prefix conversion method","Parallax method"], ans:1, explain:"The stone is lowered into water in a measuring cylinder; the rise in water level equals the stone's <b>volume</b> (water displacement method)."},
+{part:"Part B — Introduction to Science & Measuring Tools", q:"Which of the following helps increase the accuracy of a measurement?", opts:["Taking only one reading","Using suitable measuring tools, correct techniques, and taking several readings","Ignoring parallax error","Always rounding to the nearest whole number"], ans:1, explain:"Accuracy improves by choosing appropriate tools, applying correct techniques, and <b>averaging multiple readings</b>."}
+];
+
+const quizDiv = document.getElementById('quiz');
+let lastPart = "";
+let answeredCount = 0;
+
+questions.forEach((item, i)=>{
+  if(item.part !== lastPart){
+    const ph = document.createElement('h3');
+    ph.className = 'part-header';
+    ph.textContent = item.part;
+    quizDiv.appendChild(ph);
+    lastPart = item.part;
+  }
+  const qDiv = document.createElement('div');
+  qDiv.className='question';
+  qDiv.id = 'q-'+i;
+  qDiv.innerHTML = `<div class="q-text"><span class="q-number">${i+1}.</span>${item.q}</div>
+    <div class="options" id="opts-${i}">
+      ${item.opts.map((o,j)=>`<label id="opt-${i}-${j}" onclick="selectAnswer(${i},${j})"><input type="radio" name="q${i}" value="${j}" style="display:none;"> ${String.fromCharCode(65+j)}. ${o}</label>`).join('')}
+    </div>
+    <div class="explain" id="explain-${i}"><b>Explanation:</b> ${item.explain}</div>`;
+  quizDiv.appendChild(qDiv);
+});
+
+const userAnswers = new Array(questions.length).fill(null);
+
+function selectAnswer(i, j){
+  if(userAnswers[i] !== null) return; // already answered, lock it
+  userAnswers[i] = j;
+  answeredCount++;
+  const item = questions[i];
+  const labels = document.querySelectorAll(`#opts-${i} label`);
+  labels.forEach((lab, k)=>{
+    lab.classList.add('disabled');
+    if(k === item.ans){ lab.classList.add('correct'); }
+    else if(k === j){ lab.classList.add('incorrect'); }
+  });
+  document.getElementById(`explain-${i}`).classList.add('show');
+}
+
+function finishQuiz(){
+  // reveal any unanswered questions
+  questions.forEach((item, i)=>{
+    if(userAnswers[i] === null){
+      const labels = document.querySelectorAll(`#opts-${i} label`);
+      labels.forEach((lab, k)=>{
+        lab.classList.add('disabled');
+        if(k === item.ans){ lab.classList.add('correct'); }
+      });
+      document.getElementById(`explain-${i}`).classList.add('show');
+    }
+  });
+  let score = 0;
+  questions.forEach((item,i)=>{ if(userAnswers[i] === item.ans) score++; });
+  const box = document.getElementById('scoreBox');
+  box.style.display='block';
+  box.innerHTML = `Score: ${score} / ${questions.length}<span>Green highlights show the correct answer for every question, with explanations above.</span>`;
+  box.scrollIntoView({behavior:'smooth', block:'center'});
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Grade 7 Science — Chapter 1: Introduction to Science</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E2761;
+    --navy-dark:#0D1B2A;
+    --accent:#1565C0;
+    --bg:#F5F5F5;
+    --text:#1A1A1A;
+    --grey:#666666;
+    --border:#D6DCE4;
+    --green:#1E7E34;
+    --red:#B02A2A;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:'Sarabun','TH Sarabun New',Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    margin:0;
+    padding:0 0 60px 0;
+    font-size:15px;
+    line-height:1.5;
+  }
+  header{
+    background:var(--navy-dark);
+    color:#fff;
+    padding:28px 24px;
+    text-align:center;
+  }
+  header h1{margin:0 0 6px 0;font-size:22px;font-weight:700;}
+  header p{margin:2px 0;font-size:13px;color:#CADCFC;}
+  .container{max-width:820px;margin:0 auto;padding:0 20px;}
+  .info-bar{
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    background:#fff;border:1px solid var(--border);border-radius:6px;
+    padding:14px 18px;margin-top:20px;font-size:13px;color:var(--grey);
+  }
+  .info-bar strong{color:var(--navy);}
+  .name-row{
+    display:flex;gap:20px;flex-wrap:wrap;margin-top:16px;
+    background:#fff;border:1px solid var(--border);border-radius:6px;
+    padding:14px 18px;font-size:13px;
+  }
+  .name-row label{margin-right:6px;color:var(--grey);}
+  .name-row input{border:none;border-bottom:1px solid var(--border);font-family:inherit;font-size:13px;padding:2px 4px;width:220px;}
+  h2.section-title{
+    font-size:16px;color:var(--navy);border-bottom:2px solid var(--navy);
+    padding-bottom:6px;margin:32px 0 16px 0;
+  }
+  h3.topic-header{
+    font-size:13px;color:#fff;background:var(--navy);
+    padding:6px 12px;border-radius:4px;margin:24px 0 10px 0;
+  }
+  .question{
+    background:#fff;border:1px solid var(--border);border-radius:6px;
+    padding:16px 18px;margin-bottom:12px;
+  }
+  .question .q-text{font-weight:600;margin-bottom:10px;font-size:14.5px;}
+  .q-number{color:var(--accent);margin-right:6px;}
+  .options label{display:block;padding:6px 8px;border-radius:4px;cursor:pointer;font-size:14px;}
+  .options label:hover{background:#F2F5FA;}
+  .options input{margin-right:8px;}
+  .options label.correct{background:#E7F3EA;color:var(--green);font-weight:600;}
+  .options label.incorrect{background:#FBEAEA;color:var(--red);font-weight:600;}
+  .btn-row{text-align:center;margin:30px 0;}
+  button{
+    font-family:inherit;background:var(--navy);color:#fff;border:none;
+    padding:12px 32px;font-size:15px;font-weight:600;border-radius:4px;cursor:pointer;
+  }
+  button:hover{background:var(--accent);}
+  #scoreBox{
+    display:none;max-width:820px;margin:0 auto 20px auto;background:var(--navy-dark);
+    color:#fff;text-align:center;padding:18px;border-radius:6px;font-size:17px;font-weight:700;
+  }
+  #scoreBox span{color:#CADCFC;font-weight:400;font-size:13px;display:block;margin-top:4px;}
+  footer{text-align:center;font-size:12px;color:var(--grey);margin-top:40px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Grade 7 Science — Chapter 1</h1>
+  <p>Introduction to Science</p>
+</header>
+
+<div class="container">
+
+  <div class="info-bar">
+    <div><strong>Part 1:</strong> Multiple Choice — 50 items</div>
+    <div><strong>Time:</strong> 25 minutes (suggested)</div>
+    <div><strong>Total:</strong> 50 points</div>
+  </div>
+
+  <div class="name-row">
+    <div><label>Name:</label><input type="text"></div>
+    <div><label>Class:</label><input type="text" style="width:100px;"></div>
+    <div><label>Date:</label><input type="text" style="width:120px;"></div>
+  </div>
+
+  <h2 class="section-title">Instructions</h2>
+  <p style="font-size:13.5px;color:var(--grey);">Choose the <strong>one best answer</strong> for each question. Click "Check My Answers" at the end to see your score and the correct answers highlighted in green.</p>
+
+  <h2 class="section-title">Questions</h2>
+  <div id="quiz"></div>
+
+  <div class="btn-row">
+    <button onclick="gradeQuiz()">Check My Answers</button>
+  </div>
+
+  <div id="scoreBox"></div>
+
+  <footer>
+    Prepared for Grade 7 (M.1) Science Review — Chapter 1: Introduction to Science
+  </footer>
+</div>
+
+<script>
+const questions = [
+{topic:"1.1 What is Science", q:"Science is best defined as:", opts:["The study of numbers only","The systematic study of nature and how it affects us and our environment","The invention of machines","A branch of mathematics"], ans:1},
+{topic:"1.1 What is Science", q:"Natural phenomena are:", opts:["Things invented by humans","Things that happen in nature","Man-made machines only","Laboratory experiments only"], ans:1},
+{topic:"1.1 What is Science", q:"The information produced from the study of science is known as:", opts:["Technology","Scientific knowledge","A hypothesis","An investigation"], ans:1},
+{topic:"1.1 What is Science", q:"Technology is best described as:", opts:["The systematic study of nature","The application of scientific knowledge for the use of mankind","A type of natural phenomenon","A career in science"], ans:1},
+
+{topic:"1.1 Importance of Science", q:"Science helps us take better care of our health mainly because it helps us:", opts:["Understand our environment","Understand ourselves","Make life more comfortable","Improve transportation"], ans:1},
+{topic:"1.1 Importance of Science", q:"Understanding our environment through science helps us to:", opts:["Improve and conserve environmental quality for future generations","Build faster cars only","Invent light bulbs","Cure diseases only"], ans:0},
+{topic:"1.1 Importance of Science", q:"In homes, facilities such as electricity and tap water make life:", opts:["More dangerous","Easier and more comfortable","Slower","More expensive only"], ans:1},
+{topic:"1.1 Importance of Science", q:"Global communication is now possible mainly due to:", opts:["Bunsen burners","Communication satellites, e-mail and the Internet","Beam balances","Crucibles"], ans:1},
+{topic:"1.1 Importance of Science", q:"Modern public transport such as commuter trains and light rail transit helps to:", opts:["Increase traffic congestion","Reduce congestion in cities","Increase pollution only","Slow down travel times"], ans:1},
+{topic:"1.1 Importance of Science", q:"In medicine, diseases can now be diagnosed and detected earlier with devices such as:", opts:["X-ray machines and ultrasound scanning devices","Bunsen burners","Beam balances","Filter funnels"], ans:0},
+
+{topic:"1.1 Careers in Science", q:"A person who has been trained in and practises medical science is a:", opts:["Pharmacist","Doctor","Engineer","Architect"], ans:1},
+{topic:"1.1 Careers in Science", q:"An animal doctor is called a:", opts:["Veterinarian","Pharmacist","Chemist","Biologist"], ans:0},
+{topic:"1.1 Careers in Science", q:"A skilled person who designs, builds or maintains engines, buildings, bridges or roads is a(n):", opts:["Architect","Chemist","Engineer","Pharmacist"], ans:2},
+
+{topic:"1.1 Areas of Study", q:"Biology is the study of:", opts:["Matter, energy, force and motion","Life","Chemical composition of substances","Planets and stars"], ans:1},
+{topic:"1.1 Areas of Study", q:"Physics is the study of:", opts:["Life","Matter, energy, force and motion","Weather and climate","Rocks and minerals"], ans:1},
+{topic:"1.1 Areas of Study", q:"Chemistry is the study of:", opts:["Planets and stars","The composition and chemical properties of substances","Weather and climate","Life"], ans:1},
+{topic:"1.1 Areas of Study", q:"Astronomy is the study of:", opts:["Rocks and minerals","Planets and stars in the universe","Chemical processes in organisms","Weather and climate"], ans:1},
+{topic:"1.1 Areas of Study", q:"Geology is the study of:", opts:["Weather and climate","Rocks, minerals and the structure of the Earth","Life","Chemical processes in organisms"], ans:1},
+
+{topic:"1.2 Laboratory Apparatus", q:"A test tube is used for:", opts:["Containing small amounts of chemicals or mixing solutions","Measuring exact volumes of liquid","Heating solids to extremely high temperature","Enclosing samples from the surroundings"], ans:0},
+{topic:"1.2 Laboratory Apparatus", q:"A boiling tube is best described as:", opts:["A scaled-up test tube used for heating chemicals","A tool for measuring gas volume","A device for weighing chemicals","A tool for separating solids from liquids"], ans:0},
+{topic:"1.2 Laboratory Apparatus", q:"A beaker is used for:", opts:["Containing, mixing and heating large amounts of chemicals and liquids","Measuring a fixed volume of liquid","Collecting gas only","Enclosing samples"], ans:0},
+{topic:"1.2 Laboratory Apparatus", q:"Besides its general use, a conical flask is also used for:", opts:["Weighing solids","Collecting filtrates","Producing a luminous flame","Supporting apparatus during heating"], ans:1},
+{topic:"1.2 Laboratory Apparatus", q:"A bell jar is used for:", opts:["Measuring the volume of liquids","Enclosing samples and separating them from the surroundings","Heating solids to high temperatures","Holding test tubes upright"], ans:1},
+{topic:"1.2 Laboratory Apparatus", q:"A burette is used for measuring the volume of liquids to an accuracy of:", opts:["1 cm³","0.1 cm³","10 cm³","100 cm³"], ans:1},
+{topic:"1.2 Laboratory Apparatus", q:"A pipette is used for:", opts:["Measuring a fixed volume of liquid and placing it into another container","Heating chemicals to high temperature","Enclosing samples from the surroundings","Separating insoluble solids from liquids"], ans:0},
+{topic:"1.2 Laboratory Apparatus", q:"A filter funnel is used for:", opts:["Evaporating excess solvent","Separating insoluble solids from liquids","Measuring liquid volume precisely","Supporting apparatus while heating"], ans:1},
+
+{topic:"1.2 Laboratory Safety", q:"Which of the following is a correct laboratory safety rule?", opts:["Taste chemicals to help identify them","Never touch chemicals with your bare hands — use a spatula","Pour unused chemicals back into their original bottle","Run to fetch apparatus quickly when needed"], ans:1},
+{topic:"1.2 Laboratory Safety", q:"If you accidentally break a piece of apparatus in the laboratory, you should:", opts:["Hide it so you don't get into trouble","Report the breakage to the teacher","Throw it into the sink","Continue the experiment as normal"], ans:1},
+
+{topic:"1.2 Hazard Warning Symbols", q:"A substance labelled with the flammable/inflammable symbol:", opts:["Easily explodes when mixed with other substances","Easily catches fire and burns","Causes damage to the skin or eyes on contact","Gives out radiation"], ans:1},
+{topic:"1.2 Hazard Warning Symbols", q:"A substance labelled with the toxic/poisonous symbol:", opts:["Is safe to taste in small amounts","Can cause death or harm if absorbed, swallowed or inhaled","Only irritates the skin slightly","Is used for cancer treatment"], ans:1},
+{topic:"1.2 Hazard Warning Symbols", q:"A substance labelled with the corrosive symbol:", opts:["Causes damage to the skin or eyes upon contact","Easily catches fire","Is radioactive","Is harmless when touched"], ans:0},
+{topic:"1.2 Hazard Warning Symbols", q:"Substances such as uranium, plutonium and radium, which give out radiation, should be handled by:", opts:["Keeping them in paraffin","Keeping them in special lead containers","Washing them under running water","Keeping them away from fire only"], ans:1},
+
+{topic:"1.2 Bunsen Burner", q:"When the air-hole of a Bunsen burner is opened, the flame produced is:", opts:["Yellow and luminous","Blue and non-luminous","Red and cool","Invisible"], ans:1},
+{topic:"1.2 Bunsen Burner", q:"When the air-hole of a Bunsen burner is closed, the flame produced:", opts:["Is very hot and produces no soot","Is yellow, luminous, and produces black soot","Cannot be seen at all","Burns the gas completely"], ans:1},
+{topic:"1.2 Bunsen Burner", q:"What is the first step in lighting a Bunsen burner correctly?", opts:["Turn on the gas fully first","Close the air-hole by turning the collar","Open the air-hole fully first","Hold the match under the base"], ans:1},
+{topic:"1.2 Bunsen Burner", q:"When heating a test tube over a Bunsen burner, it should be held at an angle of about:", opts:["90°","45°","0°","180°"], ans:1},
+
+{topic:"1.3 Scientific Investigation", q:"The science process skill of using the five senses to gather information on things or phenomena is called:", opts:["Predicting","Observing","Classifying","Making inference"], ans:1},
+{topic:"1.3 Scientific Investigation", q:"Grouping things or phenomena based on their similar characteristics is called:", opts:["Classifying","Predicting","Communicating","Interpreting data"], ans:0},
+{topic:"1.3 Scientific Investigation", q:"Making an initial, reasonable conclusion (which may be true or false) to explain an observation is called:", opts:["Making a hypothesis","Making an inference","Experimenting","Controlling variables"], ans:1},
+{topic:"1.3 Scientific Investigation", q:"A general, testable statement about the relationship between the manipulated and responding variables is called a:", opts:["Conclusion","Hypothesis","Observation","Prediction"], ans:1},
+{topic:"1.3 Scientific Investigation", q:"In an experiment, the variable that is deliberately changed by the investigator is called the:", opts:["Constant variable","Manipulated variable","Responding variable","Controlled variable"], ans:1},
+
+{topic:"1.4 Physical Quantities and Units", q:"The SI unit for length is the:", opts:["Kilogram","Metre","Second","Ampere"], ans:1},
+{topic:"1.4 Physical Quantities and Units", q:"The SI unit for mass is the:", opts:["Newton","Kilogram","Metre","Kelvin"], ans:1},
+{topic:"1.4 Physical Quantities and Units", q:"The SI unit for time is the:", opts:["Kelvin","Second","Ampere","Metre"], ans:1},
+{topic:"1.4 Physical Quantities and Units", q:"The prefix \"kilo\" represents a numerical value of:", opts:["0.001","1,000","1,000,000","0.1"], ans:1},
+{topic:"1.4 Physical Quantities and Units", q:"In standard form, a quantity is written as a × 10ⁿ, where a must be:", opts:["Any number","Between 1 and 10","Greater than 10","A negative number"], ans:1},
+
+{topic:"1.5 The Concept of Mass", q:"The weight of an object is defined as:", opts:["The amount of matter contained in the object","The pull of the Earth's gravitational force on the object","A quantity that is always the same everywhere","Always measured in kilograms"], ans:1},
+{topic:"1.5 The Concept of Mass", q:"The mass of an object is defined as:", opts:["The pull of gravity on the object","The quantity of matter contained in the object, which stays constant everywhere","A quantity that changes according to location","Always measured in Newtons"], ans:1},
+{topic:"1.5 The Concept of Mass", q:"Weight is typically measured using a:", opts:["Lever balance","Spring balance or compression balance","Beam balance only","Electronic balance only"], ans:1},
+{topic:"1.5 The Concept of Mass", q:"An object with a mass of 1 kg has a weight of approximately:", opts:["1 N","10 N","100 N","0.1 N"], ans:1}
+];
+
+const quizDiv = document.getElementById('quiz');
+let lastTopic = "";
+questions.forEach((item, i)=>{
+  if(item.topic !== lastTopic){
+    const th = document.createElement('h3');
+    th.className = 'topic-header';
+    th.textContent = item.topic;
+    quizDiv.appendChild(th);
+    lastTopic = item.topic;
+  }
+  const qDiv = document.createElement('div');
+  qDiv.className='question';
+  qDiv.innerHTML = `<div class="q-text"><span class="q-number">${i+1}.</span>${item.q}</div>
+    <div class="options" id="opts-${i}">
+      ${item.opts.map((o,j)=>`<label><input type="radio" name="q${i}" value="${j}"> ${String.fromCharCode(65+j)}. ${o}</label>`).join('')}
+    </div>`;
+  quizDiv.appendChild(qDiv);
+});
+
+function gradeQuiz(){
+  let score = 0;
+  questions.forEach((item,i)=>{
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    const optsContainer = document.getElementById(`opts-${i}`);
+    const labels = optsContainer.querySelectorAll('label');
+    labels.forEach((lab, j)=>{
+      lab.classList.remove('correct','incorrect');
+      if(j === item.ans){ lab.classList.add('correct'); }
+    });
+    if(selected){
+      const chosen = parseInt(selected.value);
+      if(chosen === item.ans){ score++; }
+      else{ labels[chosen].classList.add('incorrect'); }
+    }
+  });
+  const box = document.getElementById('scoreBox');
+  box.style.display='block';
+  box.innerHTML = `Score: ${score} / ${questions.length}<span>Correct answers are highlighted in green. Your incorrect selections are shown in red.</span>`;
+  box.scrollIntoView({behavior:'smooth', block:'center'});
+}
+</script>
+
+</body>
+</html>

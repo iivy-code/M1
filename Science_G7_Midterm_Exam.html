@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Grade 7 Science — Midterm Exam (Chapter 5: Matter)</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E2761;
+    --navy-dark:#0D1B2A;
+    --accent:#1565C0;
+    --bg:#F5F5F5;
+    --text:#1A1A1A;
+    --grey:#666666;
+    --border:#D6DCE4;
+    --green:#1E7E34;
+    --red:#B02A2A;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:'Sarabun','TH Sarabun New',Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    margin:0;
+    padding:0 0 60px 0;
+    font-size:15px;
+    line-height:1.5;
+  }
+  header{
+    background:var(--navy-dark);
+    color:#fff;
+    padding:28px 24px;
+    text-align:center;
+  }
+  header h1{
+    margin:0 0 6px 0;
+    font-size:22px;
+    font-weight:700;
+  }
+  header p{
+    margin:2px 0;
+    font-size:13px;
+    color:#CADCFC;
+  }
+  .container{
+    max-width:820px;
+    margin:0 auto;
+    padding:0 20px;
+  }
+  .info-bar{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:14px 18px;
+    margin-top:20px;
+    font-size:13px;
+    color:var(--grey);
+  }
+  .info-bar strong{color:var(--navy);}
+  .name-row{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-top:16px;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:14px 18px;
+    font-size:13px;
+  }
+  .name-row label{margin-right:6px;color:var(--grey);}
+  .name-row input{
+    border:none;
+    border-bottom:1px solid var(--border);
+    font-family:inherit;
+    font-size:13px;
+    padding:2px 4px;
+    width:220px;
+  }
+  h2.section-title{
+    font-size:16px;
+    color:var(--navy);
+    border-bottom:2px solid var(--navy);
+    padding-bottom:6px;
+    margin:32px 0 16px 0;
+  }
+  .question{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:16px 18px;
+    margin-bottom:12px;
+  }
+  .question .q-text{
+    font-weight:600;
+    margin-bottom:10px;
+    font-size:14.5px;
+  }
+  .q-number{color:var(--accent); margin-right:6px;}
+  .options label{
+    display:block;
+    padding:6px 8px;
+    border-radius:4px;
+    cursor:pointer;
+    font-size:14px;
+  }
+  .options label:hover{background:#F2F5FA;}
+  .options input{margin-right:8px;}
+  .options label.correct{
+    background:#E7F3EA;
+    color:var(--green);
+    font-weight:600;
+  }
+  .options label.incorrect{
+    background:#FBEAEA;
+    color:var(--red);
+    font-weight:600;
+  }
+  .btn-row{
+    text-align:center;
+    margin:30px 0;
+  }
+  button{
+    font-family:inherit;
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    padding:12px 32px;
+    font-size:15px;
+    font-weight:600;
+    border-radius:4px;
+    cursor:pointer;
+  }
+  button:hover{background:var(--accent);}
+  #scoreBox{
+    display:none;
+    max-width:820px;
+    margin:0 auto 20px auto;
+    background:var(--navy-dark);
+    color:#fff;
+    text-align:center;
+    padding:18px;
+    border-radius:6px;
+    font-size:17px;
+    font-weight:700;
+  }
+  #scoreBox span{color:#CADCFC;font-weight:400; font-size:13px; display:block; margin-top:4px;}
+  footer{
+    text-align:center;
+    font-size:12px;
+    color:var(--grey);
+    margin-top:40px;
+  }
+  .topic-tag{
+    display:inline-block;
+    font-size:10px;
+    color:var(--grey);
+    border:1px solid var(--border);
+    border-radius:3px;
+    padding:1px 6px;
+    margin-left:8px;
+    vertical-align:middle;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Grade 7 Science — Midterm Exam</h1>
+  <p>Chapter 5: Matter, Atomic Structure &amp; Radioactive Elements</p>
+</header>
+
+<div class="container">
+
+  <div class="info-bar">
+    <div><strong>Part 1:</strong> Multiple Choice — 50 items</div>
+    <div><strong>Time:</strong> 25 minutes (suggested)</div>
+    <div><strong>Total:</strong> 50 points</div>
+  </div>
+
+  <div class="name-row">
+    <div><label>Name:</label><input type="text"></div>
+    <div><label>Class:</label><input type="text" style="width:100px;"></div>
+    <div><label>Date:</label><input type="text" style="width:120px;"></div>
+  </div>
+
+  <h2 class="section-title">Instructions</h2>
+  <p style="font-size:13.5px;color:var(--grey);">Choose the <strong>one best answer</strong> for each question. Click "Check My Answers" at the end to see your score and the correct answers highlighted in green.</p>
+
+  <h2 class="section-title">Questions</h2>
+  <div id="quiz"></div>
+
+  <div class="btn-row">
+    <button onclick="gradeQuiz()">Check My Answers</button>
+  </div>
+
+  <div id="scoreBox"></div>
+
+  <footer>
+    Prepared for Grade 7 (M.1) Science Midterm Review — Chapter 5: Matter
+  </footer>
+</div>
+
+<script>
+const questions = [
+{q:"Which of the following is NOT a subatomic particle found in an atom?", opts:["Proton","Neutron","Electron","Molecule"], ans:3, topic:"Atom"},
+{q:"What is the term for a substance made of only one type of atom?", opts:["Compound","Element","Mixture","Solution"], ans:1, topic:"Matter"},
+{q:"A compound is formed when:", opts:["Two or more elements chemically combine","Two substances are physically mixed","A single atom exists alone","A mixture separates by filtration"], ans:0, topic:"Matter"},
+{q:"Which of the following is a homogeneous mixture?", opts:["Sand and water","Oil and water","Salt solution","Muddy water"], ans:2, topic:"Matter"},
+{q:"Solution and colloid are classified together as:", opts:["Heterogeneous mixtures","Homogeneous mixtures","Pure substances","Compounds"], ans:1, topic:"Matter"},
+{q:"Suspension is classified as a:", opts:["Homogeneous mixture","Heterogeneous mixture","Element","Compound"], ans:1, topic:"Matter"},
+{q:"Which of the following is an example of a pure substance?", opts:["Air","Salad","Oxygen gas","Soil"], ans:2, topic:"Matter"},
+{q:"Matter is generally first divided into:", opts:["Solid and liquid","Pure substance and mixture","Metal and non-metal","Atom and molecule"], ans:1, topic:"Matter"},
+{q:"The center of an atom is called the:", opts:["Electron cloud","Nucleus","Shell","Orbit"], ans:1, topic:"Atom"},
+{q:"Which particle has a positive charge?", opts:["Electron","Neutron","Proton","Photon"], ans:2, topic:"Atom"},
+{q:"Which particle has no electric charge?", opts:["Proton","Electron","Neutron","Ion"], ans:2, topic:"Atom"},
+{q:"Electrons are located:", opts:["Inside the nucleus","Orbiting around the nucleus","Fused with protons","Completely outside the atom"], ans:1, topic:"Atom"},
+{q:"The symbol e⁻ represents:", opts:["Proton","Neutron","Electron","Nucleus"], ans:2, topic:"Atom"},
+{q:"The symbol p⁺ represents:", opts:["Proton","Neutron","Electron","Positron"], ans:0, topic:"Atom"},
+{q:"The symbol n° represents:", opts:["Proton","Neutron","Electron","Nitrogen"], ans:1, topic:"Atom"},
+{q:"In a nuclear symbol, the top number represents the:", opts:["Atomic number","Mass number","Number of electrons","Number of neutrons"], ans:1, topic:"Nuclear Symbol"},
+{q:"In a nuclear symbol, the bottom number represents the:", opts:["Mass number","Atomic number","Number of neutrons only","Ionic charge"], ans:1, topic:"Nuclear Symbol"},
+{q:"Atomic number equals the number of:", opts:["Neutrons","Protons","Mass units","Electrons in an ion"], ans:1, topic:"Nuclear Symbol"},
+{q:"For a neutral atom, the number of electrons equals the number of:", opts:["Neutrons","Protons","Mass number","Isotopes"], ans:1, topic:"Nuclear Symbol"},
+{q:"Number of neutrons is calculated as:", opts:["Mass number − Atomic number","Mass number + Atomic number","Atomic number − Mass number","Atomic number only"], ans:0, topic:"Nuclear Symbol"},
+{q:"Mercury (Hg) has Mass no. = 201 and Atomic no. = 80. How many neutrons does it have?", opts:["80","121","201","281"], ans:1, topic:"Nuclear Symbol"},
+{q:"Sodium (Na) has Mass no. = 23 and Atomic no. = 11. How many protons does it have?", opts:["11","12","23","34"], ans:0, topic:"Nuclear Symbol"},
+{q:"A sodium ion (Na⁺) still has 11 protons but only 10 electrons because it has:", opts:["Gained a neutron","Lost one electron","Lost one proton","Gained one electron"], ans:1, topic:"Nuclear Symbol"},
+{q:"If an atom has Atomic no. = 11 and loses 1 electron to form an ion, how many electrons remain?", opts:["12","11","10","9"], ans:2, topic:"Nuclear Symbol"},
+{q:"Which group below consists entirely of metals?", opts:["O, N, S","Fe, Cu, Hg, Ag, Au","B, Si, As","Ne, Ar, Kr"], ans:1, topic:"Classification"},
+{q:"Which group below consists entirely of non-metals?", opts:["Fe, Cu","O, N, S","B, Si","Ag, Au"], ans:1, topic:"Classification"},
+{q:"Which group below consists entirely of metalloids?", opts:["B, Si, As, Ge","Fe, Hg","O, N","Na, Ca"], ans:0, topic:"Classification"},
+{q:"Metalloids have properties that are:", opts:["Entirely metallic","Entirely non-metallic","Intermediate between metal and non-metal","Radioactive only"], ans:2, topic:"Classification"},
+{q:"Radioactive elements are characterized by having:", opts:["Stable nuclei","Unstable nuclei","No neutrons","No protons"], ans:1, topic:"Radioactivity"},
+{q:"Isotopes are atoms of the same element with:", opts:["The same number of protons but different numbers of neutrons","The same number of neutrons but different protons","The same mass number only","Different elements entirely"], ans:0, topic:"Radioactivity"},
+{q:"Isotones are atoms that have:", opts:["The same number of protons","The same number of neutrons","The same mass number","The same number of electrons"], ans:1, topic:"Radioactivity"},
+{q:"Isobars are atoms that have:", opts:["The same number of protons","The same number of neutrons","The same mass number","The same atomic number"], ans:2, topic:"Radioactivity"},
+{q:"Which type of radiation has the greatest penetrating power?", opts:["Alpha","Beta","Gamma","None penetrate matter"], ans:2, topic:"Radiation"},
+{q:"Which type of radiation can be stopped by a sheet of paper?", opts:["Alpha","Beta","Gamma","X-ray"], ans:0, topic:"Radiation"},
+{q:"Which type of radiation is stopped by aluminum but passes through paper?", opts:["Alpha","Beta","Gamma","None of these"], ans:1, topic:"Radiation"},
+{q:"Which type of radiation requires thick lead to be blocked?", opts:["Alpha","Beta","Gamma","Alpha and Beta"], ans:2, topic:"Radiation"},
+{q:"In an electric field, alpha particles are deflected toward the:", opts:["Positive electrode","Negative electrode","They are not deflected","Upward only, regardless of charge"], ans:1, topic:"Radiation"},
+{q:"In an electric field, beta particles are deflected toward the:", opts:["Positive electrode","Negative electrode","They are not deflected","Same direction as alpha particles"], ans:0, topic:"Radiation"},
+{q:"In an electric field, gamma rays are:", opts:["Strongly deflected toward the positive electrode","Strongly deflected toward the negative electrode","Not deflected, since they carry no charge","Deflected randomly"], ans:2, topic:"Radiation"},
+{q:"The symbol α represents:", opts:["Alpha radiation","Beta radiation","Gamma radiation","Atomic radiation"], ans:0, topic:"Radiation"},
+{q:"The symbol γ represents:", opts:["Alpha radiation","Beta radiation","Gamma radiation","Ground state energy"], ans:2, topic:"Radiation"},
+{q:"Cobalt-60 (Co-60) is commonly used for:", opts:["Sterilizing food only","Cancer treatment","Fertilizer production","Making jewelry"], ans:1, topic:"Uses"},
+{q:"Iodine-131 (I-131) is used in medicine primarily for:", opts:["Bone strengthening","Cancer treatment / medical diagnosis","Food sterilization only","Battery production"], ans:1, topic:"Uses"},
+{q:"Radioactive isotopes such as Na-24 and C-14 are typically used for:", opts:["Cancer treatment and food sterilization","Making batteries","Jewelry making","Thermometers"], ans:0, topic:"Uses"},
+{q:"Oxygen (O) is essential for:", opts:["Photosynthesis pigment","Respiration and combustion","Making batteries","Bone structure"], ans:1, topic:"Uses"},
+{q:"Magnesium (Mg) is a key component of:", opts:["Chlorophyll","Bone","Table salt","Fertilizer"], ans:0, topic:"Uses"},
+{q:"Calcium (Ca) is important for:", opts:["Chlorophyll","Bone structure","Fertilizer","Electric wire"], ans:1, topic:"Uses"},
+{q:"Which element is widely used to manufacture computer chips?", opts:["Silicon (Si)","Sodium (Na)","Iron (Fe)","Helium (He)"], ans:0, topic:"Uses"},
+{q:"In table salt (NaCl), the ratio of Na to Cl atoms is:", opts:["2:1","1:2","1:1","3:1"], ans:2, topic:"Compounds"},
+{q:"In water (H₂O), the ratio of Hydrogen to Oxygen atoms is:", opts:["1:1","1:2","2:1","3:1"], ans:2, topic:"Compounds"}
+];
+
+const quizDiv = document.getElementById('quiz');
+questions.forEach((item, i)=>{
+  const qDiv = document.createElement('div');
+  qDiv.className='question';
+  qDiv.innerHTML = `<div class="q-text"><span class="q-number">${i+1}.</span>${item.q}<span class="topic-tag">${item.topic}</span></div>
+    <div class="options" id="opts-${i}">
+      ${item.opts.map((o,j)=>`<label><input type="radio" name="q${i}" value="${j}"> ${String.fromCharCode(65+j)}. ${o}</label>`).join('')}
+    </div>`;
+  quizDiv.appendChild(qDiv);
+});
+
+function gradeQuiz(){
+  let score = 0;
+  questions.forEach((item,i)=>{
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    const optsContainer = document.getElementById(`opts-${i}`);
+    const labels = optsContainer.querySelectorAll('label');
+    labels.forEach((lab, j)=>{
+      lab.classList.remove('correct','incorrect');
+      if(j === item.ans){ lab.classList.add('correct'); }
+    });
+    if(selected){
+      const chosen = parseInt(selected.value);
+      if(chosen === item.ans){ score++; }
+      else{ labels[chosen].classList.add('incorrect'); }
+    }
+  });
+  const box = document.getElementById('scoreBox');
+  box.style.display='block';
+  box.innerHTML = `Score: ${score} / ${questions.length}<span>Correct answers are highlighted in green. Your incorrect selections are shown in red.</span>`;
+  box.scrollIntoView({behavior:'smooth', block:'center'});
+}
+</script>
+
+</body>
+</html>
