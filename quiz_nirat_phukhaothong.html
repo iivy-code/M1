@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>แบบทดสอบ นิราศภูเขาทอง</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0D1B2A; --navy2:#16273D; --gold:#C9A227; --gold-light:#E7CE7A;
+    --cream:#F6F1E4; --ink:#1A1A1A; --grey:#6B6B6B; --green:#2E7D32; --red:#B3261E;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:'Sarabun',sans-serif; background:var(--navy);
+    color:var(--ink); min-height:100vh;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:28px 18px 60px;}
+  header{text-align:center;color:var(--cream);margin-bottom:18px;}
+  header h1{font-size:22px;font-weight:800;margin:0 0 4px;color:var(--gold-light);}
+  header p{font-size:13px;margin:0;color:#B9C2CE;}
+
+  /* river progress */
+  .river{position:relative;height:46px;margin:20px 0 26px;}
+  .river svg{width:100%;height:100%;display:block;}
+  .river-track{fill:none;stroke:#2A3B4E;stroke-width:4;stroke-dasharray:2 8;stroke-linecap:round;}
+  .river-fill{fill:none;stroke:var(--gold);stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset .5s ease;}
+  .boat{position:absolute;top:6px;font-size:20px;transition:left .5s ease;transform:translateX(-50%);}
+  .qcount{text-align:center;color:var(--gold-light);font-size:13px;font-weight:600;margin-bottom:6px;}
+
+  .card{
+    background:var(--cream); border-radius:10px; padding:24px 22px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35); border:1px solid #E4DCC4;
+  }
+  .cat{
+    display:inline-block; font-size:11px; font-weight:700; letter-spacing:.03em;
+    color:var(--navy); background:var(--gold-light); padding:3px 10px; border-radius:20px; margin-bottom:12px;
+  }
+  .qtext{font-size:16px;font-weight:700;line-height:1.6;margin:0 0 16px;color:var(--navy);}
+  .choices{display:flex;flex-direction:column;gap:9px;}
+  .choice{
+    text-align:left; padding:11px 14px; border:1.5px solid #D8CFB0; background:#FFFEF9;
+    border-radius:7px; font-family:'Sarabun',sans-serif; font-size:14.5px; cursor:pointer;
+    transition:.15s; color:var(--ink);
+  }
+  .choice:hover:not(.locked){border-color:var(--gold); background:#FBF3DD;}
+  .choice.correct{background:#E5F3E6;border-color:var(--green);color:var(--green);font-weight:700;}
+  .choice.wrong{background:#FBE7E6;border-color:var(--red);color:var(--red);font-weight:700;}
+  .choice.locked{cursor:default;}
+
+  .explain{
+    margin-top:14px; padding:12px 14px; background:#F0EAD6; border-left:4px solid var(--gold);
+    border-radius:4px; font-size:13.5px; line-height:1.6; display:none; color:#3A3120;
+  }
+  .explain.show{display:block;}
+
+  .nav{display:flex;justify-content:space-between;align-items:center;margin-top:20px;}
+  .btn{
+    font-family:'Sarabun',sans-serif; font-weight:700; font-size:14px; padding:10px 20px;
+    border-radius:7px; border:none; cursor:pointer; transition:.15s;
+  }
+  .btn-primary{background:var(--gold);color:var(--navy);}
+  .btn-primary:hover{background:var(--gold-light);}
+  .btn-primary:disabled{background:#4A4636;color:#8a8570;cursor:not-allowed;}
+  .btn-ghost{background:transparent;color:var(--cream);border:1px solid #445569;}
+  .btn-ghost:hover{border-color:var(--gold);}
+
+  .result{text-align:center;color:var(--cream);}
+  .result .score{font-size:52px;font-weight:800;color:var(--gold-light);margin:8px 0;}
+  .result .sub{color:#B9C2CE;font-size:14px;margin-bottom:20px;}
+  .breakdown{
+    background:var(--cream);border-radius:10px;padding:18px 20px;text-align:left;
+    color:var(--navy);margin-top:10px;
+  }
+  .breakdown h3{margin:0 0 10px;font-size:14px;color:var(--navy);}
+  .breakdown .row{display:flex;justify-content:space-between;font-size:13.5px;padding:5px 0;border-bottom:1px dashed #D8CFB0;}
+  .breakdown .row:last-child{border-bottom:none;}
+  .restart{margin-top:22px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>⛩ แบบทดสอบ นิราศภูเขาทอง</h1>
+    <p>วรรณคดีลำนำ — สุนทรภู่ | 40 ข้อ พร้อมเฉลยและคำอธิบาย</p>
+  </header>
+
+  <div id="quizArea">
+    <div class="qcount" id="qcount">ข้อที่ 1 / 40</div>
+    <div class="river">
+      <svg viewBox="0 0 700 40" preserveAspectRatio="none">
+        <path class="river-track" d="M10,20 Q175,5 350,20 T690,20"/>
+        <path class="river-fill" id="riverFill" d="M10,20 Q175,5 350,20 T690,20"
+              stroke-dasharray="1000" stroke-dashoffset="1000"/>
+      </svg>
+      <div class="boat" id="boat" style="left:1%;">🚣</div>
+    </div>
+
+    <div class="card">
+      <div class="cat" id="qcat">หมวดหมู่</div>
+      <p class="qtext" id="qtext">คำถาม</p>
+      <div class="choices" id="choices"></div>
+      <div class="explain" id="explain"></div>
+      <div class="nav">
+        <button class="btn btn-ghost" id="skipBtn">ข้าม →</button>
+        <button class="btn btn-primary" id="nextBtn" disabled>ข้อถัดไป →</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="resultArea" style="display:none;">
+    <div class="result">
+      <p>คุณทำแบบทดสอบเสร็จแล้ว!</p>
+      <div class="score" id="scoreText">0/40</div>
+      <div class="sub" id="scoreMsg"></div>
+      <div class="breakdown" id="breakdown"></div>
+      <button class="btn btn-primary restart" id="restartBtn">ทำแบบทดสอบอีกครั้ง</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = [
+{c:"ผู้แต่ง/ประวัติ",q:"นิราศภูเขาทองเป็นผลงานของกวีท่านใด?",ch:["ศรีปราชญ์","สุนทรภู่","เจ้าฟ้าธรรมธิเบศร","พระยาตรัง"],a:1,e:"สุนทรภู่เป็นผู้แต่งนิราศภูเขาทอง ได้รับยกย่องเป็นกวีสี่แผ่นดิน (ร.1–ร.4)"},
+{c:"ผู้แต่ง/ประวัติ",q:"สุนทรภู่เกิดวันที่เท่าใด?",ch:["26 มิถุนายน 2329","15 สิงหาคม 2328","1 มกราคม 2330","26 กรกฎาคม 2329"],a:0,e:"สุนทรภู่เกิดวันที่ 26 มิถุนายน พ.ศ. 2329 ซึ่งภายหลังกำหนดเป็น 'วันสุนทรภู่'"},
+{c:"ผู้แต่ง/ประวัติ",q:"นิราศภูเขาทองสันนิษฐานว่าแต่งขึ้นในรัชสมัยใด?",ch:["รัชกาลที่ 1","รัชกาลที่ 2","รัชกาลที่ 3","รัชกาลที่ 4"],a:2,e:"สมเด็จฯ กรมพระยาดำรงราชานุภาพทรงสันนิษฐานว่าสุนทรภู่แต่งนิราศภูเขาทองในสมัยรัชกาลที่ 3"},
+{c:"ผู้แต่ง/ประวัติ",q:"ขณะแต่งนิราศภูเขาทอง สุนทรภู่อยู่ในสถานะใด?",ch:["ข้าราชสำนัก","พ่อค้า","ภิกษุ","ขุนนาง"],a:2,e:"สุนทรภู่แต่งเรื่องนี้ขณะบวชเป็นภิกษุ จึงมีการคร่ำครวญถึงนางในเนื้อเรื่องแบบสมมติขึ้น"},
+{c:"ผู้แต่ง/ประวัติ",q:"ใครร่วมเดินทางไปกับสุนทรภู่ในนิราศภูเขาทอง?",ch:["หนูพัด บุตรชาย","ภรรยา","ศิษย์วัด","เพื่อนกวี"],a:0,e:"สุนทรภู่เดินทางไปกับ 'หนูพัด' บุตรชายซึ่งยังเป็นเด็กอยู่"},
+{c:"ผู้แต่ง/ประวัติ",q:"พาหนะที่ใช้เดินทางในนิราศภูเขาทองคือ?",ch:["ม้า","เกวียน","เรือแจว","เรือสำเภา"],a:2,e:"สุนทรภู่ใช้เรือแจวล่องไปตามลำน้ำเจ้าพระยา"},
+{c:"ผู้แต่ง/ประวัติ",q:"วรรณคดีสโมสรยกย่องนิราศภูเขาทองว่าอย่างไร?",ch:["ยอดของบทละคร","ยอดของกลอนนิราศ","ยอดของโคลงสี่สุภาพ","ยอดของฉันท์"],a:1,e:"วรรณคดีสโมสรยกย่องนิราศภูเขาทองเป็น 'ยอดของกลอนนิราศ' เพราะสำนวนกลอนโดดเด่น"},
+{c:"ผู้แต่ง/ประวัติ",q:"สุนทรภู่ถึงแก่กรรมเมื่อ พ.ศ. ใด สิริอายุเท่าใด?",ch:["พ.ศ. 2398 อายุ 69 ปี","พ.ศ. 2394 อายุ 60 ปี","พ.ศ. 2400 อายุ 71 ปี","พ.ศ. 2385 อายุ 56 ปี"],a:0,e:"สุนทรภู่ถึงแก่กรรมเมื่อ พ.ศ. 2398 สิริอายุได้ 69 ปี"},
+{c:"ผู้แต่ง/ประวัติ",q:"UNESCO ยกย่องสุนทรภู่ว่าอย่างไร?",ch:["ศิลปินแห่งชาติ","บุคคลสำคัญของโลกด้านวรรณกรรม","กวีเอกแห่งเอเชีย","ครูภาษาไทยดีเด่น"],a:1,e:"ปี พ.ศ. 2529 (ครบ 200 ปีชาตกาล) UNESCO ยกย่องสุนทรภู่เป็นบุคคลสำคัญของโลกด้านวรรณกรรม"},
+{c:"ผู้แต่ง/ประวัติ",q:"ผลงานเรื่องแรกของสุนทรภู่คือเรื่องใด?",ch:["นิราศภูเขาทอง","นิราศเมืองแกลง","พระอภัยมณี","นิราศพระบาท"],a:1,e:"นิราศเมืองแกลงเป็นนิราศเรื่องแรกของสุนทรภู่"},
+{c:"เส้นทาง/สถานที่",q:"สุนทรภู่ออกเดินทางจากที่ใด?",ch:["วัดอรุณราชวราราม","วัดราชบุรณะ (วัดเลียบ)","วัดพระเชตุพนฯ","วัดสุทัศน์"],a:1,e:"การเดินทางเริ่มต้นจากวัดราชบุรณะ หรือ 'วัดเลียบ' กรุงเทพฯ"},
+{c:"เส้นทาง/สถานที่",q:"จุดหมายปลายทางของนิราศภูเขาทองคือที่ใด?",ch:["วัดพระแก้ว","เจดีย์ภูเขาทอง จ.พระนครศรีอยุธยา","วัดไชยวัฒนาราม","เจดีย์ชัยมงคล"],a:1,e:"สุนทรภู่เดินทางไปนมัสการพระบรมธาตุที่เจดีย์ภูเขาทอง จังหวัดพระนครศรีอยุธยา"},
+{c:"เส้นทาง/สถานที่",q:"'วัดประโคนปัก' ในนิราศ ปัจจุบันคือวัดใด?",ch:["วัดดุสิตาราม","วัดเขมาภิรตาราม","วัดพระเมรุ","วัดอรุณฯ"],a:0,e:"วัดประโคนปัก เดิมชื่อวัดเสาประโคน ปัจจุบันคือวัดดุสิตาราม"},
+{c:"เส้นทาง/สถานที่",q:"'ตลาดขวัญ' ที่กล่าวในนิราศ ปัจจุบันอยู่จังหวัดใด?",ch:["ปทุมธานี","นนทบุรี","อยุธยา","สมุทรปราการ"],a:1,e:"ตลาดขวัญปัจจุบันอยู่ในจังหวัดนนทบุรี"},
+{c:"เส้นทาง/สถานที่",q:"'สามโคก' ในนิราศ ปัจจุบันคือจังหวัดใด?",ch:["นนทบุรี","ปทุมธานี","อยุธยา","สุพรรณบุรี"],a:1,e:"สามโคกถูกเปลี่ยนชื่อเป็น 'ปทุมธานี' ในเวลาต่อมา"},
+{c:"เส้นทาง/สถานที่",q:"ใครเป็นผู้เปลี่ยนชื่อ 'สามโคก' เป็น 'ปทุมธานี'?",ch:["รัชกาลที่ 1","รัชกาลที่ 2","รัชกาลที่ 3","รัชกาลที่ 4"],a:1,e:"พระบาทสมเด็จพระพุทธเลิศหล้านภาลัย (ร.2) ทรงเปลี่ยนชื่อสามโคกเป็นปทุมธานีเพราะมีดอกบัวมาก"},
+{c:"เส้นทาง/สถานที่",q:"สิ่งสำคัญที่ 'เกาะเกร็ด' ในนิราศคือสิ่งใด?",ch:["พระเจดีย์มุเตา วัดปรมัยยิกาวาส","วัดพระแก้ว","เจดีย์ภูเขาทอง","วัดอรุณฯ"],a:0,e:"เกาะเกร็ดมีพระเจดีย์มุเตา วัดปรมัยยิกาวาส เป็นสัญลักษณ์สำคัญของจังหวัดนนทบุรี"},
+{c:"เส้นทาง/สถานที่",q:"บทตอน 'ถึงบ้านงิ้ว' สุนทรภู่กล่าวสอนเรื่องใด?",ch:["การพูดจา","การไม่ทำชู้","การค้าขาย","ความรัก"],a:1,e:"บทบ้านงิ้วสอนไม่ให้ประพฤติผิดในกาม เพราะเชื่อว่าจะตกนรกต้องปีนต้นงิ้ว"},
+{c:"เส้นทาง/สถานที่",q:"ในขากลับ สุนทรภู่กล่าวถึงวัดใด?",ch:["วัดอรุณราชวราราม","วัดสุทัศน์","วัดโพธิ์","วัดบวรนิเวศ"],a:0,e:"ขากลับสุนทรภู่กล่าวถึงวัดอรุณราชวราราม ราชวรมหาวิหาร กรุงเทพฯ"},
+{c:"เส้นทาง/สถานที่",q:"เจดีย์ภูเขาทองมีฐานเป็นรูปแบบใด?",ch:["ฐานประทักษิณสี่เหลี่ยมซ้อนลดหลั่น","ฐานกลม","ฐานแปดเหลี่ยม","ฐานบัวเดี่ยว"],a:0,e:"เจดีย์ภูเขาทองมีฐานประทักษิณสี่เหลี่ยมซ้อนลดหลั่นหลายชั้น เป็นรูปแบบเจดีย์อยุธยา"},
+{c:"เส้นทาง/สถานที่",q:"หลังจากออกจากวัดเขมา สุนทรภู่ผ่านสถานที่ใดก่อนถึงเกาะเกร็ด?",ch:["บางธรณี ตลาดขวัญ ตลาดแก้ว","บางจาก บางพลู","วัดพระเมรุ","จวนเจ้าเมือง"],a:0,e:"เส้นทางผ่านวัดเขมา บ้านญวน ตลาดแก้ว ตลาดขวัญ บางธรณี ก่อนถึงเกาะเกร็ด"},
+{c:"ศัพท์ยาก",q:"'ขวาก' หมายถึงอะไร?",ch:["เรือชนิดหนึ่ง","ไม้/เหล็กปลายแหลมสำหรับดักผู้ผ่าน","เครื่องดักปลา","ชื่อต้นไม้"],a:1,e:"ขวาก คือไม้หรือเหล็กปลายแหลมที่ปักหรือโปรยไว้เพื่อดักหรือทำร้ายผู้ผ่านเข้าไป"},
+{c:"ศัพท์ยาก",q:"'ฐานบัทม์' หมายถึงอะไร?",ch:["ฐานบัวหน้ากระดานบัวคว่ำบัวหงาย","ฐานดอกบัวลอยน้ำ","ฐานเจดีย์ทรงกลม","ยอดเจดีย์"],a:0,e:"ฐานบัทม์ คือฐานบัวหน้ากระดานบัวคว่ำบัวหงาย ส่วนหนึ่งของสถาปัตยกรรมเจดีย์"},
+{c:"ศัพท์ยาก",q:"'ประทักษิณ' หมายถึงอะไร?",ch:["การเวียนซ้าย","การเวียนขวา","การกราบไหว้","การเดินตรง"],a:1,e:"ประทักษิณ คือการเวียนขวา โดยให้สิ่งที่นับถืออยู่ทางขวาของผู้เวียน"},
+{c:"ศัพท์ยาก",q:"'สวาท' ในบทกลอนหมายถึงอะไร?",ch:["โกรธ","รัก ยินดี พอใจ","เศร้าโศก","อิจฉา"],a:1,e:"สวาท ในบริบทนี้หมายถึง รัก ยินดี หรือพอใจ"},
+{c:"ศัพท์ยาก",q:"'อัประมาณ' หมายถึงอะไร?",ch:["น่าอับอาย","น่ายินดี","น่าสงสาร","น่าประหลาดใจ"],a:0,e:"อัประมาณ หมายถึง น่าอับอาย"},
+{c:"ศัพท์ยาก",q:"'เพียญชนัง' ในบทกลอนใช้คู่กับคำใด และหมายถึงอะไร?",ch:["คู่กับ 'สูปะ' หมายถึงกับข้าวที่ไม่ใช่แกง","คู่กับ 'ข้าว' หมายถึงของหวาน","คู่กับ 'น้ำ' หมายถึงเครื่องดื่ม","คู่กับ 'ผลไม้' หมายถึงของว่าง"],a:0,e:"เพียญชนังมาจาก 'พยัญชนะ' หมายถึงกับข้าวที่ไม่ใช่แกง ใช้คู่กับ 'สูปะ' คือของกินที่เป็นน้ำ"},
+{c:"ศัพท์ยาก",q:"'เครื่องอัฏฐะ' หมายถึงอะไร?",ch:["เครื่องประดับสตรี","เครื่องใช้สอยของพระภิกษุ (อัฐบริขาร)","เครื่องดนตรีไทย","เครื่องมือจับปลา"],a:1,e:"เครื่องอัฏฐะ คืออัฐบริขาร เครื่องใช้สอยของพระภิกษุในพระพุทธศาสนา มี 8 อย่าง เช่น บาตร จีวร"},
+{c:"ศัพท์ยาก",q:"'โพงพาง' คืออุปกรณ์ประเภทใด?",ch:["เครื่องมือดักปลา","เครื่องมือทอผ้า","เครื่องมือทำนา","เครื่องมือแพทย์"],a:0,e:"โพงพางเป็นเครื่องมือดักปลาชนิดถุงตาข่ายรูปยาวรี ผูกกับเสาปักขวางลำน้ำ"},
+{c:"ศัพท์ยาก",q:"'จับเขม่า' หมายถึงอะไร?",ch:["วิธีแต่งผมของหญิงโบราณให้ดำ","วิธีเก็บเกี่ยวข้าว","วิธีจับปลา","วิธีทอผ้า"],a:0,e:"จับเขม่า คือวิธีแต่งผมของหญิงสมัยโบราณ โดยนำผงสีดำผสมน้ำมันตานีทาให้ผมดำ"},
+{c:"ศัพท์ยาก",q:"'นิโรธ' หมายถึงอะไร?",ch:["ความดับ นิพพาน","ความเกิด","ความสุข","ความรัก"],a:0,e:"นิโรธ หมายถึง ความดับ หรือนิพพาน หนึ่งในหลักธรรมอริยสัจ"},
+{c:"คุณค่า/ข้อคิด",q:"ลักษณะคำประพันธ์ของนิราศภูเขาทองคือประเภทใด?",ch:["โคลงสี่สุภาพ","กลอนนิราศ","ฉันท์","กาพย์"],a:1,e:"นิราศภูเขาทองแต่งด้วยกลอนนิราศ ซึ่งมีลักษณะคล้ายกลอนสุภาพ แต่ขึ้นต้นด้วยวรรครับและลงท้ายด้วยคำว่า 'เอย'"},
+{c:"คุณค่า/ข้อคิด",q:"กลอนนิราศขึ้นต้นบทแรกด้วยวรรคใด?",ch:["วรรคสดับ","วรรครับ (วรรคที่ 2)","วรรครอง","วรรคส่ง"],a:1,e:"กลอนนิราศมีลักษณะพิเศษคือขึ้นต้นบทด้วยวรรคที่ 2 หรือวรรครับ"},
+{c:"คุณค่า/ข้อคิด",q:"บทกลอนตอนท้ายเรื่องของนิราศมักลงท้ายด้วยคำใด?",ch:["เทอญ","เอย","นะ","จ๊ะ"],a:1,e:"บทลงท้ายของกลอนนิราศมักจบด้วยคำว่า 'เอย' เป็นเอกลักษณ์"},
+{c:"คุณค่า/ข้อคิด",q:"บท 'ทั้งองค์ฐานรานร้าวถึงเก้าแฉก...คิดก็เป็นอนิจจังเสียทั้งนั้น' สะท้อนแนวคิดใด?",ch:["ความไม่เที่ยงแท้ของสรรพสิ่ง","ความรักที่มั่นคง","ความกตัญญู","ความขยันหมั่นเพียร"],a:0,e:"บทนี้สะท้อนแนวคิดเรื่องอนิจจัง คือความไม่เที่ยงแท้แน่นอนของสรรพสิ่ง แม้แต่เจดีย์ที่สร้างขึ้นก็ยังร้าวชำรุดได้"},
+{c:"คุณค่า/ข้อคิด",q:"ไตรลักษณ์ในพระพุทธศาสนามีกี่ประการ อะไรบ้าง?",ch:["2 ประการ: สุข ทุกข์","3 ประการ: อนิจจัง ทุกขัง อนัตตา","4 ประการ: อริยสัจ 4","5 ประการ: ขันธ์ 5"],a:1,e:"ไตรลักษณ์มี 3 ประการ คือ อนิจจัง (ความไม่เที่ยง) ทุกขัง (ความเป็นทุกข์) และอนัตตา (ความไม่ใช่ตัวตนที่แท้จริง)"},
+{c:"คุณค่า/ข้อคิด",q:"บทกลอน 'ดูน้ำวิ่งกลิ้งเชี่ยวเป็นเกลียวกลอก' ใช้กลวิธีทางวรรณศิลป์ใดเด่นชัด?",ch:["การเล่นเสียงสัมผัสอักษรและสระ","การใช้อุปมา","การเล่นคำพ้อง","การใช้คำอัพภาส"],a:0,e:"บทนี้เล่นเสียงสัมผัสพยัญชนะและสระอย่างประณีต ทำให้เกิดจังหวะและภาพพจน์ของสายน้ำ"},
+{c:"คุณค่า/ข้อคิด",q:"'ไม่เมาเหล้าแล้วแต่เรายังเมารัก' ใช้กลวิธีทางวรรณศิลป์ใด?",ch:["การซ้ำคำ (เมา)","การเล่นสัมผัสสระ","การใช้คำอัพภาส","การเล่นคำพ้องเสียง"],a:0,e:"เป็นการซ้ำคำว่า 'เมา' เพื่อเน้นความหมายและสร้างโวหารที่คมคายติดใจผู้อ่าน"},
+{c:"คุณค่า/ข้อคิด",q:"'ถึงบางจากจากวัดพลัดพี่น้อง' เป็นการเล่นคำประเภทใด?",ch:["คำพ้องรูปพ้องเสียง (จาก)","คำซ้ำ","คำอัพภาส","คำอุปมา"],a:0,e:"เป็นการเล่นคำพ้องรูปพ้องเสียง คำว่า 'บางจาก' เป็นชื่อตำบล ส่วน 'จาก' คำที่สองหมายถึงการพรากจากไป"},
+{c:"คุณค่า/ข้อคิด",q:"บทตอน 'ถึงบางเดื่อ...เหมือนคนพาลหวานนอกย่อมขมใน' สอนเรื่องใด?",ch:["อย่าตัดสินคนจากรูปลักษณ์ภายนอก","อย่าโลภมาก","อย่าเกียจคร้าน","อย่าโกหก"],a:0,e:"บทนี้เปรียบคนพาลเหมือนมะเดื่อที่แลดูสวยแต่ข้างในมีหนอน สอนให้ระวังไม่หลงเชื่อรูปลักษณ์ภายนอก"},
+{c:"คุณค่า/ข้อคิด",q:"นิราศภูเขาทองสะท้อนภาพสังคมและวัฒนธรรมด้านใดบ้าง?",ch:["เฉพาะเรื่องความรักเท่านั้น","การค้าขาย การแต่งกาย ที่มาของชื่อสถานที่ การละเล่น สถาปัตยกรรม","เฉพาะสถาปัตยกรรมเท่านั้น","เฉพาะการเมืองการปกครอง"],a:1,e:"นิราศภูเขาทองสะท้อนภาพสังคมหลายด้าน ทั้งการค้าขาย การแต่งกาย ที่มาชื่อสถานที่ การละเล่น และสถาปัตยกรรม"},
+{c:"คุณค่า/ข้อคิด",q:"ข้อคิดสำคัญที่สุดจากนิราศภูเขาทองคือข้อใด?",ch:["ควรยึดติดกับชื่อเสียงลาภยศ","ไม่ควรยึดติดกับสิ่งใด เพราะทุกสิ่งไม่เที่ยงแท้แน่นอน","ควรเดินทางท่องเที่ยวบ่อย ๆ","ควรบวชเป็นภิกษุตลอดชีวิต"],a:1,e:"แก่นสำคัญของเรื่องคือการสอนให้ไม่ยึดติดกับสิ่งใด เพราะทุกสิ่งไม่เที่ยงแท้แน่นอน สอดคล้องกับหลักไตรลักษณ์"}
+];
+
+let current = 0, score = 0, answered = new Array(QUESTIONS.length).fill(null);
+const catStats = {};
+QUESTIONS.forEach(q=>{ if(!catStats[q.c]) catStats[q.c]={correct:0,total:0}; catStats[q.c].total++; });
+
+const qcount=document.getElementById('qcount'), qcat=document.getElementById('qcat'),
+      qtext=document.getElementById('qtext'), choicesEl=document.getElementById('choices'),
+      explainEl=document.getElementById('explain'), nextBtn=document.getElementById('nextBtn'),
+      skipBtn=document.getElementById('skipBtn'), riverFill=document.getElementById('riverFill'),
+      boat=document.getElementById('boat');
+
+function renderQuestion(){
+  const q = QUESTIONS[current];
+  qcount.textContent = `ข้อที่ ${current+1} / ${QUESTIONS.length}`;
+  qcat.textContent = q.c;
+  qtext.textContent = q.q;
+  choicesEl.innerHTML = '';
+  explainEl.classList.remove('show');
+  explainEl.textContent = '';
+  nextBtn.disabled = true;
+  skipBtn.style.display = 'inline-block';
+
+  q.ch.forEach((choice, idx)=>{
+    const btn = document.createElement('button');
+    btn.className = 'choice';
+    btn.textContent = choice;
+    btn.onclick = ()=> selectAnswer(idx);
+    choicesEl.appendChild(btn);
+  });
+
+  const pct = current / (QUESTIONS.length-1) * 100;
+  const len = riverFill.getTotalLength ? riverFill.getTotalLength() : 1000;
+  riverFill.style.strokeDasharray = len;
+  riverFill.style.strokeDashoffset = len - (len * (current/(QUESTIONS.length-1)));
+  boat.style.left = pct + '%';
+}
+
+function selectAnswer(idx){
+  if(answered[current] !== null) return;
+  const q = QUESTIONS[current];
+  answered[current] = idx;
+  const isCorrect = idx === q.a;
+  if(isCorrect){ score++; catStats[q.c].correct++; }
+
+  [...choicesEl.children].forEach((btn,i)=>{
+    btn.classList.add('locked');
+    if(i === q.a) btn.classList.add('correct');
+    else if(i === idx) btn.classList.add('wrong');
+  });
+
+  explainEl.textContent = (isCorrect ? '✔ ถูกต้อง! ' : '✘ ไม่ถูกต้อง — ') + q.e;
+  explainEl.classList.add('show');
+  nextBtn.disabled = false;
+  skipBtn.style.display = 'none';
+}
+
+function nextQuestion(){
+  if(current < QUESTIONS.length-1){ current++; renderQuestion(); }
+  else showResult();
+}
+
+skipBtn.onclick = ()=>{ if(current < QUESTIONS.length-1){current++; renderQuestion();} else showResult(); };
+nextBtn.onclick = nextQuestion;
+
+function showResult(){
+  document.getElementById('quizArea').style.display='none';
+  const resultArea = document.getElementById('resultArea');
+  resultArea.style.display='block';
+  document.getElementById('scoreText').textContent = `${score} / ${QUESTIONS.length}`;
+  const pct = Math.round(score/QUESTIONS.length*100);
+  let msg = '';
+  if(pct>=90) msg='ยอดเยี่ยมมาก! เข้าใจนิราศภูเขาทองอย่างลึกซึ้ง';
+  else if(pct>=70) msg='ดีมาก! เข้าใจเนื้อหาส่วนใหญ่แล้ว';
+  else if(pct>=50) msg='พอใช้ ลองทบทวนเนื้อหาอีกครั้ง';
+  else msg='ควรกลับไปอ่านเนื้อหาเพิ่มเติม แล้วลองใหม่';
+  document.getElementById('scoreMsg').textContent = `${pct}% — ${msg}`;
+
+  const bd = document.getElementById('breakdown');
+  bd.innerHTML = '<h3>คะแนนแยกตามหมวดหมู่</h3>' +
+    Object.entries(catStats).map(([cat,s])=>
+      `<div class="row"><span>${cat}</span><span>${s.correct} / ${s.total}</span></div>`
+    ).join('');
+}
+
+document.getElementById('restartBtn').onclick = ()=>{
+  current=0; score=0; answered=new Array(QUESTIONS.length).fill(null);
+  Object.values(catStats).forEach(s=>s.correct=0);
+  document.getElementById('resultArea').style.display='none';
+  document.getElementById('quizArea').style.display='block';
+  renderQuestion();
+};
+
+renderQuestion();
+</script>
+</body>
+</html>

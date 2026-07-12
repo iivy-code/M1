@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>นิราศภูเขาทอง — สรุปเนื้อหาพร้อมภาพประกอบ</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0D1B2A; --navy2:#16273D; --gold:#C9A227; --gold-light:#E7CE7A;
+    --cream:#F6F1E4; --ink:#1A1A1A; --grey:#5B5B5B; --line:#E4DCC4;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:'Sarabun',sans-serif; background:var(--cream); color:var(--ink); line-height:1.7;}
+  img{max-width:100%; display:block; object-fit:cover;}
+  .container{max-width:980px; margin:0 auto; padding:0 20px;}
+
+  /* HERO */
+  .hero{
+    position:relative; min-height:62vh; display:flex; align-items:flex-end;
+    background:linear-gradient(180deg,rgba(13,27,42,.35),rgba(13,27,42,.92)),
+      url('https://commons.wikimedia.org/wiki/Special:FilePath/Wat_Phu_Khao_Thong_(Ayutthaya).jpg') center/cover no-repeat;
+  }
+  .hero-inner{padding:60px 20px 44px; max-width:980px; margin:0 auto; width:100%;}
+  .eyebrow{color:var(--gold-light); letter-spacing:.12em; font-size:13px; font-weight:600; text-transform:uppercase;}
+  .hero h1{color:#fff; font-size:clamp(34px,6vw,56px); font-weight:800; margin:10px 0 8px;}
+  .hero p.sub{color:#D7CBAE; font-size:17px; max-width:620px;}
+  .hero .tags{margin-top:18px; display:flex; gap:10px; flex-wrap:wrap;}
+  .tag{border:1px solid rgba(231,206,122,.5); color:var(--gold-light); font-size:12.5px; padding:5px 12px; border-radius:20px;}
+
+  /* SECTION HEADERS */
+  section{padding:64px 0;}
+  .section-label{color:var(--gold); font-weight:700; font-size:13px; letter-spacing:.1em; text-transform:uppercase; margin-bottom:8px;}
+  h2.section-title{font-size:clamp(26px,4vw,34px); font-weight:800; color:var(--navy); margin-bottom:28px;}
+  .divider{width:56px; height:3px; background:var(--gold); margin:10px 0 26px; border-radius:2px;}
+
+  /* AUTHOR */
+  .author-grid{display:grid; grid-template-columns:280px 1fr; gap:34px; align-items:start;}
+  .author-grid img{border-radius:10px; box-shadow:0 10px 26px rgba(13,27,42,.18);}
+  .author-cap{font-size:12px; color:var(--grey); margin-top:8px; text-align:center;}
+  .fact-list{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:18px;}
+  .fact{background:#fff; border:1px solid var(--line); border-radius:8px; padding:14px 16px;}
+  .fact .k{font-size:12px; color:var(--gold); font-weight:700; text-transform:uppercase; letter-spacing:.04em;}
+  .fact .v{font-size:15px; font-weight:600; color:var(--navy); margin-top:3px;}
+
+  /* ROUTE */
+  .route-wrap{background:var(--navy); border-radius:14px; padding:40px 30px; color:#fff;}
+  .route-wrap h2.section-title{color:#fff;}
+  .route-wrap .section-label{color:var(--gold-light);}
+  .river-line{position:relative; margin:24px 0 8px; padding-left:20px; border-left:3px dashed rgba(231,206,122,.45);}
+  .stop{position:relative; padding:0 0 26px 22px;}
+  .stop::before{content:''; position:absolute; left:-31px; top:4px; width:14px; height:14px; border-radius:50%; background:var(--gold); border:3px solid var(--navy); box-shadow:0 0 0 2px var(--gold);}
+  .stop.dest::before{width:18px; height:18px; left:-33px; background:var(--gold-light);}
+  .stop .name{font-weight:700; font-size:16px; color:var(--gold-light);}
+  .stop .desc{font-size:14px; color:#C3CBD6; margin-top:2px;}
+  .route-imgs{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:30px;}
+  .route-imgs figure{border-radius:10px; overflow:hidden;}
+  .route-imgs img{height:220px; width:100%;}
+  .route-imgs figcaption{background:var(--navy2); color:#D7CBAE; font-size:12.5px; padding:8px 12px;}
+
+  /* VALUES */
+  .value-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .value-card{background:#fff; border:1px solid var(--line); border-radius:10px; padding:22px 20px; border-top:4px solid var(--gold);}
+  .value-card h3{color:var(--navy); font-size:17px; font-weight:700; margin-bottom:10px;}
+  .value-card p{font-size:14px; color:var(--grey); margin-bottom:14px;}
+  .quote{background:var(--cream); border-left:3px solid var(--gold); padding:10px 12px; font-size:13.5px; color:var(--navy); border-radius:4px; margin-bottom:8px;}
+  .quote .line{display:block;}
+
+  /* IDEAS */
+  .idea-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px;}
+  .idea-card{background:#fff; border:1px solid var(--line); border-radius:10px; padding:20px; position:relative;}
+  .idea-num{position:absolute; top:-14px; left:18px; background:var(--navy); color:var(--gold-light); font-weight:800; font-size:13px; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center;}
+  .idea-card h4{margin-top:10px; color:var(--navy); font-size:15.5px; font-weight:700; margin-bottom:8px;}
+  .idea-card p{font-size:13.5px; color:var(--grey);}
+
+  /* FOOTER */
+  footer{background:var(--navy); color:#B9C2CE; text-align:center; padding:34px 20px; font-size:13px;}
+  footer strong{color:var(--gold-light);}
+
+  @media (max-width:760px){
+    .author-grid{grid-template-columns:1fr;}
+    .fact-list{grid-template-columns:1fr;}
+    .value-grid{grid-template-columns:1fr;}
+    .route-imgs{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">วรรณคดีไทย · กลอนนิราศ</div>
+    <h1>นิราศภูเขาทอง</h1>
+    <p class="sub">บันทึกการเดินทางและปรัชญาชีวิตของสุนทรภู่ ระหว่างล่องเรือจากกรุงเทพฯ ไปนมัสการเจดีย์ภูเขาทอง จังหวัดพระนครศรีอยุธยา</p>
+    <div class="tags">
+      <span class="tag">สุนทรภู่</span>
+      <span class="tag">รัชกาลที่ 3</span>
+      <span class="tag">ยอดของกลอนนิราศ</span>
+      <span class="tag">UNESCO World Poet 2529</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ผู้แต่ง -->
+  <section>
+    <div class="section-label">รู้จักผู้แต่ง</div>
+    <h2 class="section-title">สุนทรภู่ — กวีสี่แผ่นดิน</h2>
+    <div class="author-grid">
+      <div>
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/กุฏิสุนทรภู่_วัดเทพธิดาราม_(1).jpg" alt="กุฏิสุนทรภู่ วัดเทพธิดาราม">
+        <div class="author-cap">กุฏิที่สุนทรภู่เคยจำพรรษา วัดเทพธิดาราม<br>ปัจจุบันเป็นพิพิธภัณฑ์สุนทรภู่</div>
+      </div>
+      <div>
+        <p style="color:var(--grey); font-size:15px;">
+          สุนทรภู่ (พระสุนทรโวหาร) เกิดวันที่ 26 มิถุนายน พ.ศ. 2329 ในรัชกาลที่ 1 มีชีวิตและสร้างสรรค์ผลงานผ่าน 4 รัชกาล
+          จึงได้รับสมญานามว่า <strong>“กวีสี่แผ่นดิน”</strong> ท่านแต่งนิราศภูเขาทองขณะบวชเป็นภิกษุ สันนิษฐานว่าอยู่ในสมัยรัชกาลที่ 3
+          และได้รับยกย่องจาก UNESCO ให้เป็นบุคคลสำคัญของโลกด้านวรรณกรรมในปี พ.ศ. 2529 ซึ่งเป็นที่มาของ “วันสุนทรภู่” 26 มิถุนายนของทุกปี
+        </p>
+        <div class="fact-list">
+          <div class="fact"><div class="k">เกิด</div><div class="v">26 มิ.ย. 2329 · ร.1</div></div>
+          <div class="fact"><div class="k">ถึงแก่กรรม</div><div class="v">พ.ศ. 2398 · อายุ 69 ปี</div></div>
+          <div class="fact"><div class="k">สถานะขณะแต่ง</div><div class="v">ภิกษุ (บวชอยู่)</div></div>
+          <div class="fact"><div class="k">ผู้ร่วมทาง</div><div class="v">หนูพัด (บุตรชาย)</div></div>
+          <div class="fact"><div class="k">คำประพันธ์</div><div class="v">กลอนนิราศ</div></div>
+          <div class="fact"><div class="k">การยกย่อง</div><div class="v">ยอดของกลอนนิราศ</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- เส้นทาง -->
+  <section>
+    <div class="route-wrap">
+      <div class="section-label">ตามรอยการเดินทาง</div>
+      <h2 class="section-title">เส้นทางล่องเรือจากกรุงเทพฯ สู่อยุธยา</h2>
+      <p style="color:#C3CBD6; font-size:14.5px; max-width:640px;">สุนทรภู่เดินทางด้วยเรือแจวล่องไปตามลำน้ำเจ้าพระยา ผ่านชุมชนและวัดสำคัญนับสิบแห่ง ก่อนถึงจุดหมายที่เจดีย์ภูเขาทอง</p>
+
+      <div class="river-line">
+        <div class="stop"><div class="name">วัดราชบุรณะ (วัดเลียบ)</div><div class="desc">จุดเริ่มต้นการเดินทาง กรุงเทพฯ</div></div>
+        <div class="stop"><div class="name">พระบรมมหาราชวัง</div><div class="desc">คร่ำครวญรำลึกถึงรัชกาลที่ 2</div></div>
+        <div class="stop"><div class="name">วัดประโคนปัก (วัดดุสิตาราม)</div><div class="desc">แวะสักการะระหว่างทาง</div></div>
+        <div class="stop"><div class="name">บางจาก · บางพลู · บางพลัด · บางโพ</div><div class="desc">ย่านชุมชนริมฝั่งแม่น้ำ</div></div>
+        <div class="stop"><div class="name">วัดเขมา (วัดเขมาภิรตาราม)</div><div class="desc">ผ่านวัดสำคัญฝั่งนนทบุรี</div></div>
+        <div class="stop"><div class="name">ตลาดขวัญ · เกาะเกร็ด</div><div class="desc">จังหวัดนนทบุรี มีพระเจดีย์มุเตาที่เกาะเกร็ด</div></div>
+        <div class="stop"><div class="name">สามโคก (ปทุมธานี)</div><div class="desc">ร.2 เปลี่ยนชื่อเป็น “ปทุมธานี” เพราะมีดอกบัวมาก</div></div>
+        <div class="stop"><div class="name">บ้านงิ้ว</div><div class="desc">บทสอนเรื่องบาปกรรมจากการทำชู้</div></div>
+        <div class="stop"><div class="name">วัดพระเมรุ · จวนเจ้าเมือง</div><div class="desc">เข้าเขตพระนครศรีอยุธยา</div></div>
+        <div class="stop dest"><div class="name">🏆 เจดีย์ภูเขาทอง จ.พระนครศรีอยุธยา</div><div class="desc">จุดหมายปลายทาง — นมัสการพระบรมธาตุ</div></div>
+        <div class="stop"><div class="name">วัดอรุณราชวราราม (ขากลับ)</div><div class="desc">กล่าวถึงในบทลงท้ายเรื่อง</div></div>
+      </div>
+
+      <div class="route-imgs">
+        <figure>
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Wat_Phu_Khao_Thong_(Ayutthaya).jpg" alt="เจดีย์ภูเขาทอง อยุธยา">
+          <figcaption>เจดีย์ภูเขาทอง จ.พระนครศรีอยุธยา — จุดหมายปลายทางของนิราศ</figcaption>
+        </figure>
+        <figure>
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Wat_Arun_from_Chao_Phraya_River.jpg" alt="วัดอรุณราชวราราม ริมแม่น้ำเจ้าพระยา">
+          <figcaption>วัดอรุณราชวราราม กรุงเทพฯ — กล่าวถึงในบทลงท้ายขากลับ</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- คุณค่า -->
+  <section>
+    <div class="section-label">คุณค่าวรรณคดี</div>
+    <h2 class="section-title">บทประพันธ์ที่สะท้อนเรื่องราวต่าง ๆ</h2>
+    <div class="value-grid">
+      <div class="value-card">
+        <h3>คุณค่าด้านเนื้อหา</h3>
+        <p>สะท้อนแนวคิดเรื่องความไม่เที่ยงแท้ของสรรพสิ่ง (ไตรลักษณ์) และคำสอนเรื่องบาปบุญคุณโทษ</p>
+        <div class="quote"><span class="line">"ทั้งองค์ฐานรานร้าวถึงเก้าแฉก"</span><span class="line">"คิดก็เป็นอนิจจังเสียทั้งนั้น"</span></div>
+      </div>
+      <div class="value-card">
+        <h3>คุณค่าด้านวรรณศิลป์</h3>
+        <p>ใช้กลวิธีทางภาษาอย่างประณีต ทั้งสัมผัสเสียง อุปมา คำพ้อง คำซ้ำ และคำอัพภาส</p>
+        <div class="quote"><span class="line">"ดูน้ำวิ่งกลิ้งเชี่ยวเป็นเกลียวกลอก"</span><span class="line">— เล่นเสียงสัมผัสพยัญชนะและสระ</span></div>
+      </div>
+      <div class="value-card">
+        <h3>คุณค่าด้านสังคม-วัฒนธรรม</h3>
+        <p>บันทึกภาพการค้าขาย การแต่งกาย ที่มาของชื่อสถานที่ การละเล่น และสถาปัตยกรรมไทย</p>
+        <div class="quote"><span class="line">"แพประจำจอดรายเขาขายของ"</span><span class="line">— ภาพการค้าขายริมน้ำในอดีต</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ข้อคิด -->
+  <section>
+    <div class="section-label">แง่คิดจากเรื่อง</div>
+    <h2 class="section-title">คำสอนที่ปรากฏในนิราศภูเขาทอง</h2>
+    <div class="idea-grid">
+      <div class="idea-card"><div class="idea-num">1</div><h4>อย่าประพฤติผิดในกาม</h4><p>เชื่อว่าจะทำให้ตกนรกและต้องไปปีนต้นงิ้ว ดังบทตอน “ถึงบ้านงิ้ว”</p></div>
+      <div class="idea-card"><div class="idea-num">2</div><h4>อย่าตัดสินคนจากภายนอก</h4><p>ควรพิจารณาความคิดจิตใจ เพราะคนชั่วมักเสแสร้งทำดี</p></div>
+      <div class="idea-card"><div class="idea-num">3</div><h4>ควรพูดจาให้ไพเราะ</h4><p>คำพูดที่ดีทำให้มีคนรักและเมตตา ตรงข้ามกับคำพูดที่ทำลายมิตร</p></div>
+      <div class="idea-card"><div class="idea-num">4</div><h4>มีสติในเรื่องความรัก</h4><p>ความรักนำมาซึ่งทั้งความสุขและความทุกข์ ต้องรู้เท่าทันใจตนเอง</p></div>
+      <div class="idea-card"><div class="idea-num">5</div><h4>ไม่ยึดติดชื่อเสียงลาภยศ</h4><p>สอดคล้องกับไตรลักษณ์ — อนิจจัง ทุกขัง อนัตตา ไม่มีสิ่งใดคงอยู่ถาวร</p></div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  สรุปเนื้อหาเพื่อการศึกษา อ้างอิงจากบทเรียนวิชาภาษาไทย เรื่อง <strong>นิราศภูเขาทอง</strong> โดยสุนทรภู่<br>
+  ภาพประกอบจาก Wikimedia Commons (Creative Commons License)
+</footer>
+
+</body>
+</html>
