@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buddhism for Mathayom 1 — 50-Question Exam</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E2761;
+    --navy-dark:#0D1B2A;
+    --slate:#2C3E50;
+    --lightblue:#CADCFC;
+    --bg:#F2F2F2;
+    --text:#1A1A1A;
+    --correct:#1565C0;
+    --correct-bg:#E8F0FE;
+    --wrong-bg:#FBE9E9;
+    --wrong-border:#B3261E;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:'Sarabun','TH Sarabun New',Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    margin:0;
+    padding:24px 12px 60px;
+    font-size:15px;
+    line-height:1.6;
+  }
+  .container{max-width:760px;margin:0 auto;}
+  header{
+    background:var(--navy);
+    color:#fff;
+    padding:22px 26px;
+    border-radius:10px;
+    margin-bottom:20px;
+  }
+  header h1{margin:0 0 4px;font-size:19px;font-weight:700;}
+  header p{margin:0;font-size:13px;color:var(--lightblue);}
+
+  .progress-wrap{
+    background:#fff;
+    border-radius:10px;
+    padding:14px 20px;
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    flex-wrap:wrap;
+    gap:10px;
+    position:sticky;
+    top:8px;
+    z-index:5;
+  }
+  .progress-bar-bg{
+    flex:1;
+    min-width:160px;
+    background:#E0E0E0;
+    height:8px;
+    border-radius:4px;
+    overflow:hidden;
+    margin:0 14px;
+  }
+  .progress-bar-fill{
+    height:100%;
+    background:var(--correct);
+    width:0%;
+    transition:width .3s ease;
+  }
+  .score-badge{
+    font-weight:700;
+    color:var(--navy);
+    white-space:nowrap;
+    font-size:14px;
+  }
+  .qcount{color:var(--slate);font-size:13px;white-space:nowrap;}
+
+  .card{
+    background:#fff;
+    border-radius:10px;
+    padding:22px 24px;
+    margin-bottom:16px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    border-left:4px solid var(--navy);
+  }
+  .section-tag{
+    display:inline-block;
+    background:var(--lightblue);
+    color:var(--navy-dark);
+    font-weight:700;
+    font-size:11px;
+    padding:3px 10px;
+    border-radius:12px;
+    margin-bottom:8px;
+    margin-left:8px;
+  }
+  .qnum{
+    display:inline-block;
+    background:var(--navy);
+    color:#fff;
+    font-weight:700;
+    font-size:12px;
+    padding:3px 10px;
+    border-radius:12px;
+    margin-bottom:10px;
+  }
+  .qtext{font-size:16px;font-weight:600;color:var(--navy-dark);margin-bottom:14px;}
+
+  .choice{
+    display:block;
+    width:100%;
+    text-align:left;
+    background:#fff;
+    border:1.5px solid #D6DCE4;
+    border-radius:8px;
+    padding:11px 14px;
+    margin-bottom:9px;
+    font-family:inherit;
+    font-size:14.5px;
+    color:var(--text);
+    cursor:pointer;
+    transition:all .15s ease;
+  }
+  .choice:hover:not(.locked){
+    border-color:var(--navy);
+    background:#F5F7FC;
+  }
+  .choice.correct{
+    background:var(--correct-bg);
+    border-color:var(--correct);
+    color:var(--correct);
+    font-weight:600;
+  }
+  .choice.wrong{
+    background:var(--wrong-bg);
+    border-color:var(--wrong-border);
+    color:var(--wrong-border);
+    font-weight:600;
+  }
+  .choice.locked{cursor:default;}
+
+  .explain{
+    margin-top:12px;
+    padding:12px 14px;
+    background:#F5F7FC;
+    border-left:3px solid var(--navy);
+    border-radius:0 6px 6px 0;
+    font-size:13.5px;
+    color:var(--slate);
+    display:none;
+  }
+  .explain.show{display:block;}
+  .explain b{color:var(--navy-dark);}
+
+  .nav-row{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:14px;
+  }
+  .next-btn{
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    padding:9px 22px;
+    border-radius:7px;
+    font-family:inherit;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    display:none;
+  }
+  .next-btn.show{display:inline-block;}
+  .next-btn:hover{background:var(--navy-dark);}
+
+  .result-card{
+    background:var(--navy);
+    color:#fff;
+    border-radius:10px;
+    padding:32px 26px;
+    text-align:center;
+    display:none;
+  }
+  .result-card.show{display:block;}
+  .result-card h2{margin:0 0 6px;font-size:22px;}
+  .result-score{font-size:42px;font-weight:700;color:var(--lightblue);margin:14px 0;}
+  .result-msg{font-size:14px;color:var(--lightblue);margin-bottom:20px;}
+  .breakdown{
+    text-align:left;
+    background:rgba(255,255,255,0.08);
+    border-radius:8px;
+    padding:14px 18px;
+    margin-bottom:20px;
+    font-size:13.5px;
+  }
+  .breakdown div{display:flex;justify-content:space-between;padding:4px 0;}
+  .restart-btn{
+    background:#fff;
+    color:var(--navy);
+    border:none;
+    padding:10px 26px;
+    border-radius:7px;
+    font-family:inherit;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+  }
+  #quizArea.hidden{display:none;}
+
+  .footer-note{
+    text-align:center;
+    font-size:11.5px;
+    color:#888;
+    margin-top:24px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Buddhism for Mathayom 1 — 50-Question Exam</h1>
+    <p>Pages 1–9: The Ten Buddhist Councils &amp; Buddhism in Thailand (Suvarnabhūmi to King Rama IV)</p>
+  </header>
+
+  <div class="progress-wrap">
+    <span class="qcount" id="qcount">Question 1 of 50</span>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+    <span class="score-badge" id="scoreBadge">Score: 0</span>
+  </div>
+
+  <div id="quizArea">
+    <div class="card" id="quizCard">
+      <div class="qnum" id="qnumLabel">Q1</div><span class="section-tag" id="sectionTag"></span>
+      <div class="qtext" id="qtext"></div>
+      <div id="choicesWrap"></div>
+      <div class="explain" id="explainBox"></div>
+      <div class="nav-row"><button class="next-btn" id="nextBtn">Next Question →</button></div>
+    </div>
+  </div>
+
+  <div class="result-card" id="resultCard">
+    <h2>Exam Complete!</h2>
+    <div class="result-score" id="finalScore">0 / 50</div>
+    <div class="result-msg" id="finalMsg"></div>
+    <div class="breakdown" id="breakdown"></div>
+    <button class="restart-btn" id="restartBtn">Try Again</button>
+  </div>
+
+  <div class="footer-note">Based on "Buddhism for Mathayom 1," pages 1–9 — The Ten Buddhist Councils and Buddhism in Thailand</div>
+</div>
+
+<script>
+const questions = [
+  // ===== SECTION A: The Buddhist Councils (Q1–25) =====
+  { section:"Councils", q:"According to the Introduction, roughly how long ago was the Thai nation organized?", choices:["Over 2,000 years ago","500 years ago","100 years ago","5,000 years ago"], correct:0, explain:"The Thai nation was organized over 2,000 years ago, and Buddhism came in the same period." },
+  { section:"Councils", q:"How long ago did the Thai nation settle firmly in present-day Thailand, and adopt the present form of Buddhism?", choices:["300 years ago","700 years ago (seven centuries)","2,000 years ago","50 years ago"], correct:1, explain:"The Thai nation settled firmly in present-day Thailand 700 years ago, and seven centuries ago it adopted the present form of Buddhism." },
+  { section:"Councils", q:"For roughly how long after the Buddha's Parinibbāna were his teachings preserved only through monks' memory, before being written down?", choices:["50 years", "500 years", "1,000 years", "2,000 years"], correct:1, explain:"For five hundred years after the Buddha's passing away, his teachings were retained through the memories of venerable monks, until the fourth council when they were finally written down." },
+  { section:"Councils", q:"How many Buddhist Councils in total does the textbook describe?", choices:["Six", "Eight", "Ten", "Twelve"], correct:2, explain:"The textbook describes ten Buddhist Councils in total." },
+  { section:"Councils", q:"Who was the monk that rejoiced rather than grieved at the news of the Buddha's death, alarming Mahākassapa?", choices:["Subhadda", "Yasa", "Ānanda", "Moggaliputta Tissa"], correct:0, explain:"A monk named Subhadda, who had entered the Order in his old age, was the only one who rejoiced at the Buddha's death, alarming Mahākassapa about the future of the teachings." },
+  { section:"Councils", q:"Who heard of the Buddha's death about seven days later and became concerned about the future of his teachings?", choices:["Venerable Mahākassapa", "Venerable Ānanda", "King Ajātasattu", "Venerable Mahinda"], correct:0, explain:"About seven days after the Buddha passed away, the Venerable Mahākassapa heard of His death and became concerned about the future of the teachings." },
+  { section:"Councils", q:"Which king helped organize and support the First Buddhist Council?", choices:["King Asoka", "King Ajātasattu", "King Kalasoka", "King Mindon"], correct:1, explain:"King Ajātasattu was informed of the Sangha's intention and, with his help, the first Buddhist Council was held." },
+  { section:"Councils", q:"Where was the First Council held, and how many Arahants attended?", choices:["Vaisāli, with 1,000 Arahants", "Rājagaha, with 500 Arahants", "Pāṭaliputta, with 500 Arahants", "Mandalay, with 2,400 Arahants"], correct:1, explain:"The first Buddhist Council was held at Rājagaha with 500 Arahants." },
+  { section:"Councils", q:"How soon after the Buddha's demise was the First Council held, and how long did it last?", choices:["Held immediately, lasted 1 month", "Held after 3 months, lasted 7 months", "Held after 1 year, lasted 1 year", "Held after 7 days, lasted 7 days"], correct:1, explain:"The First Council was held after three months of the Buddha's demise (Parinibbāna), and it lasted for seven months." },
+  { section:"Councils", q:"What controversy led to the Second Buddhist Council being held at Vaisāli?", choices:["A dispute over royal succession", "A controversy between Yasa and the monks of Vajji", "A disagreement over where to hold the First Council", "A conflict between Mahākassapa and Subhadda"], correct:1, explain:"The Second Council was held at Vaisāli to settle a disagreement between a certain Yasa and the monks of Vajji." },
+  { section:"Councils", q:"Roughly how long after the Buddha's Parinibbāna was the Second Council held?", choices:["About 100 years", "About 218 years", "About 500 years", "About 7 years"], correct:0, explain:"The Second Council was held around a hundred years after the Buddha's Parinibbāna." },
+  { section:"Councils", q:"Who presided over the Second Council, and which king patronized it?", choices:["Moggaliputta Tissa, patronized by King Asoka", "Yasakakantaputta, patronized by King Kalasoka", "Mahākassapa, patronized by King Ajātasattu", "Mahārakkhita, patronized by King Vattagamani"], correct:1, explain:"The Most Venerable Yasakakantaputta presided over the Second Council and had been patronized by King Kalasoka." },
+  { section:"Councils", q:"What major division in Buddhism resulted from the Second Council?", choices:["Zen and Vajrayāna", "Theravāda and Mahāyāna", "Lankāvamsa and Bukam", "Dhammayutta and Mahānikāya"], correct:1, explain:"As a result of the Second Council, the division led to the appearance of the two major Buddhist traditions: Theravāda and Mahāyāna." },
+  { section:"Councils", q:"What was the main reason for holding the Third Buddhist Council?", choices:["To settle a dispute over robes", "Non-Buddhists had joined the Order for royal patronage, causing confusion that endangered the purity of Buddhism", "To translate the Tipiṭaka into Pāli", "To choose a new Supreme Patriarch"], correct:1, explain:"After Emperor Asoka's conversion, many newcomers joined the Order for royal patronage rather than genuine interest, introducing confusion, so a council was needed to clarify and protect the purity of Buddhism." },
+  { section:"Councils", q:"Where was the Third Council held, and how long after the Buddha's Parinibbāna?", choices:["Rājagaha, 3 months after", "Vaisāli, 100 years after", "Pāṭaliputta, 218 years after", "Tambapanni, 500 years after"], correct:2, explain:"The Third Council was held by King Asoka at Pāṭaliputta, 218 years after the Buddha's Parinibbāna." },
+  { section:"Councils", q:"Who led the Third Council, and how many monks assembled?", choices:["Venerable Mahinda, with 500 monks", "Venerable Moggaliputta Tissa, with 1,000 monks", "Venerable Mahākassapa, with 500 Arahants", "Venerable Mahārakkhita, with 500 monks"], correct:1, explain:"The Third Council was the assembly of 1,000 monks with Venerable Moggaliputta Tissa as the leader." },
+  { section:"Councils", q:"Besides rehearsing the Buddha's teachings, what else did the Third Council decide to do?", choices:["Write the Tipiṭaka on palm leaves", "Send missionaries out to various countries", "Build the Wat Phra Kew temple", "Move the capital to Pāṭaliputta"], correct:1, explain:"The Third Council also decided to send missionaries out to the various countries." },
+  { section:"Councils", q:"Under whose patronage, and where, was the Fourth Council held?", choices:["King Vattagamani, in Tambapanni (Sri Lanka)", "King Asoka, in Pāṭaliputta", "King Mindon, in Mandalay", "King Kalasoka, in Vaisāli"], correct:0, explain:"The Fourth Council was held in Tambapanni (Sri Lanka) under the patronage of King Vattagamani (103–77 BCE)." },
+  { section:"Councils", q:"What was the main reason for holding the Fourth Council?", choices:["A dispute over monastic rules", "Most monks could no longer retain the entire Tipiṭaka in memory, so it needed to be committed to writing", "The death of Venerable Mahinda", "A request from King Asoka"], correct:1, explain:"It was realized that it was no longer possible for the majority of monks to retain the entire Tipiṭaka in memory as before, so the council was held to commit it to writing." },
+  { section:"Councils", q:"Who recited and wrote down the Buddha's words on palm leaves at the Fourth Council, and how many monks were involved?", choices:["Venerable Mahinda and 218 monks", "Venerable Maharakkhita and 500 monks", "Venerable Moggaliputta Tissa and 1,000 monks", "Venerable Mahakassapa and 2,400 monks"], correct:1, explain:"The Venerable Maharakkhita and five hundred monks recited the words of the Buddha and then wrote them down on palm leaves." },
+  { section:"Councils", q:"Which missionary monk of the Third Council is credited with originally bringing the Tipiṭaka and its commentaries to Sri Lanka?", choices:["Venerable Mahinda", "Venerable Sona Thera", "Venerable Uttara Thera", "Venerable Mahasi Sayadaw"], correct:0, explain:"It is mentioned that the Tipiṭaka and its commentaries were originally brought to Sri Lanka by the missionary monk, Venerable Mahinda of the Third Council." },
+  { section:"Councils", q:"When and where was the Fifth Council held?", choices:["2414 B.E. (1871 A.D.) in Mandalay, Burma", "2497 B.E. in Rangoon, Burma", "218 years after Parinibbāna in Pāṭaliputta", "B.E. 2331 in Bangkok"], correct:0, explain:"The Fifth Council was held on 2414 B.E. (1871 A.D.) in Mandalay City, Burma, sponsored by King Mindon." },
+  { section:"Councils", q:"What was the outcome of the Fifth Council for the preservation of the Tipiṭaka?", choices:["It was translated into Thai", "It was inscribed on 729 marble slabs in Mandalay", "It was printed as books for the first time", "It was recited by 500 Arahants"], correct:1, explain:"As a result of the Fifth Council, the entire Tipiṭaka was inscribed for posterity on seven hundred and twenty-nine marble slabs in Mandalay." },
+  { section:"Councils", q:"Who sponsored the Sixth Council, and where was it held?", choices:["The Thai Government, in Bangkok", "The Burmese government, in Rangoon", "King Mindon, in Mandalay", "King Asoka, in Pāṭaliputta"], correct:1, explain:"The Sixth Council was sponsored by the Burmese government and held in Rangoon, Burma, attended by representatives from Theravāda Buddhist countries." },
+  { section:"Councils", q:"What was the purpose of the Seventh Council, and who presided over it?", choices:["To compile sub-commentary texts, presided by Most Venerable Mahākassapa", "To rehearse the Buddha's original teachings, presided by King Asoka", "To write the Tipiṭaka on marble, presided by King Mindon", "To settle a monastic dispute, presided by Yasakakantaputta"], correct:0, explain:"The Seventh Council was held to compile sub-commentary texts, presided over by the Most Venerable Mahākassapa, with one thousand monks as participants, in Sri Lanka." },
+  // ===== SECTION B: Buddhism in Thailand (Q26–50) =====
+  { section:"Thailand", q:"What was Thailand's territory called when Buddhism was first introduced, more than 2,000 years ago?", choices:["Ratanakosin", "Suvarnabhūmi", "Lanna", "Sukhothai"], correct:1, explain:"The territory was known as 'Suvarnabhūmi' and was still inhabited by the Mons and Lawas when Buddhism was introduced." },
+  { section:"Thailand", q:"Who were the two Arahants that headed King Asoka's mission to Suvarnabhūmi?", choices:["Mahinda and Sanghamitta", "Sona Thera and Uttara Thera", "Moggaliputta Tissa and Mahārakkhita", "Jagarabhivamsa and Narindabhidhaja"], correct:1, explain:"One of the nine missions sent by King Asoka to spread Buddhism was headed by two Arahants: Sona Thera and Uttara Thera, and the ruler and people of Suvarnabhūmi adopted Buddhism." },
+  { section:"Thailand", q:"Who introduced Mahāyāna Buddhism into Thailand, and from where?", choices:["The King of Sukhothai, from Central Thailand", "The King of Srivijaya, whose capital was in Sumatra Island", "The King of Lanna, from Chiengsan", "The King of Burma, from Mandalay"], correct:1, explain:"Mahāyāna Buddhism was introduced into Thailand by the King of Srivijaya, whose capital was in Sumatra Island, ruling over the southern provinces of Thailand." },
+  { section:"Thailand", q:"The Period of Bukam Theravāda Buddhism (around 1800 B.E.) marked the merging of which two kingdoms?", choices:["Sukhothai and Ayutthaya", "Lanna (King Mengrai) and Sukhothai (Phoh Khun Sri-indraditya)", "Ratanakosin and Ayutthaya", "Srivijaya and Sukhothai"], correct:1, explain:"Bukam Theravāda Buddhism took place when the kingdom of Lanna, founded by King Mengrai of Chiengsan, and the kingdom of Sukhothai, founded by Phoh Khun Sri-indraditya, were merged — marking the start of continuous Thai history." },
+  { section:"Thailand", q:"Where did the monks of the Lankāvamsa sect first settle in Thailand, before their fame reached Sukhothai?", choices:["Bangkok", "Nakorn Sridhammaraj", "Chiengsan", "Ayutthaya"], correct:1, explain:"The monks of the Lankāvamsa sect settled first in Nakorn Sridhammaraj, and their fame soon reached the Sukhothai Kingdom." },
+  { section:"Thailand", q:"Which King of Sukhothai invited the dignitary Phra Mahaswami to his capital and gave him royal support in propagating Buddhism?", choices:["King Ramkamhaeng", "King Lithai", "King Mengrai", "Phoh Khun Sri-indraditya"], correct:0, explain:"King Ramkamhaeng, the third King of Sukhothai, invited Phra Mahaswami to his capital and gave him royal support in propagating the doctrine." },
+  { section:"Thailand", q:"Which Sukhothai monarch even entered the Sangha Order and lived for a time as a bhikkhu?", choices:["King Ramkamhaeng", "King Lithai", "Phoh Khun Sri-indraditya", "King Mengrai"], correct:1, explain:"As Theravāda Buddhism of the Lankāvamsa Tradition became more widely practiced, some Thai monarchs, such as King Lithai of Sukhothai, even entered the Sangha Order and lived for some time as a bhikkhu." },
+  { section:"Thailand", q:"When did King Rama I's reign begin, and what was his capital?", choices:["B.E. 2325, with Bangkok as capital", "B.E. 2352, with Ayutthaya as capital", "B.E. 2367, with Sukhothai as capital", "B.E. 2394, with Chiengsan as capital"], correct:0, explain:"The reign of King Rama I of the Chakri Dynasty began in B.E. 2325, with the town of Bangkok as the capital." },
+  { section:"Thailand", q:"Which temple, also known as Jetavana Vihāra, underwent seven years of repair during King Rama I's reign?", choices:["Wat Arun", "Wat Phra Kew", "Wat Pho", "Wat Mahathat"], correct:2, explain:"Of the temples repaired during King Rama I's reign, the Jetavana Vihāra or Wat Pho underwent seven years of repair." },
+  { section:"Thailand", q:"Which temple, regarded as the most important in Thailand, was also built during King Rama I's reign?", choices:["Wat Arun (Temple of Dawn)", "Wat Phra Kew (Temple of the Emerald Buddha)", "Wat Mahathat", "Wat Phodharam"], correct:1, explain:"The well-known Wat Phra Kew (Temple of the Emerald Buddha), regarded as the most important temple in Thailand, was also built during King Rama I's reign." },
+  { section:"Thailand", q:"In B.E. 2331, King Rama I held a Buddhist Council to set the contents of the Tipiṭaka at which temple?", choices:["Wat Arun", "Wat Phra Kew", "Wat Mahathat", "Wat Pho"], correct:2, explain:"In B.E. 2331, the Buddhist Council was held for the sake of setting the contents of the Tipiṭaka at the present Wat Mahathat — the second council held in Thailand." },
+  { section:"Thailand", q:"When did King Rama II come to the throne, and what was he formerly called?", choices:["B.E. 2325, Phra Chom Klao", "B.E. 2352, Phra Buddha Lert Lah", "B.E. 2367, Phra Nang-Klao", "B.E. 2394, Prince Mongkut"], correct:1, explain:"King Rama II, formerly called Phra Buddha Lert Lah, came to the throne in B.E. 2352." },
+  { section:"Thailand", q:"What notable religious activity is King Rama II remembered for regarding Ceylon?", choices:["He built the Wat Phra Kew temple there", "He sent a religious goodwill mission group to Ceylon and organized research and study of Buddhism", "He invited monks from Ceylon to found Bangkok", "He translated the Tipiṭaka into Sinhalese"], correct:1, explain:"Buddhist activities during King Rama II's time were noted for sending a religious goodwill mission group to Ceylon and organizing the research and study of Buddhism." },
+  { section:"Thailand", q:"During King Rama II's reign, into how many grades was the course for studying Buddhism in the Pāli language divided?", choices:["Five grades", "Nine grades", "Ten grades", "Three grades"], correct:1, explain:"During this time, the course for studying Buddhism in the Pāli language was divided into nine grades, as it had been done during the Ayutthaya period." },
+  { section:"Thailand", q:"The 'Prang' of which temple, symbolic of Thailand for foreigners, was completed across the reigns of Rama I to Rama III?", choices:["Wat Mahathat", "Wat Pho", "Wat Arun (Temple of Dawn)", "Wat Phra Kew"], correct:2, explain:"Among the temples built and repaired, the 'Prang' of Wat Arun (Temple of Dawn), symbolic of Thailand for all foreigners, was included." },
+  { section:"Thailand", q:"When did King Rama III succeed his father, and what was he formerly called?", choices:["B.E. 2325, Phra Buddha Lert Lah", "B.E. 2352, Phra Chom Klao", "B.E. 2367, Phra Nang-Klao", "B.E. 2394, Prince Mongkut"], correct:2, explain:"Phra Nang-Klao, the third of the Chakri Dynasty, succeeded his father in B.E. 2367 and became King Rama III." },
+  { section:"Thailand", q:"What was King Rama III particularly noted for, besides being a pious king?", choices:["A natural bent for architecture", "Translating the Tipiṭaka into English", "Founding the city of Sukhothai", "Abolishing the Sangha Order"], correct:0, explain:"Having a natural bent for architecture besides being a pious king himself, King Rama III had more temples built both inside and outside Bangkok." },
+  { section:"Thailand", q:"What group of bhikkhus was born during King Rama III's reign, in B.E. 2372, marking a cornerstone for Buddhist study and practice?", choices:["The Lankāvamsa group", "The Dhammayutta group", "The Mahānikāya group", "The Bukam group"], correct:1, explain:"In B.E. 2372, there was a religious movement which marked a cornerstone for the study and practice of Buddhism in Thailand: the birth of the Dhammayutta group of bhikkhus." },
+  { section:"Thailand", q:"What religious literature about the life of the Buddha was compiled during King Rama III's reign?", choices:["The Saṅghāyanā Volumes", "Pathom-Som-Bodhi-Katha", "The Jabub Thong Yai", "The Tipiṭaka commentaries"], correct:1, explain:"During King Rama III's reign, the religious literature 'Pathom-Som-Bodhi-Katha' (the life of the Buddha) was compiled." },
+  { section:"Thailand", q:"Who compiled the 'Pathom-Som-Bodhi-Katha' during King Rama III's reign?", choices:["Supreme Patriarch Prince Paramanujit Jinorasa of Jetuvana Temple", "Venerable Moggaliputta Tissa", "Sangha Rājā, the Supreme Patriarch", "Phra Mahaswami"], correct:0, explain:"The religious literature was compiled by the Supreme Patriarch Prince Paramanujit Jinorasa of Jetuvana Temple." },
+  { section:"Thailand", q:"How many groups of goodwill missionary monks did King Rama III send to Ceylon?", choices:["One group", "Two groups, one after the other", "Three groups", "None"], correct:1, explain:"During King Rama III's reign, two groups of goodwill missionary monks, one after the other, were sent to Ceylon, known as modern Sri Lanka." },
+  { section:"Thailand", q:"When did King Rama IV come to the throne, and what was he formally known as?", choices:["B.E. 2325, Phra Buddha Lert Lah", "B.E. 2352, Phra Nang-Klao", "B.E. 2394, Phra Chom Klao", "B.E. 2367, Sangha Rājā"], correct:2, explain:"King Rama IV, or the Prince Mongkut, came to the throne in B.E. 2394 and was formally known as Phra Chom Klao." },
+  { section:"Thailand", q:"What was emphasized for bhikkhus during King Rama IV's reign?", choices:["Military training", "Being well-behaved and well-educated in the Buddha's doctrine, with rules and regulations", "Learning foreign languages only", "Building temples exclusively in Bangkok"], correct:1, explain:"During King Rama IV's reign, bhikkhus were greatly encouraged in their study and practice of Buddhism, so that they were well-behaved as well as well-educated in the Buddha's doctrine." },
+  { section:"Thailand", q:"What three outcomes does Unit 1 of the textbook expect students to understand?", choices:["Pāli grammar, monastic robes, and temple architecture", "The Buddhist Councils, Buddhism in Thailand, and the significance of Buddhism in Thailand", "The Jātaka stories, model Buddhists, and the Buddha's disciples", "Meditation techniques, holy days, and religious rites"], correct:1, explain:"The Expected Outcome of Unit 1 is: an understanding of the Buddhist Councils, an analysis of Buddhism in Thailand, and an analysis of the significance of Buddhism in Thailand." },
+  { section:"Thailand", q:"Which council is identified as the very first Buddhist Council held on Thai soil?", choices:["The Eighth Council, at Wat Phodharam", "The Ninth Council, at Bangkok", "The Tenth Council, at Wat Phrasriratanasasdaram", "The Fifth Council, at Mandalay"], correct:0, explain:"The Eighth Council, held at Wat Phodharam, Thailand, under King Tilokaraj of Lanna, is identified as the first Buddhist Council held in Thailand." },
+  { section:"Thailand", q:"What overall theme connects the Buddhist Councils (Part I) to Buddhism in Thailand (Part II) in this unit?", choices:["Both describe unrelated topics with no connection", "The Councils preserved and purified the Buddha's teachings, which were then carried into Thailand and shaped its religious history", "Both focus only on Pāli grammar", "Both describe temple architecture exclusively"], correct:1, explain:"The Councils' purpose was to preserve and purify the Buddha's teachings; this same body of teachings and tradition was carried into Suvarnabhūmi/Thailand and shaped the country's religious and royal history through the Ratanakosin kings." }
+];
+
+let current = 0;
+let score = 0;
+let answered = false;
+const sectionScore = { Councils: {correct:0, total:0}, Thailand: {correct:0, total:0} };
+questions.forEach(q => sectionScore[q.section].total++);
+
+const qcount = document.getElementById('qcount');
+const progressFill = document.getElementById('progressFill');
+const scoreBadge = document.getElementById('scoreBadge');
+const qnumLabel = document.getElementById('qnumLabel');
+const sectionTag = document.getElementById('sectionTag');
+const qtext = document.getElementById('qtext');
+const choicesWrap = document.getElementById('choicesWrap');
+const explainBox = document.getElementById('explainBox');
+const nextBtn = document.getElementById('nextBtn');
+const quizArea = document.getElementById('quizArea');
+const resultCard = document.getElementById('resultCard');
+const finalScore = document.getElementById('finalScore');
+const finalMsg = document.getElementById('finalMsg');
+const breakdown = document.getElementById('breakdown');
+const restartBtn = document.getElementById('restartBtn');
+
+function renderQuestion(){
+  answered = false;
+  const item = questions[current];
+  qnumLabel.textContent = 'Q' + (current+1);
+  sectionTag.textContent = item.section === 'Councils' ? 'The Buddhist Councils' : 'Buddhism in Thailand';
+  qtext.textContent = item.q;
+  qcount.textContent = `Question ${current+1} of ${questions.length}`;
+  progressFill.style.width = (current/questions.length*100) + '%';
+  scoreBadge.textContent = 'Score: ' + score;
+  explainBox.classList.remove('show');
+  explainBox.innerHTML = '';
+  nextBtn.classList.remove('show');
+
+  choicesWrap.innerHTML = '';
+  item.choices.forEach((choice, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice';
+    btn.textContent = choice;
+    btn.addEventListener('click', () => selectAnswer(idx, btn));
+    choicesWrap.appendChild(btn);
+  });
+}
+
+function selectAnswer(idx, btn){
+  if(answered) return;
+  answered = true;
+  const item = questions[current];
+  const allBtns = choicesWrap.querySelectorAll('.choice');
+  allBtns.forEach(b => b.classList.add('locked'));
+
+  if(idx === item.correct){
+    btn.classList.add('correct');
+    score++;
+    sectionScore[item.section].correct++;
+  } else {
+    btn.classList.add('wrong');
+    allBtns[item.correct].classList.add('correct');
+  }
+
+  explainBox.innerHTML = `<b>Explanation:</b> ${item.explain}`;
+  explainBox.classList.add('show');
+  scoreBadge.textContent = 'Score: ' + score;
+  nextBtn.classList.add('show');
+  nextBtn.textContent = (current === questions.length - 1) ? 'See Results →' : 'Next Question →';
+}
+
+nextBtn.addEventListener('click', () => {
+  current++;
+  if(current >= questions.length){
+    showResults();
+  } else {
+    renderQuestion();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+});
+
+function showResults(){
+  quizArea.classList.add('hidden');
+  document.querySelector('.progress-wrap').style.display = 'none';
+  resultCard.classList.add('show');
+  finalScore.textContent = `${score} / ${questions.length}`;
+  const pct = Math.round(score/questions.length*100);
+  let msg = '';
+  if(pct >= 90) msg = 'Excellent! You have a strong command of this unit.';
+  else if(pct >= 70) msg = 'Good work! A focused review of a few sections will help.';
+  else if(pct >= 50) msg = 'Fair — worth reviewing the Councils and Ratanakosin sections.';
+  else msg = 'Keep studying — review pages 1–9 and try again.';
+  finalMsg.textContent = `${pct}% correct — ${msg}`;
+
+  breakdown.innerHTML = `
+    <div><span>The Buddhist Councils</span><span>${sectionScore.Councils.correct} / ${sectionScore.Councils.total}</span></div>
+    <div><span>Buddhism in Thailand</span><span>${sectionScore.Thailand.correct} / ${sectionScore.Thailand.total}</span></div>
+  `;
+}
+
+restartBtn.addEventListener('click', () => {
+  current = 0;
+  score = 0;
+  sectionScore.Councils.correct = 0;
+  sectionScore.Thailand.correct = 0;
+  quizArea.classList.remove('hidden');
+  document.querySelector('.progress-wrap').style.display = 'flex';
+  resultCard.classList.remove('show');
+  renderQuestion();
+});
+
+renderQuestion();
+</script>
+</body>
+</html>
